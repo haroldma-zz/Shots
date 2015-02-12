@@ -13,8 +13,32 @@ namespace Shots.Api
 {
     public class ShotsService
     {
+        private readonly AppSettingsHelper _appSettingsHelper;
+        private string _identifierForVendor;
+
+        public ShotsService(AppSettingsHelper appSettingsHelper)
+        {
+            _appSettingsHelper = appSettingsHelper;
+        }
+
         /// <summary>
-        /// Checks the email against the api.
+        ///     Gets the identifier for the vendor.
+        ///     Used by Shots to identify devices.
+        /// </summary>
+        /// <value>
+        ///     The identifier of the vendor.
+        /// </value>
+        public string IdentifierForVendor
+        {
+            get
+            {
+                return _identifierForVendor ??
+                       (_identifierForVendor = _appSettingsHelper.Read("IdentifierForVendor", Guid.NewGuid().ToString()));
+            }
+        }
+
+        /// <summary>
+        ///     Checks the email against the api.
         /// </summary>
         /// <param name="email">The email.</param>
         /// <returns>Success if is available.</returns>
@@ -28,7 +52,7 @@ namespace Shots.Api
         }
 
         /// <summary>
-        /// Logins to shots.
+        ///     Logins to shots.
         /// </summary>
         /// <param name="username">The username.</param>
         /// <param name="password">The password.</param>
@@ -46,7 +70,7 @@ namespace Shots.Api
         }
 
         /// <summary>
-        /// Registers a new account on shots.
+        ///     Registers a new account on shots.
         /// </summary>
         /// <param name="username">The username.</param>
         /// <param name="password">The password.</param>
@@ -56,11 +80,12 @@ namespace Shots.Api
         /// <param name="birthday">The birthday.</param>
         /// <param name="imageData">The image data. Use null to not include any.</param>
         /// <returns></returns>
-        public async Task<BaseResponse> RegisterAsync(string username, string password, string email, string firstName, string lastName, DateTime birthday, Stream imageData)
+        public async Task<BaseResponse> RegisterAsync(string username, string password, string email, string firstName,
+                                                      string lastName, DateTime birthday, Stream imageData)
         {
             const string path = ShotsConstants.UserNewPath;
             var data = GetDefaultData(path);
-            data.Add("identifierForVendor", Guid.NewGuid().ToString());
+            data.Add("identifierForVendor", IdentifierForVendor);
             data.Add("username", username);
             data.Add("password", password);
             data.Add("email", email);
@@ -69,9 +94,7 @@ namespace Shots.Api
             data.Add("birthday", birthday.ToUnixTimestamp().ToString());
 
             if (imageData != null)
-            {
                 return await PostAsync<LoginResponse>(path, data, imageData);
-            }
 
             //TODO Save login state
 
@@ -120,9 +143,7 @@ namespace Shots.Api
             {
                 // add dictionary data
                 foreach (var pair in data)
-                {
                     content.Add(new StringContent(pair.Value), pair.Key);
-                }
 
                 // then the image stream
                 content.Add(CreateFileContent(imageData, "picture", "picture.jpg", "image/jpeg"));
@@ -168,6 +189,5 @@ namespace Shots.Api
         }
 
         #endregion
-
     }
 }

@@ -31,6 +31,8 @@ namespace Shots.Api
             _consumer = credentials.UserName;
             credentials.RetrievePassword();
             _secret = credentials.Password;
+
+            CurrentUser = _appSettingsHelper.ReadJsonAs<AuthenticatedUserInfo>(ShotsConstants.CredentialResouceName);
         }
 
         /// <summary>
@@ -55,7 +57,9 @@ namespace Shots.Api
         /// <value>
         ///     The current user.
         /// </value>
-        public UserInfo CurrentUser { get; private set; }
+        public AuthenticatedUserInfo CurrentUser { get; private set; }
+
+        public bool IsAuthenticated { get { return CurrentUser != null; } }
 
         /// <summary>
         ///     Checks the email against the api.
@@ -119,12 +123,23 @@ namespace Shots.Api
             LoginResponse resp;
 
             if (imageData != null) resp = await PostAsync<LoginResponse>(path, data, imageData);
-            else resp = await PostAsync<LoginResponse>(path, data);
+            else resp = await PostAsync<LoginResponse>(ShotsConstants.UserNewPath, data);
 
             if (resp.Status == Status.Success &&
                 resp.Keys != null) SaveAuthentication(resp.UserInfo, resp.Keys.Consumer, resp.Keys.Secret);
 
             return resp;
+        }
+
+        /// <summary>
+        /// Gets the suggested users for the current account.
+        /// </summary>
+        /// <returns></returns>
+        public async Task<SuggestedResponse> GetSuggestedUsersAsync()
+        {
+            const string path = ShotsConstants.SuggestedPath;
+            var data = GetDefaultData(path);
+            return await PostAsync<SuggestedResponse>(path, data);
         }
 
         #region Helpers
@@ -147,17 +162,17 @@ namespace Shots.Api
         /// <summary>
         /// Saves the authentication information.
         /// </summary>
-        /// <param name="userInfo">The user information.</param>
+        /// <param name="authenticatedUserInfo">The user information.</param>
         /// <param name="consumer">The consumer key.</param>
         /// <param name="secret">The secret key.</param>
-        private void SaveAuthentication(UserInfo userInfo, string consumer, string secret)
+        private void SaveAuthentication(AuthenticatedUserInfo authenticatedUserInfo, string consumer, string secret)
         {
             _credentialHelper.SaveCredentials(ShotsConstants.CredentialResouceName, consumer, secret);
-            _appSettingsHelper.WriteAsJson(ShotsConstants.CredentialResouceName, userInfo);
+            _appSettingsHelper.WriteAsJson(ShotsConstants.CredentialResouceName, authenticatedUserInfo);
 
             _consumer = consumer;
             _secret = secret;
-            CurrentUser = userInfo;
+            CurrentUser = authenticatedUserInfo;
         }
 
         /// <summary>
@@ -197,6 +212,7 @@ namespace Shots.Api
 
             if (!string.IsNullOrEmpty(_consumer)) data.Add("rl_consumer", _consumer);
             if (!string.IsNullOrEmpty(_secret)) data.Add("rl_secret", _secret);
+            if (CurrentUser != null) data.Add("user_id", CurrentUser.Id);
 
             return data;
         }

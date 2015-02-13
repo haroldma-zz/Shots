@@ -7,6 +7,7 @@
         public const string ClientHeader = "WindowsPhone (ThirdParty;Zumicts)";
         public const string CredentialResouceName = "ShotsAccount";
 
+        public const string SuggestedPath = "suggested";
         public const string UserPath = "user";
         public const string UserLoginPath = UserPath + "/login";
         public const string UserNewPath = UserPath + "/new";

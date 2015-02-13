@@ -14,11 +14,23 @@ namespace Shots.Api
     public class ShotsService
     {
         private readonly AppSettingsHelper _appSettingsHelper;
+        private readonly CredentialHelper _credentialHelper;
+        private string _consumer;
         private string _identifierForVendor;
+        private string _secret;
 
-        public ShotsService(AppSettingsHelper appSettingsHelper)
+        public ShotsService(AppSettingsHelper appSettingsHelper, CredentialHelper credentialHelper)
         {
             _appSettingsHelper = appSettingsHelper;
+            _credentialHelper = credentialHelper;
+
+            var credentials = _credentialHelper.GetCredentials(ShotsConstants.CredentialResouceName);
+
+            if (credentials == null) return;
+
+            _consumer = credentials.UserName;
+            credentials.RetrievePassword();
+            _secret = credentials.Password;
         }
 
         /// <summary>
@@ -36,6 +48,14 @@ namespace Shots.Api
                        (_identifierForVendor = _appSettingsHelper.Read("IdentifierForVendor", Guid.NewGuid().ToString()));
             }
         }
+
+        /// <summary>
+        ///     Gets the current user.
+        /// </summary>
+        /// <value>
+        ///     The current user.
+        /// </value>
+        public UserInfo CurrentUser { get; private set; }
 
         /// <summary>
         ///     Checks the email against the api.
@@ -64,9 +84,12 @@ namespace Shots.Api
             data.Add("username", username);
             data.Add("password", password);
 
-            //TODO Save login state
+            var resp = await PostAsync<LoginResponse>(path, data);
 
-            return await PostAsync<LoginResponse>(path, data);
+            if (resp.Status == Status.Success &&
+                resp.Keys != null) SaveAuthentication(resp.UserInfo, resp.Keys.Consumer, resp.Keys.Secret);
+
+            return resp;
         }
 
         /// <summary>
@@ -93,17 +116,25 @@ namespace Shots.Api
             data.Add("lname", lastName);
             data.Add("birthday", birthday.ToUnixTimestamp().ToString());
 
-            if (imageData != null)
-                return await PostAsync<LoginResponse>(path, data, imageData);
+            LoginResponse resp;
 
-            //TODO Save login state
+            if (imageData != null) resp = await PostAsync<LoginResponse>(path, data, imageData);
+            else resp = await PostAsync<LoginResponse>(path, data);
 
-            return await PostAsync<LoginResponse>(path, data);
+            if (resp.Status == Status.Success &&
+                resp.Keys != null) SaveAuthentication(resp.UserInfo, resp.Keys.Consumer, resp.Keys.Secret);
+
+            return resp;
         }
 
         #region Helpers
 
-        private static HttpClient CreateClient()
+        /// <summary>
+        /// Creates the HTTP client.
+        /// Contains required headers.
+        /// </summary>
+        /// <returns></returns>
+        private HttpClient CreateHttpClient()
         {
             var client = new HttpClient(new HttpClientHandler
             {
@@ -113,12 +144,47 @@ namespace Shots.Api
             return client;
         }
 
+        /// <summary>
+        /// Saves the authentication information.
+        /// </summary>
+        /// <param name="userInfo">The user information.</param>
+        /// <param name="consumer">The consumer key.</param>
+        /// <param name="secret">The secret key.</param>
+        private void SaveAuthentication(UserInfo userInfo, string consumer, string secret)
+        {
+            _credentialHelper.SaveCredentials(ShotsConstants.CredentialResouceName, consumer, secret);
+            _appSettingsHelper.WriteAsJson(ShotsConstants.CredentialResouceName, userInfo);
+
+            _consumer = consumer;
+            _secret = secret;
+            CurrentUser = userInfo;
+        }
+
+        /// <summary>
+        /// Resets the authentication information.
+        /// </summary>
+        private void ResetAuthentication()
+        {
+            _credentialHelper.DeleteCredentials(ShotsConstants.CredentialResouceName);
+            _appSettingsHelper.WriteAsJson(ShotsConstants.CredentialResouceName, null);
+
+            _consumer = null;
+            _secret = null;
+            CurrentUser = null;
+        }
+
+        /// <summary>
+        /// Gets the default data dictionary.
+        /// Including auth related parameters.
+        /// </summary>
+        /// <param name="path">The path.</param>
+        /// <returns></returns>
         private SortedDictionary<string, string> GetDefaultData(string path)
         {
             var code = ShotsAuthHelper.GetTimeCode();
             var signature = ShotsAuthHelper.GetSignature(path, code);
 
-            return new SortedDictionary<string, string>
+            var data = new SortedDictionary<string, string>
             {
                 {"appId", "8"},
                 {"appVersion", "3.1.7"},
@@ -128,12 +194,16 @@ namespace Shots.Api
                 {"rl_auth", signature},
                 {"rl_code", code}
             };
+
+            if (!string.IsNullOrEmpty(_consumer)) data.Add("rl_consumer", _consumer);
+            if (!string.IsNullOrEmpty(_secret)) data.Add("rl_secret", _secret);
+
+            return data;
         }
 
         private async Task<T> PostAsync<T>(string path, IDictionary<string, string> data) where T : BaseResponse, new()
         {
-            using (var content = new FormUrlEncodedContent(data))
-                return await PostAsync<T>(path, content);
+            using (var content = new FormUrlEncodedContent(data)) return await PostAsync<T>(path, content);
         }
 
         private async Task<T> PostAsync<T>(string path, IDictionary<string, string> data, Stream imageData)
@@ -142,8 +212,7 @@ namespace Shots.Api
             using (var content = new MultipartFormDataContent("--Boundary+67DE93E465AACAB1"))
             {
                 // add dictionary data
-                foreach (var pair in data)
-                    content.Add(new StringContent(pair.Value), pair.Key);
+                foreach (var pair in data) content.Add(new StringContent(pair.Value), pair.Key);
 
                 // then the image stream
                 content.Add(CreateFileContent(imageData, "picture", "picture.jpg", "image/jpeg"));
@@ -168,7 +237,7 @@ namespace Shots.Api
         {
             var url = "https://" + ShotsConstants.ApiBase + path;
 
-            using (var client = CreateClient())
+            using (var client = CreateHttpClient())
             {
                 var resp = await client.PostAsync(url, content);
                 var json = await resp.Content.ReadAsStringAsync();

@@ -80,8 +80,10 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Models\BaseResponse.cs" />
+    <Compile Include="Models\FollowingResponse.cs" />
     <Compile Include="Models\Keys.cs" />
     <Compile Include="Models\LoginResponse.cs" />
+    <Compile Include="Models\PageInfo.cs" />
     <Compile Include="Models\SuggestedResponse.cs" />
     <Compile Include="Models\AuthenticatedUserInfo.cs" />
     <Compile Include="ShotsAuthHelper.cs" />

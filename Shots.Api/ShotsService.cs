@@ -142,6 +142,21 @@ namespace Shots.Api
             return await PostAsync<SuggestedResponse>(path, data);
         }
 
+        /// <summary>
+        /// Gets the user's following for the specified timeframe.
+        /// </summary>
+        /// <param name="since">Since when to request following.</param>
+        /// <param name="id">The user id. (Use "me" for the current account)</param>
+        /// <returns></returns>
+        public async Task<FollowingResponse> GetUserFollowingAsync(DateTime since, string id = "me")
+        {
+            const string path = ShotsConstants.UserFollowingPath;
+            var data = GetDefaultData(path);
+            data.Add("request_user_id", id == "me" ? CurrentUser.Id : id);
+            data.Add("since", since.ToUnixTimestamp().ToString());
+            return await PostAsync<FollowingResponse>(path, data);
+        }
+
         #region Helpers
 
         /// <summary>

@@ -9,6 +9,7 @@
 
         public const string SuggestedPath = "suggested";
         public const string UserPath = "user";
+        public const string UserLoadPath = UserPath + "/load";
         public const string UserFollowingPath = UserPath + "/following";
         public const string UserLoginPath = UserPath + "/login";
         public const string UserNewPath = UserPath + "/new";

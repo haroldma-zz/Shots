@@ -145,6 +145,16 @@ namespace Shots.Api
         /// <summary>
         /// Gets the user's following for the specified timeframe.
         /// </summary>
+        /// <param name="id">The user id. (Use "me" for the current account)</param>
+        /// <returns></returns>
+        public Task<FollowingResponse> GetUserFollowingAsync(string id = "me")
+        {
+            return GetUserFollowingAsync(DateTime.MinValue, id);
+        }
+
+        /// <summary>
+        /// Gets the user's following for the specified timeframe.
+        /// </summary>
         /// <param name="since">Since when to request following.</param>
         /// <param name="id">The user id. (Use "me" for the current account)</param>
         /// <returns></returns>
@@ -153,8 +163,22 @@ namespace Shots.Api
             const string path = ShotsConstants.UserFollowingPath;
             var data = GetDefaultData(path);
             data.Add("request_user_id", id == "me" ? CurrentUser.Id : id);
-            data.Add("since", since.ToUnixTimestamp().ToString());
+            if (since != DateTime.MinValue) data.Add("since", since.ToUnixTimestamp().ToString());
+
             return await PostAsync<FollowingResponse>(path, data);
+        }
+
+        /// <summary>
+        /// Gets the specified id user info.
+        /// </summary>
+        /// <param name="id">The user identifier.</param>
+        /// <returns></returns>
+        public async Task<UserInfoReponse> GetUserAsync(string id)
+        {
+            const string path = ShotsConstants.UserLoadPath;
+            var data = GetDefaultData(path);
+            data.Add("request_user_id", id);
+            return await PostAsync<UserInfoReponse>(path, data);
         }
 
         #region Helpers

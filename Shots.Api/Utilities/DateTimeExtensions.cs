@@ -16,7 +16,7 @@ namespace Shots.Api.Utilities
         /// <returns></returns>
         public static DateTime FromUnixTimestamp(this long timestamp)
         {
-            return EpochDateTime.AddMilliseconds(timestamp);
+            return EpochDateTime.AddSeconds(timestamp);
         }
 
         /// <summary>

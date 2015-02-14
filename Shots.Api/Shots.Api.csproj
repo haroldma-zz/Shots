@@ -89,6 +89,7 @@
     <Compile Include="Models\Keys.cs" />
     <Compile Include="Models\Like.cs" />
     <Compile Include="Models\HomeListResponse.cs" />
+    <Compile Include="Models\LikeResponse.cs" />
     <Compile Include="Models\LoginResponse.cs" />
     <Compile Include="Models\PageInfo.cs" />
     <Compile Include="Models\Resource.cs" />

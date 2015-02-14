@@ -132,6 +132,23 @@ namespace Shots.Api
         }
 
         /// <summary>
+        /// Likes the shot item.
+        /// </summary>
+        /// <param name="id">The resource id.</param>
+        /// <param name="on">if set to <c>true</c> [on].</param>
+        /// <returns></returns>
+        public async Task<LikeResponse> LikeShotItemAsync(string id, bool on = true)
+        {
+            var path = on ? ShotsConstants.LikeOnPath : ShotsConstants.LikeOffPath;
+            var data = GetDefaultData(path);
+            // Haven't seen any other type yet
+            data.Add("type", "photo");
+            data.Add("resource_id", id);
+
+            return await PostAsync<LikeResponse>(path, data);
+        }
+
+        /// <summary>
         ///     Gets the suggested users for the current account.
         /// </summary>
         /// <returns></returns>

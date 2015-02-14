@@ -11,6 +11,8 @@ namespace Shots.Api.Models
 
         [JsonProperty("server_time")]
         public int ServerTime { get; set; }
+
+        public string Timings { get; set; }
     }
 
     public enum Status

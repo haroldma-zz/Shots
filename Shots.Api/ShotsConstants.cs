@@ -24,5 +24,9 @@
         public const string ListUserPath = ListsBasePath + "/user";
         public const string ListDiscoverPath = ListsBasePath + "/discover";
         public const string ListExplorePath = ListsBasePath + "/explore";
+
+        public const string LikeBasePath = "like";
+        public const string LikeOnPath = LikeBasePath + "/on";
+        public const string LikeOffPath = LikeBasePath + "/off";
     }
 }

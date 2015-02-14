@@ -15,7 +15,10 @@
         public const string UserLoginPath = UserPath + "/login";
         public const string UserNewPath = UserPath + "/new";
         public const string UserCheckPath = UserPath + "/check";
-        
+
+        public const string PostBasePath = "post";
+        public const string PostByResourceIdPath = PostBasePath + "/byResource";
+
         public const string ListsBasePath = "lists";
         public const string ListHomePath = ListsBasePath + "/home";
         public const string ListUserPath = ListsBasePath + "/user";

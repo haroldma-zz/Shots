@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
@@ -11,6 +12,9 @@ using Shots.Api.Utilities;
 
 namespace Shots.Api
 {
+    /// <summary>
+    ///     Provides read and write operations to the Shots API.
+    /// </summary>
     public class ShotsService
     {
         private readonly AppSettingsHelper _appSettingsHelper;
@@ -51,6 +55,8 @@ namespace Shots.Api
             }
         }
 
+        public bool IsAuthenticated { get { return CurrentUser != null; } }
+
         /// <summary>
         ///     Gets the current user.
         /// </summary>
@@ -58,8 +64,6 @@ namespace Shots.Api
         ///     The current user.
         /// </value>
         public AuthenticatedUserInfo CurrentUser { get; private set; }
-
-        public bool IsAuthenticated { get { return CurrentUser != null; } }
 
         /// <summary>
         ///     Checks the email against the api.
@@ -73,6 +77,131 @@ namespace Shots.Api
             data.Add("email", email);
 
             return await PostAsync<BaseResponse>(path, data);
+        }
+
+        /// <summary>
+        ///     Gets the home list.
+        /// </summary>
+        /// <param name="lastId">The id of the last item. (Paging)</param>
+        /// <returns></returns>
+        public async Task<HomeListResponse> GetHomeListAsync(string lastId = null)
+        {
+            const string path = ShotsConstants.ListHomePath;
+            var data = GetDefaultData(path);
+            if (!string.IsNullOrEmpty(lastId)) data.Add("last_id", lastId);
+
+            return await PostAsync<HomeListResponse>(path, data);
+        }
+
+        /// <summary>
+        ///     Gets the shot item.
+        /// </summary>
+        /// <param name="id">The resource id.</param>
+        /// <returns></returns>
+        public async Task<SingleItemResponse> GetShotItemAsync(string id)
+        {
+            const string path = ShotsConstants.PostByResourceIdPath;
+            var data = GetDefaultData(path);
+            // Haven't seen any other type yet
+            data.Add("type", "photo");
+            data.Add("resource_id", id);
+
+            // so the api returns a list response
+            var resp = await PostAsync<BaseListResponse>(path, data);
+
+            // To make everything nicer, we convert it to a SingleItemResponse manually
+            return new SingleItemResponse
+            {
+                Item = resp.Items != null ? resp.Items.FirstOrDefault() : null,
+                Message = resp.Message,
+                Status = resp.Status,
+                ServerTime = resp.ServerTime
+            };
+        }
+
+        /// <summary>
+        ///     Gets the suggested users for the current account.
+        /// </summary>
+        /// <returns></returns>
+        public async Task<SuggestedResponse> GetSuggestedUsersAsync()
+        {
+            const string path = ShotsConstants.SuggestedPath;
+            var data = GetDefaultData(path);
+            return await PostAsync<SuggestedResponse>(path, data);
+        }
+
+        /// <summary>
+        ///     Gets the specified id user info.
+        /// </summary>
+        /// <param name="id">The user identifier.</param>
+        /// <returns></returns>
+        public async Task<UserInfoReponse> GetUserAsync(string id)
+        {
+            const string path = ShotsConstants.UserLoadPath;
+            var data = GetDefaultData(path);
+            data.Add("request_user_id", id);
+            return await PostAsync<UserInfoReponse>(path, data);
+        }
+
+        /// <summary>
+        ///     Gets the user's followers.
+        /// </summary>
+        /// <param name="id">The user id. (Use "me" for the current account)</param>
+        /// <param name="lastId">The id of the last item. (Paging)</param>
+        /// <returns></returns>
+        public async Task<FollowersResponse> GetUserFollowersAsync(string id, string lastId = null)
+        {
+            const string path = ShotsConstants.UserFollowersPath;
+            var data = GetDefaultData(path);
+            data.Add("request_user_id", id == "me" ? CurrentUser.Id : id);
+            if (!string.IsNullOrEmpty(lastId)) data.Add("last_id", lastId);
+
+            return await PostAsync<FollowersResponse>(path, data);
+        }
+
+        /// <summary>
+        ///     Gets the user's following.
+        /// </summary>
+        /// <param name="id">The user id. (Use "me" for the current account)</param>
+        /// <param name="lastId">The id of the last item. (Paging)</param>
+        /// <returns></returns>
+        public Task<FollowingResponse> GetUserFollowingAsync(string id, string lastId = null)
+        {
+            return GetUserFollowingAsync(DateTime.MinValue, id, lastId);
+        }
+
+        /// <summary>
+        ///     Gets the user's following for the specified timeframe.
+        /// </summary>
+        /// <param name="since">Since when to request following.</param>
+        /// <param name="id">The user id. (Use "me" for the current account)</param>
+        /// <param name="lastId">The id of the last item. (Paging)</param>
+        /// <returns></returns>
+        public async Task<FollowingResponse> GetUserFollowingAsync(DateTime since, string id, string lastId = null)
+        {
+            const string path = ShotsConstants.UserFollowingPath;
+            var data = GetDefaultData(path);
+            data.Add("request_user_id", id == "me" ? CurrentUser.Id : id);
+            if (since != DateTime.MinValue) data.Add("since", since.ToUnixTimestamp().ToString());
+            if (!string.IsNullOrEmpty(lastId)) data.Add("last_id", lastId);
+
+            return await PostAsync<FollowingResponse>(path, data);
+        }
+
+        /// <summary>
+        ///     Gets the user's list.
+        /// </summary>
+        /// <param name="id">The user id. (Use "me" for the current account)</param>
+        /// <param name="lastId">The id of the last item. (Paging)</param>
+        /// <returns></returns>
+        public async Task<UserListResponse> GetUserListAsync(string id, string lastId = null)
+        {
+            const string path = ShotsConstants.ListHomePath;
+            var data = GetDefaultData(path);
+            data.Add("request_user_id", id == "me" ? CurrentUser.Id : id);
+            if (!string.IsNullOrEmpty(lastId)) data.Add("last_id", lastId);
+
+            return await PostAsync<UserListResponse>(path, data);
         }
 
         /// <summary>
@@ -131,109 +260,11 @@ namespace Shots.Api
             return resp;
         }
 
-        /// <summary>
-        /// Gets the suggested users for the current account.
-        /// </summary>
-        /// <returns></returns>
-        public async Task<SuggestedResponse> GetSuggestedUsersAsync()
-        {
-            const string path = ShotsConstants.SuggestedPath;
-            var data = GetDefaultData(path);
-            return await PostAsync<SuggestedResponse>(path, data);
-        }
-
-        /// <summary>
-        /// Gets the user's following.
-        /// </summary>
-        /// <param name="id">The user id. (Use "me" for the current account)</param>
-        /// <param name="lastId">The id of the last item. (Paging)</param>
-        /// <returns></returns>
-        public Task<FollowingResponse> GetUserFollowingAsync(string id, string lastId = null)
-        {
-            return GetUserFollowingAsync(DateTime.MinValue, id, lastId);
-        }
-
-        /// <summary>
-        /// Gets the user's following for the specified timeframe.
-        /// </summary>
-        /// <param name="since">Since when to request following.</param>
-        /// <param name="id">The user id. (Use "me" for the current account)</param>
-        /// <param name="lastId">The id of the last item. (Paging)</param>
-        /// <returns></returns>
-        public async Task<FollowingResponse> GetUserFollowingAsync(DateTime since, string id, string lastId = null)
-        {
-            const string path = ShotsConstants.UserFollowingPath;
-            var data = GetDefaultData(path);
-            data.Add("request_user_id", id == "me" ? CurrentUser.Id : id);
-            if (since != DateTime.MinValue) data.Add("since", since.ToUnixTimestamp().ToString());
-            if (!string.IsNullOrEmpty(lastId)) data.Add("last_id", lastId);
-
-            return await PostAsync<FollowingResponse>(path, data);
-        }
-        /// <summary>
-        /// Gets the user's followers.
-        /// </summary>
-        /// <param name="id">The user id. (Use "me" for the current account)</param>
-        /// <param name="lastId">The id of the last item. (Paging)</param>
-        /// <returns></returns>
-        public async Task<FollowersResponse> GetUserFollowersAsync(string id, string lastId = null)
-        {
-            const string path = ShotsConstants.UserFollowersPath;
-            var data = GetDefaultData(path);
-            data.Add("request_user_id", id == "me" ? CurrentUser.Id : id);
-            if (!string.IsNullOrEmpty(lastId)) data.Add("last_id", lastId);
-
-            return await PostAsync<FollowersResponse>(path, data);
-        }
-
-        /// <summary>
-        /// Gets the home list.
-        /// </summary>
-        /// <param name="lastId">The id of the last item. (Paging)</param>
-        /// <returns></returns>
-        public async Task<HomeListResponse> GetHomeListAsync(string lastId = null)
-        {
-            const string path = ShotsConstants.ListHomePath;
-            var data = GetDefaultData(path);
-            if (!string.IsNullOrEmpty(lastId)) data.Add("last_id", lastId);
-
-            return await PostAsync<HomeListResponse>(path, data);
-        }
-
-        /// <summary>
-        /// Gets the user's list.
-        /// </summary>
-        /// <param name="id">The user id. (Use "me" for the current account)</param>
-        /// <param name="lastId">The id of the last item. (Paging)</param>
-        /// <returns></returns>
-        public async Task<UserListResponse> GetUserListAsync(string id, string lastId = null)
-        {
-            const string path = ShotsConstants.ListHomePath;
-            var data = GetDefaultData(path);
-            data.Add("request_user_id", id == "me" ? CurrentUser.Id : id);
-            if (!string.IsNullOrEmpty(lastId)) data.Add("last_id", lastId);
-
-            return await PostAsync<UserListResponse>(path, data);
-        }
-
-        /// <summary>
-        /// Gets the specified id user info.
-        /// </summary>
-        /// <param name="id">The user identifier.</param>
-        /// <returns></returns>
-        public async Task<UserInfoReponse> GetUserAsync(string id)
-        {
-            const string path = ShotsConstants.UserLoadPath;
-            var data = GetDefaultData(path);
-            data.Add("request_user_id", id);
-            return await PostAsync<UserInfoReponse>(path, data);
-        }
-
         #region Helpers
 
         /// <summary>
-        /// Creates the HTTP client.
-        /// Contains required headers.
+        ///     Creates the HTTP client.
+        ///     Contains required headers.
         /// </summary>
         /// <returns></returns>
         private HttpClient CreateHttpClient()
@@ -247,7 +278,7 @@ namespace Shots.Api
         }
 
         /// <summary>
-        /// Saves the authentication information.
+        ///     Saves the authentication information.
         /// </summary>
         /// <param name="authenticatedUserInfo">The user information.</param>
         /// <param name="consumer">The consumer key.</param>
@@ -263,7 +294,7 @@ namespace Shots.Api
         }
 
         /// <summary>
-        /// Resets the authentication information.
+        ///     Resets the authentication information.
         /// </summary>
         private void ResetAuthentication()
         {
@@ -276,8 +307,8 @@ namespace Shots.Api
         }
 
         /// <summary>
-        /// Gets the default data dictionary.
-        /// Including auth related parameters.
+        ///     Gets the default data dictionary.
+        ///     Including auth related parameters.
         /// </summary>
         /// <param name="path">The path.</param>
         /// <returns></returns>
@@ -305,7 +336,7 @@ namespace Shots.Api
         }
 
         /// <summary>
-        /// Posts the http content.
+        ///     Posts the http content.
         /// </summary>
         /// <typeparam name="T">The type of response, must inherit BaseResponse</typeparam>
         /// <param name="path">The path.</param>
@@ -317,7 +348,7 @@ namespace Shots.Api
         }
 
         /// <summary>
-        /// Posts the http content.
+        ///     Posts the http content.
         /// </summary>
         /// <typeparam name="T">The type of response, must inherit BaseResponse</typeparam>
         /// <param name="path">The path.</param>
@@ -340,7 +371,7 @@ namespace Shots.Api
         }
 
         /// <summary>
-        /// Creates a StreamContent for file upload.
+        ///     Creates a StreamContent for file upload.
         /// </summary>
         /// <param name="stream">The stream.</param>
         /// <param name="name">The name.</param>
@@ -360,7 +391,7 @@ namespace Shots.Api
         }
 
         /// <summary>
-        /// Posts the http content.
+        ///     Posts the http content.
         /// </summary>
         /// <typeparam name="T">The type of response, must inherit BaseResponse</typeparam>
         /// <param name="path">The path.</param>

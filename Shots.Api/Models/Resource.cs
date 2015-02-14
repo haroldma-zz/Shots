@@ -49,7 +49,7 @@ namespace Shots.Api.Models
         public string Url { get; set; }
 
         [JsonProperty("user_id")]
-        public string UserId { get; set; }
+        public long UserId { get; set; }
 
         public string WebIdent { get; set; }
         public string Width { get; set; }

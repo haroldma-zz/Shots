@@ -92,8 +92,11 @@
     <Compile Include="Models\PageInfo.cs" />
     <Compile Include="Models\Resource.cs" />
     <Compile Include="Models\ShotItem.cs" />
+    <Compile Include="Models\SimpleUserInfo.cs" />
+    <Compile Include="Models\SingleItemResponse.cs" />
     <Compile Include="Models\SuggestedResponse.cs" />
     <Compile Include="Models\AuthenticatedUserInfo.cs" />
+    <Compile Include="Models\UserInfo.cs" />
     <Compile Include="Models\UserListResponse.cs" />
     <Compile Include="ShotsAuthHelper.cs" />
     <Compile Include="ShotsConstants.cs" />

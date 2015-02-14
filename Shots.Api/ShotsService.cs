@@ -143,13 +143,14 @@ namespace Shots.Api
         }
 
         /// <summary>
-        /// Gets the user's following for the specified timeframe.
+        /// Gets the user's following.
         /// </summary>
         /// <param name="id">The user id. (Use "me" for the current account)</param>
+        /// <param name="lastId">The id of the last item. (Paging)</param>
         /// <returns></returns>
-        public Task<FollowingResponse> GetUserFollowingAsync(string id = "me")
+        public Task<FollowingResponse> GetUserFollowingAsync(string id, string lastId = null)
         {
-            return GetUserFollowingAsync(DateTime.MinValue, id);
+            return GetUserFollowingAsync(DateTime.MinValue, id, lastId);
         }
 
         /// <summary>
@@ -157,15 +158,62 @@ namespace Shots.Api
         /// </summary>
         /// <param name="since">Since when to request following.</param>
         /// <param name="id">The user id. (Use "me" for the current account)</param>
+        /// <param name="lastId">The id of the last item. (Paging)</param>
         /// <returns></returns>
-        public async Task<FollowingResponse> GetUserFollowingAsync(DateTime since, string id = "me")
+        public async Task<FollowingResponse> GetUserFollowingAsync(DateTime since, string id, string lastId = null)
         {
             const string path = ShotsConstants.UserFollowingPath;
             var data = GetDefaultData(path);
             data.Add("request_user_id", id == "me" ? CurrentUser.Id : id);
             if (since != DateTime.MinValue) data.Add("since", since.ToUnixTimestamp().ToString());
+            if (!string.IsNullOrEmpty(lastId)) data.Add("last_id", lastId);
 
             return await PostAsync<FollowingResponse>(path, data);
+        }
+        /// <summary>
+        /// Gets the user's followers.
+        /// </summary>
+        /// <param name="id">The user id. (Use "me" for the current account)</param>
+        /// <param name="lastId">The id of the last item. (Paging)</param>
+        /// <returns></returns>
+        public async Task<FollowersResponse> GetUserFollowersAsync(string id, string lastId = null)
+        {
+            const string path = ShotsConstants.UserFollowersPath;
+            var data = GetDefaultData(path);
+            data.Add("request_user_id", id == "me" ? CurrentUser.Id : id);
+            if (!string.IsNullOrEmpty(lastId)) data.Add("last_id", lastId);
+
+            return await PostAsync<FollowersResponse>(path, data);
+        }
+
+        /// <summary>
+        /// Gets the home list.
+        /// </summary>
+        /// <param name="lastId">The id of the last item. (Paging)</param>
+        /// <returns></returns>
+        public async Task<HomeListResponse> GetHomeListAsync(string lastId = null)
+        {
+            const string path = ShotsConstants.ListHomePath;
+            var data = GetDefaultData(path);
+            if (!string.IsNullOrEmpty(lastId)) data.Add("last_id", lastId);
+
+            return await PostAsync<HomeListResponse>(path, data);
+        }
+
+        /// <summary>
+        /// Gets the user's list.
+        /// </summary>
+        /// <param name="id">The user id. (Use "me" for the current account)</param>
+        /// <param name="lastId">The id of the last item. (Paging)</param>
+        /// <returns></returns>
+        public async Task<UserListResponse> GetUserListAsync(string id, string lastId = null)
+        {
+            const string path = ShotsConstants.ListHomePath;
+            var data = GetDefaultData(path);
+            data.Add("request_user_id", id == "me" ? CurrentUser.Id : id);
+            if (!string.IsNullOrEmpty(lastId)) data.Add("last_id", lastId);
+
+            return await PostAsync<UserListResponse>(path, data);
         }
 
         /// <summary>
@@ -256,11 +304,26 @@ namespace Shots.Api
             return data;
         }
 
+        /// <summary>
+        /// Posts the http content.
+        /// </summary>
+        /// <typeparam name="T">The type of response, must inherit BaseResponse</typeparam>
+        /// <param name="path">The path.</param>
+        /// <param name="data">The dictionary data.</param>
+        /// <returns></returns>
         private async Task<T> PostAsync<T>(string path, IDictionary<string, string> data) where T : BaseResponse, new()
         {
             using (var content = new FormUrlEncodedContent(data)) return await PostAsync<T>(path, content);
         }
 
+        /// <summary>
+        /// Posts the http content.
+        /// </summary>
+        /// <typeparam name="T">The type of response, must inherit BaseResponse</typeparam>
+        /// <param name="path">The path.</param>
+        /// <param name="data">The dictionary data.</param>
+        /// <param name="imageData">The image data.</param>
+        /// <returns></returns>
         private async Task<T> PostAsync<T>(string path, IDictionary<string, string> data, Stream imageData)
             where T : BaseResponse, new()
         {
@@ -276,6 +339,14 @@ namespace Shots.Api
             }
         }
 
+        /// <summary>
+        /// Creates a StreamContent for file upload.
+        /// </summary>
+        /// <param name="stream">The stream.</param>
+        /// <param name="name">The name.</param>
+        /// <param name="fileName">Name of the file.</param>
+        /// <param name="contentType">Type of the content.</param>
+        /// <returns></returns>
         private StreamContent CreateFileContent(Stream stream, string name, string fileName, string contentType)
         {
             var fileContent = new StreamContent(stream);
@@ -288,6 +359,13 @@ namespace Shots.Api
             return fileContent;
         }
 
+        /// <summary>
+        /// Posts the http content.
+        /// </summary>
+        /// <typeparam name="T">The type of response, must inherit BaseResponse</typeparam>
+        /// <param name="path">The path.</param>
+        /// <param name="content">The content to post.</param>
+        /// <returns></returns>
         private async Task<T> PostAsync<T>(string path, HttpContent content) where T : BaseResponse, new()
         {
             var url = "https://" + ShotsConstants.ApiBase + path;
@@ -305,7 +383,7 @@ namespace Shots.Api
                 }
                 catch
                 {
-                    parseResp = new T {Message = "Problem connecting to the cloud."};
+                    parseResp = new T {Message = "Problem connecting to Shots."};
                 }
 
                 return parseResp;

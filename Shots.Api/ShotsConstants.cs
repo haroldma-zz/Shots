@@ -11,8 +11,13 @@
         public const string UserPath = "user";
         public const string UserLoadPath = UserPath + "/load";
         public const string UserFollowingPath = UserPath + "/following";
+        public const string UserFollowersPath = UserPath + "/followers";
         public const string UserLoginPath = UserPath + "/login";
         public const string UserNewPath = UserPath + "/new";
         public const string UserCheckPath = UserPath + "/check";
+        
+        public const string ListsBasePath = "lists";
+        public const string ListHomePath = ListsBasePath + "/home";
+        public const string ListUserPath = ListsBasePath + "/user";
     }
 }

@@ -79,13 +79,22 @@
     <Prefer32Bit>true</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Models\BaseListResponse.cs" />
+    <Compile Include="Models\BasePageResponse.cs" />
     <Compile Include="Models\BaseResponse.cs" />
+    <Compile Include="Models\FollowersResponse.cs" />
     <Compile Include="Models\FollowingResponse.cs" />
+    <Compile Include="Models\FsVenueInfo.cs" />
     <Compile Include="Models\Keys.cs" />
+    <Compile Include="Models\Like.cs" />
+    <Compile Include="Models\HomeListResponse.cs" />
     <Compile Include="Models\LoginResponse.cs" />
     <Compile Include="Models\PageInfo.cs" />
+    <Compile Include="Models\Resource.cs" />
+    <Compile Include="Models\ShotItem.cs" />
     <Compile Include="Models\SuggestedResponse.cs" />
     <Compile Include="Models\AuthenticatedUserInfo.cs" />
+    <Compile Include="Models\UserListResponse.cs" />
     <Compile Include="ShotsAuthHelper.cs" />
     <Compile Include="ShotsConstants.cs" />
     <Compile Include="ShotsService.cs" />

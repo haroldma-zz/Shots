@@ -1,14 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace Shots.Api.Models
 {
-    public class FollowingResponse : BaseResponse
+    public class FollowingResponse : BasePageResponse
     {
-        public PageInfo PageInfo { get; set; }
         public List<UserInfo> Following { get; set; }
     }
 }

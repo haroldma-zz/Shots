@@ -6,10 +6,14 @@ namespace Shots.Api.Models
 {
     public class Resource
     {
-        [JsonProperty("auto_ts")]
-        public string AutoTs { get; set; }
+        private string _description;
 
-        public string Description { get; set; }
+        [JsonProperty("auto_ts")]
+        public DateTime? AutoTs { get; set; }
+
+        public string Caption { get; set; }
+        // The explore section has shots that use different property names, like description and caption
+        public string Description { get { return Caption ?? _description; } set { _description = value; } }
         public string Filter { get; set; }
         public string Front { get; set; }
         public FsVenueInfo FsVenueInfo { get; set; }

@@ -80,6 +80,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Models\BaseListResponse.cs" />
+    <Compile Include="Models\BasePageListResponse.cs" />
     <Compile Include="Models\BasePageResponse.cs" />
     <Compile Include="Models\BaseResponse.cs" />
     <Compile Include="Models\FollowersResponse.cs" />

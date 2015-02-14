@@ -18,12 +18,18 @@ namespace Shots.Api.Utilities
         {
             // Try to parse as a number, else as DateTime object
             long valueLong;
-            if (!long.TryParse((string) reader.Value, out valueLong))
+
+            if (reader.Value is long) valueLong = (long) reader.Value;
+            else
             {
-                DateTime dateTime;
-                DateTime.TryParse((string) reader.Value, out dateTime);
-                return dateTime;
+                if (!long.TryParse((string) reader.Value, out valueLong))
+                {
+                    DateTime dateTime;
+                    DateTime.TryParse((string) reader.Value, out dateTime);
+                    return dateTime;
+                }
             }
+
             var t = valueLong;
             return t.FromUnixTimestamp();
         }

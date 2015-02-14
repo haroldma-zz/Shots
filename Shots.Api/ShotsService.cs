@@ -94,6 +94,18 @@ namespace Shots.Api
         }
 
         /// <summary>
+        ///     Gets the discover list.
+        /// </summary>
+        /// <returns></returns>
+        public async Task<BaseListResponse> GetDiscoverListAsync()
+        {
+            const string path = ShotsConstants.ListDiscoverPath;
+            var data = GetDefaultData(path);
+
+            return await PostAsync<BaseListResponse>(path, data);
+        }
+
+        /// <summary>
         ///     Gets the shot item.
         /// </summary>
         /// <param name="id">The resource id.</param>
@@ -107,7 +119,7 @@ namespace Shots.Api
             data.Add("resource_id", id);
 
             // so the api returns a list response
-            var resp = await PostAsync<BaseListResponse>(path, data);
+            var resp = await PostAsync<BasePageListResponse>(path, data);
 
             // To make everything nicer, we convert it to a SingleItemResponse manually
             return new SingleItemResponse

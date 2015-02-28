@@ -79,6 +79,8 @@
     <Prefer32Bit>true</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="DesignShotsService.cs" />
+    <Compile Include="IShotsService.cs" />
     <Compile Include="Models\BaseListResponse.cs" />
     <Compile Include="Models\BasePageListResponse.cs" />
     <Compile Include="Models\BasePageResponse.cs" />
@@ -105,10 +107,12 @@
     <Compile Include="ShotsService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Utilities\AppSettingsHelper.cs" />
+    <Compile Include="Utilities\ColorHelper.cs" />
     <Compile Include="Utilities\DateTimeExtensions.cs" />
     <Compile Include="Utilities\JsonEpochDateTimeConverter.cs" />
     <Compile Include="Utilities\JsonIntBoolConverter.cs" />
     <Compile Include="Utilities\CredentialHelper.cs" />
+    <Compile Include="Utilities\ShotsColor.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Newtonsoft.Json">

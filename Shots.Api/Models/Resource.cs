@@ -20,7 +20,7 @@ namespace Shots.Api.Models
         public string Height { get; set; }
         public string Id { get; set; }
         public bool IsLike { get; set; }
-        public string LikeCount { get; set; }
+        public int LikeCount { get; set; }
         public List<Like> Likes { get; set; }
 
         [JsonProperty("1080")]

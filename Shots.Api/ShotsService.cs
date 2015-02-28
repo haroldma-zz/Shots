@@ -15,7 +15,7 @@ namespace Shots.Api
     /// <summary>
     ///     Provides read and write operations to the Shots API.
     /// </summary>
-    public class ShotsService
+    public class ShotsService : IShotsService
     {
         private readonly AppSettingsHelper _appSettingsHelper;
         private readonly CredentialHelper _credentialHelper;

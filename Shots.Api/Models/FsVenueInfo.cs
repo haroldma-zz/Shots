@@ -7,6 +7,6 @@ namespace Shots.Api.Models
         [JsonProperty("fsVenue_name")]
         public string FsVenueName { get; set; }
 
-        public string Id { get; set; }
+        public int Id { get; set; }
     }
 }

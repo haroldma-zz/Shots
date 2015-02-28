@@ -1,11 +1,19 @@
+using Windows.UI.Xaml.Media;
 using Newtonsoft.Json;
+using Shots.Api.Utilities;
 
 namespace Shots.Api.Models
 {
     public class SimpleUserInfo
     {
         public string Bio { get; set; }
-        public string Color { get; set; }
+        public int Color { get; set; }
+
+        [JsonIgnore]
+        public SolidColorBrush ColorBrush
+        {
+            get { return ShotsColor.GetColorById(Color).Brush; }
+        }
 
         [JsonProperty("fname")]
         public string FirstName { get; set; }

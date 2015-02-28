@@ -432,21 +432,23 @@ namespace Shots.Api
 
             using (var client = CreateHttpClient())
             {
-                var resp = await client.PostAsync(url, content);
-                var json = await resp.Content.ReadAsStringAsync();
-
-                T parseResp;
-                try
+                using (var resp = await client.PostAsync(url, content))
                 {
-                    parseResp = JsonConvert.DeserializeObject<T>(json, new JsonEpochDateTimeConverter(),
-                        new JsonIntBoolConverter());
-                }
-                catch
-                {
-                    parseResp = new T {Message = "Problem connecting to Shots."};
-                }
+                    var json = await resp.Content.ReadAsStringAsync();
 
-                return parseResp;
+                    T parseResp;
+                    try
+                    {
+                        parseResp = JsonConvert.DeserializeObject<T>(json, new JsonEpochDateTimeConverter(),
+                            new JsonIntBoolConverter());
+                    }
+                    catch
+                    {
+                        parseResp = new T {Message = "Problem connecting to Shots."};
+                    }
+
+                    return parseResp;
+                }
             }
         }
 

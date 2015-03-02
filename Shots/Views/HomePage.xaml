@@ -7,117 +7,17 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:utilities="using:Shots.Utilities"
     xmlns:converters="using:Shots.Converters"
+    xmlns:controls="using:Shots.Controls"
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
     DataContext="{Binding Source={StaticResource Locator}, Path=Main}">
 
     <Grid>
-        <Grid.Resources>
-            <converters:BoolToImageConverter x:Key="LikeBoolToImageConverter">
-                <converters:BoolToImageConverter.TrueContent>
-                    <BitmapImage UriSource="/Assets/Icons/liked.png" />
-                </converters:BoolToImageConverter.TrueContent>
-                <converters:BoolToImageConverter.FalseContent>
-                    <BitmapImage UriSource="/Assets/Icons/like.png" />
-                </converters:BoolToImageConverter.FalseContent>
-            </converters:BoolToImageConverter>
-            <converters:BoolToImageConverter x:Key="DescriptionLikeBoolToImageConverter">
-                <converters:BoolToImageConverter.TrueContent>
-                    <BitmapImage UriSource="/Assets/Icons/description_liked.png" />
-                </converters:BoolToImageConverter.TrueContent>
-                <converters:BoolToImageConverter.FalseContent>
-                    <BitmapImage UriSource="/Assets/Icons/description_like.png" />
-                </converters:BoolToImageConverter.FalseContent>
-            </converters:BoolToImageConverter>
-        </Grid.Resources>
         <utilities:ScrollListView x:Name="FeedView" IsItemClickEnabled="False" SelectionMode="None"
                                   ItemsSource="{Binding Feed}">
             <ListView.ItemTemplate>
                 <DataTemplate>
-                    <Grid>
-                        <Grid.Resources>
-                            <utilities:ParallaxConverter x:Key="ParallaxConverter"
-                                                         Item="{Binding}"
-                                                         List="{Binding ElementName=FeedView}" />
-                        </Grid.Resources>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="*" />
-                            <RowDefinition Height="Auto" />
-                        </Grid.RowDefinitions>
-                        <Grid Background="Black">
-                            <Grid>
-                                <Grid.Background>
-                                    <ImageBrush Opacity=".5" Stretch="UniformToFill"
-                                                utilities:BlurImageTool.Source="{Binding Resource.Pic1080}">
-                                        <ImageBrush.Transform>
-                                            <TranslateTransform
-                                                Y="{Binding ElementName=FeedView, Path=ScrollViewer.VerticalOffset, Converter={StaticResource ParallaxConverter}}" />
-                                        </ImageBrush.Transform>
-                                    </ImageBrush>
-                                </Grid.Background>
-                                <StackPanel Orientation="Horizontal" Margin="10">
-                                    <Ellipse Width="50" Height="50">
-                                        <Ellipse.Fill>
-                                            <ImageBrush ImageSource="{Binding User.ProfilePhotoSmall}" />
-                                        </Ellipse.Fill>
-                                    </Ellipse>
-                                    <TextBlock Text="{Binding User.Username}" Foreground="White"
-                                               VerticalAlignment="Center" Margin="10,0,0,0" FontSize="22" />
-                                </StackPanel>
-                                <StackPanel HorizontalAlignment="Right" Orientation="Horizontal"
-                                            VerticalAlignment="Center" Margin="0,0,10,0">
-                                    <Button Margin="0,0,5,0">
-                                        <Image Width="35"
-                                               Source="{Binding Resource.IsLike, Converter={StaticResource LikeBoolToImageConverter}}" />
-                                    </Button>
-                                    <Button Margin="5,0">
-                                        <Image Width="35" Source="/Assets/Icons/react.png" />
-                                    </Button>
-                                    <Button Margin="5,0,0,0">
-                                        <Image Width="35" Source="/Assets/Icons/more.png" />
-                                    </Button>
-                                </StackPanel>
-                            </Grid>
-                        </Grid>
-                        <Image Grid.Row="1" Height="{Binding Resource.RatioHeight}" Source="{Binding Resource.Pic1080}" />
-                        <Grid Background="Black" Grid.Row="2">
-                            <Grid>
-                                <Grid.Background>
-                                    <ImageBrush Opacity=".5" Stretch="UniformToFill"
-                                                utilities:BlurImageTool.Source="{Binding Resource.Pic1080}">
-                                        <ImageBrush.Transform>
-                                            <TranslateTransform
-                                                Y="{Binding ElementName=FeedView, Path=ScrollViewer.VerticalOffset, Converter={StaticResource ParallaxConverter}}" />
-                                        </ImageBrush.Transform>
-                                    </ImageBrush>
-                                </Grid.Background>
-                                <Grid Margin="15">
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition Height="Auto" />
-                                        <RowDefinition Height="Auto" />
-                                    </Grid.RowDefinitions>
-                                    <TextBlock utilities:InlineHyperlinks.Text="{Binding Resource.Description}"
-                                               Visibility="{Binding Resource.Description, Converter={StaticResource NullToVisibilityConverters}}"
-                                               Foreground="White"
-                                               VerticalAlignment="Center" TextWrapping="Wrap" FontSize="22" />
-                                    <Grid Grid.Row="1" Margin="0,5,0,0">
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="Auto" />
-                                            <ColumnDefinition Width="*" />
-                                        </Grid.ColumnDefinitions>
-                                        <Image Source="{Binding Resource.IsLike, Converter={StaticResource DescriptionLikeBoolToImageConverter}}" Width="20" Margin="0,5,5,5" />
-                                        <TextBlock Grid.Column="1" Foreground="White"
-                                                   VerticalAlignment="Center" TextWrapping="Wrap" FontSize="18">
-                                            <Run Text="blah, blah and" />
-                                            <Run Text="{Binding Resource.LikeCount}" />
-                                            <Run Text="more" />
-                                        </TextBlock>
-                                    </Grid>
-                                </Grid>
-                            </Grid>
-                        </Grid>
-                    </Grid>
+                    <controls:ShotItemViewer ScrollListView="{Binding ElementName=FeedView}" />
                 </DataTemplate>
             </ListView.ItemTemplate>
         </utilities:ScrollListView>

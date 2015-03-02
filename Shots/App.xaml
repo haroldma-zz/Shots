@@ -7,6 +7,22 @@
             <vm:ViewModelLocator x:Key="Locator" xmlns:vm="using:Shots.ViewModel" />
 
             <converters:NullToVisibilityConverter x:Key="NullToVisibilityConverters" />
+            <converters:BoolToImageConverter x:Key="LikeBoolToImageConverter">
+                <converters:BoolToImageConverter.TrueContent>
+                    <BitmapImage UriSource="/Assets/Icons/liked.png" />
+                </converters:BoolToImageConverter.TrueContent>
+                <converters:BoolToImageConverter.FalseContent>
+                    <BitmapImage UriSource="/Assets/Icons/like.png" />
+                </converters:BoolToImageConverter.FalseContent>
+            </converters:BoolToImageConverter>
+            <converters:BoolToImageConverter x:Key="DescriptionLikeBoolToImageConverter">
+                <converters:BoolToImageConverter.TrueContent>
+                    <BitmapImage UriSource="/Assets/Icons/description_liked.png" />
+                </converters:BoolToImageConverter.TrueContent>
+                <converters:BoolToImageConverter.FalseContent>
+                    <BitmapImage UriSource="/Assets/Icons/description_like.png" />
+                </converters:BoolToImageConverter.FalseContent>
+            </converters:BoolToImageConverter>
             
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="ms-appx:///Styles.xaml" />

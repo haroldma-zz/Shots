@@ -92,6 +92,9 @@
     </Compile>
     <Compile Include="Common\BrTextBox.cs" />
     <Compile Include="Common\IncrementalObservableCollection.cs" />
+    <Compile Include="Controls\ShotItemViewer.xaml.cs">
+      <DependentUpon>ShotItemViewer.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Converters\BoolToImageConverter.cs" />
     <Compile Include="Converters\NullToVisibilityConverter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -208,6 +211,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <Page Include="Controls\ShotItemViewer.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Styles.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

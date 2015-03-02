@@ -93,6 +93,7 @@
     <Compile Include="Models\HomeListResponse.cs" />
     <Compile Include="Models\LikeResponse.cs" />
     <Compile Include="Models\LoginResponse.cs" />
+    <Compile Include="Models\NotifyPropertyChangedObject.cs" />
     <Compile Include="Models\PageInfo.cs" />
     <Compile Include="Models\Resource.cs" />
     <Compile Include="Models\ShotItem.cs" />

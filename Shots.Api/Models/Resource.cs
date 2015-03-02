@@ -5,22 +5,39 @@ using Newtonsoft.Json;
 
 namespace Shots.Api.Models
 {
-    public class Resource
+    public class Resource : NotifyPropertyChangedObject
     {
         private string _description;
+        private bool _isLike;
+        private int _ratioHeight;
 
         [JsonProperty("auto_ts")]
         public DateTime? AutoTs { get; set; }
 
         public string Caption { get; set; }
         // The explore section has shots that use different property names, like description and caption
-        public string Description { get { return Caption ?? _description; } set { _description = value; } }
+        public string Description
+        {
+            get { return Caption ?? _description; }
+            set { _description = value; }
+        }
+
         public string Filter { get; set; }
         public string Front { get; set; }
         public FsVenueInfo FsVenueInfo { get; set; }
         public int Height { get; set; }
         public string Id { get; set; }
-        public bool IsLike { get; set; }
+
+        public bool IsLike
+        {
+            get { return _isLike; }
+            set
+            {
+                _isLike = value;
+                OnPropertyChanged();
+            }
+        }
+
         public int LikeCount { get; set; }
         public List<Like> Likes { get; set; }
 
@@ -59,7 +76,6 @@ namespace Shots.Api.Models
         public string WebIdent { get; set; }
         public int Width { get; set; }
 
-        private int _ratioHeight;
         public int RatioHeight
         {
             get
@@ -67,8 +83,8 @@ namespace Shots.Api.Models
                 if (_ratioHeight > 0) return _ratioHeight;
                 if (Window.Current == null || Window.Current.CoreWindow == null) return 533;
 
-                var ratio = (double)Width / Height;
-                _ratioHeight = (int)(Window.Current.CoreWindow.Bounds.Width/ratio);
+                var ratio = (double) Width/Height;
+                _ratioHeight = (int) (Window.Current.CoreWindow.Bounds.Width/ratio);
                 return _ratioHeight;
             }
         }

@@ -2,6 +2,7 @@ using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Ioc;
 using Microsoft.Practices.ServiceLocation;
 using Shots.Api;
+using Shots.Api.Utilities;
 
 namespace Shots.ViewModel
 {
@@ -17,6 +18,9 @@ namespace Shots.ViewModel
         public ViewModelLocator()
         {
             ServiceLocator.SetLocatorProvider(() => SimpleIoc.Default);
+
+            SimpleIoc.Default.Register<AppSettingsHelper>();
+            SimpleIoc.Default.Register<CredentialHelper>();
 
             if (ViewModelBase.IsInDesignModeStatic)
             {
@@ -35,6 +39,11 @@ namespace Shots.ViewModel
         public MainViewModel Main
         {
             get { return ServiceLocator.Current.GetInstance<MainViewModel>(); }
+        }
+
+        public IShotsService ShotsService
+        {
+            get { return ServiceLocator.Current.GetInstance<IShotsService>(); }
         }
 
         public static void Cleanup()

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Windows.UI.Xaml;
 using Newtonsoft.Json;
 
 namespace Shots.Api.Models
@@ -17,7 +18,7 @@ namespace Shots.Api.Models
         public string Filter { get; set; }
         public string Front { get; set; }
         public FsVenueInfo FsVenueInfo { get; set; }
-        public string Height { get; set; }
+        public int Height { get; set; }
         public string Id { get; set; }
         public bool IsLike { get; set; }
         public int LikeCount { get; set; }
@@ -56,6 +57,16 @@ namespace Shots.Api.Models
         public long UserId { get; set; }
 
         public string WebIdent { get; set; }
-        public string Width { get; set; }
+        public int Width { get; set; }
+
+        public int RatioHeight
+        {
+            get
+            {
+                var ratio = (double)Width / Height;
+                var ratioHeight = Window.Current.CoreWindow.Bounds.Width/ratio;
+                return (int)ratioHeight;
+            }
+        }
     }
 }

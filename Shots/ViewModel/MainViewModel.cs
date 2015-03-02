@@ -1,34 +1,49 @@
+using System;
+using System.Linq;
+using System.Threading.Tasks;
+using Windows.UI.Xaml.Data;
 using GalaSoft.MvvmLight;
+using Shots.Api;
+using Shots.Api.Models;
+using Shots.Common;
 
 namespace Shots.ViewModel
 {
-    /// <summary>
-    /// This class contains properties that the main View can data bind to.
-    /// <para>
-    /// Use the <strong>mvvminpc</strong> snippet to add bindable properties to this ViewModel.
-    /// </para>
-    /// <para>
-    /// You can also use Blend to data bind with the tool's support.
-    /// </para>
-    /// <para>
-    /// See http://www.galasoft.ch/mvvm
-    /// </para>
-    /// </summary>
     public class MainViewModel : ViewModelBase
     {
+        private readonly IShotsService _service;
+        private PageInfo _pageInfo;
+
         /// <summary>
-        /// Initializes a new instance of the MainViewModel class.
+        ///     Initializes a new instance of the MainViewModel class.
         /// </summary>
-        public MainViewModel()
+        public MainViewModel(IShotsService service)
         {
-            ////if (IsInDesignMode)
-            ////{
-            ////    // Code runs in Blend --> create design time data.
-            ////}
-            ////else
-            ////{
-            ////    // Code runs "for real"
-            ////}
+            _service = service;
+            _pageInfo = new PageInfo{LastId = ""};
+            Feed = new IncrementalObservableCollection<ShotItem>(
+                () => _pageInfo != null && _pageInfo.LastId != null,
+                u =>
+                {
+                    Func<Task<LoadMoreItemsResult>> taskFunc = async () =>
+                    {
+                        var resp = await _service.GetHomeListAsync(Feed.Count != 0 ? Feed.LastOrDefault().Resource.Id : "");
+
+                        if (resp.Status != Status.Success) return new LoadMoreItemsResult {Count = 0};
+
+                        _pageInfo = resp.PageInfo;
+
+                        foreach (var item in resp.Items)
+                        {
+                            Feed.Add(item);
+                        }
+                        return new LoadMoreItemsResult {Count = (uint) resp.Items.Count};
+                    };
+                    var loadMorePostsTask = taskFunc();
+                    return loadMorePostsTask.AsAsyncOperation();
+                });
         }
+
+        public IncrementalObservableCollection<ShotItem> Feed { get; set; }
     }
 }

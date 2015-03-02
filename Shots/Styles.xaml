@@ -1,0 +1,452 @@
+﻿<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:common="using:Shots.Common"
+    mc:Ignorable="d">
+    <SolidColorBrush x:Key="ShotsAccentColor" Color="#26D1F3" />
+    <FontFamily x:Key="PhoneFontFamilyNormal">Segoe UI</FontFamily>
+    <FontWeight x:Key="PhoneButtonFontWeight">Light</FontWeight>
+    <x:Double x:Key="TextStyleLargeFontSize">30</x:Double>
+    
+    <Style TargetType="TextBlock">
+        <Setter Property="FontSize" Value="25"/>
+    </Style>
+    
+    <Style TargetType="Button">
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="Foreground" Value="{StaticResource ShotsAccentColor}"/>
+        <Setter Property="BorderThickness" Value="{ThemeResource PhoneBorderThickness}"/>
+        <Setter Property="FontFamily" Value="{ThemeResource PhoneFontFamilyNormal}"/>
+        <Setter Property="FontWeight" Value="{ThemeResource PhoneButtonFontWeight}"/>
+        <Setter Property="FontSize" Value="{ThemeResource TextStyleLargeFontSize}"/>
+        <Setter Property="MinWidth" Value="{ThemeResource PhoneButtonMinWidth}"/>
+        <Setter Property="Padding" Value="0"/>
+        <Setter Property="MinHeight" Value="0"/>
+        <Setter Property="HorizontalAlignment" Value="Stretch"/>
+        <Setter Property="VerticalAlignment" Value="Top"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Grid x:Name="Grid" Background="Transparent">
+                        <VisualStateManager.VisualStateGroups>
+                            <VisualStateGroup x:Name="CommonStates">
+                                <VisualStateGroup.Transitions>
+                                    <VisualTransition From="Pressed" To="PointerOver">
+                                        <Storyboard>
+                                            <PointerUpThemeAnimation Storyboard.TargetName="Grid"/>
+                                        </Storyboard>
+                                    </VisualTransition>
+                                    <VisualTransition From="PointerOver" To="Normal">
+                                        <Storyboard>
+                                            <PointerUpThemeAnimation Storyboard.TargetName="Grid"/>
+                                        </Storyboard>
+                                    </VisualTransition>
+                                    <VisualTransition From="Pressed" To="Normal">
+                                        <Storyboard>
+                                            <PointerUpThemeAnimation Storyboard.TargetName="Grid"/>
+                                        </Storyboard>
+                                    </VisualTransition>
+                                </VisualStateGroup.Transitions>
+                                <VisualState x:Name="Normal"/>
+                                <VisualState x:Name="PointerOver"/>
+                                <VisualState x:Name="Pressed">
+                                    <Storyboard>
+                                        <PointerDownThemeAnimation Storyboard.TargetName="Grid"/>
+                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Foreground" Storyboard.TargetName="ContentPresenter">
+                                            <DiscreteObjectKeyFrame KeyTime="00:00:00.01" Value="#7F000000"/>
+                                        </ObjectAnimationUsingKeyFrames>
+                                    </Storyboard>
+                                </VisualState>
+                                <VisualState x:Name="Disabled">
+                                    <Storyboard>
+                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Foreground" Storyboard.TargetName="ContentPresenter">
+                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource ButtonDisabledForegroundThemeBrush}"/>
+                                        </ObjectAnimationUsingKeyFrames>
+                                    </Storyboard>
+                                </VisualState>
+                            </VisualStateGroup>
+                        </VisualStateManager.VisualStateGroups>
+                        <ContentPresenter x:Name="ContentPresenter" AutomationProperties.AccessibilityView="Raw" ContentTemplate="{TemplateBinding ContentTemplate}" Content="{TemplateBinding Content}" Foreground="{TemplateBinding Foreground}" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="10"/>
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <SolidColorBrush
+        x:Key="SplitHeaderBrush"
+        Color="#2a5748" />
+    <SolidColorBrush
+        x:Key="SplitBorderBrush"
+        Color="#2a5748" />
+    <SolidColorBrush
+        x:Key="SplitTextBrush"
+        Color="#84a399" />
+    <Style
+        x:Name="SplitBrTextBoxStyle"
+        TargetType="common:BrTextBox">
+        <Setter
+            Property="MaxWidth"
+            Value="350" />
+        <Setter
+            Property="Width"
+            Value="350" />
+        <Setter
+            Property="MinHeight"
+            Value="60" />
+        <Setter
+            Property="Foreground"
+            Value="{StaticResource SplitTextBrush}" />
+        <Setter
+            Property="Background"
+            Value="Transparent" />
+        <Setter
+            Property="BorderBrush"
+            Value="{StaticResource SplitBorderBrush}" />
+        <Setter
+            Property="SelectionHighlightColor"
+            Value="Red" />
+        <Setter
+            Property="BorderThickness"
+            Value="0,3" />
+        <Setter
+            Property="FontWeight"
+            Value="SemiBold" />
+        <Setter
+            Property="FontSize"
+            Value="32" />
+        <Setter
+            Property="Template">
+            <Setter.Value>
+                <ControlTemplate
+                    TargetType="common:BrTextBox">
+                    <Grid
+                        Width="{TemplateBinding Width}"
+                        MaxHeight="{TemplateBinding MaxWidth}">
+                        <Grid.RowDefinitions>
+                            <RowDefinition
+                                Height="70" />
+                            <RowDefinition
+                                Height="Auto" />
+                        </Grid.RowDefinitions>
+                        <VisualStateManager.VisualStateGroups>
+                            <VisualStateGroup
+                                x:Name="CommonStates">
+                                <VisualState
+                                    x:Name="Disabled" />
+                                <VisualState
+                                    x:Name="Normal" />
+                                <VisualState
+                                    x:Name="PointerOver" />
+                                <VisualState
+                                    x:Name="Focused" />
+                            </VisualStateGroup>
+                            <VisualStateGroup
+                                x:Name="ExpandStates">
+                                <VisualState
+                                    x:Name="Expand">
+                                    <Storyboard>
+                                        <DoubleAnimation
+                                            EnableDependentAnimation="True"
+                                            Duration="0:0:0.2"
+                                            BeginTime="0"
+                                            To="70"
+                                            From="60"
+                                            Storyboard.TargetProperty="(FrameworkElement.Height)"
+                                            Storyboard.TargetName="BorderElement">
+                                            <DoubleAnimation.EasingFunction>
+                                                <CircleEase
+                                                    EasingMode="EaseOut" />
+                                            </DoubleAnimation.EasingFunction>
+                                        </DoubleAnimation>
+                                        <DoubleAnimation
+                                            EnableDependentAnimation="True"
+                                            Duration="0:0:0.2"
+                                            To="-54"
+                                            From="0"
+                                            Storyboard.TargetProperty="(UIElement.RenderTransform).(CompositeTransform.TranslateY)"
+                                            Storyboard.TargetName="HeaderContentPresenter">
+                                            <DoubleAnimation.EasingFunction>
+                                                <CircleEase
+                                                    EasingMode="EaseOut" />
+                                            </DoubleAnimation.EasingFunction>
+                                        </DoubleAnimation>
+                                    </Storyboard>
+                                </VisualState>
+                                <VisualState
+                                    x:Name="Collapse">
+                                    <Storyboard>
+                                        <DoubleAnimation
+                                            EnableDependentAnimation="True"
+                                            Duration="0:0:0.2"
+                                            BeginTime="0"
+                                            To="60"
+                                            Storyboard.TargetProperty="(FrameworkElement.Height)"
+                                            Storyboard.TargetName="BorderElement">
+                                            <DoubleAnimation.EasingFunction>
+                                                <CircleEase
+                                                    EasingMode="EaseOut" />
+                                            </DoubleAnimation.EasingFunction>
+                                        </DoubleAnimation>
+                                        <DoubleAnimation
+                                            EnableDependentAnimation="True"
+                                            Duration="0:0:0.2"
+                                            To="0"
+                                            Storyboard.TargetProperty="(UIElement.RenderTransform).(CompositeTransform.TranslateY)"
+                                            Storyboard.TargetName="HeaderContentPresenter">
+                                            <DoubleAnimation.EasingFunction>
+                                                <CircleEase
+                                                    EasingMode="EaseOut" />
+                                            </DoubleAnimation.EasingFunction>
+                                        </DoubleAnimation>
+                                    </Storyboard>
+                                </VisualState>
+                            </VisualStateGroup>
+                            <VisualStateGroup
+                                x:Name="ButtonStates">
+                                <VisualState
+                                    x:Name="ButtonVisible" />
+                                <VisualState
+                                    x:Name="ButtonCollapsed" />
+                            </VisualStateGroup>
+                        </VisualStateManager.VisualStateGroups>
+                        <Border
+                            x:Name="BackgroundElement"
+                            Background="Transparent"
+                            Grid.Row="1" />
+                        <Border
+                            x:Name="BorderElement"
+                            MinHeight="{TemplateBinding MinHeight}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            Grid.Row="1" />
+                        <ContentPresenter
+                            x:Name="HeaderContentPresenter"
+                            FontSize="18"
+                            Foreground="{StaticResource SplitHeaderBrush}"
+                            Content="{TemplateBinding Header}"
+                            ContentTemplate="{TemplateBinding HeaderTemplate}"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Center"
+                            Grid.Row="1"
+                            Margin="8"
+                            RenderTransformOrigin="0.5,0.5">
+                            <ContentPresenter.RenderTransform>
+                                <CompositeTransform />
+                            </ContentPresenter.RenderTransform>
+                        </ContentPresenter>
+                        <ScrollViewer
+                            x:Name="ContentElement"
+                            HorizontalScrollMode="{TemplateBinding ScrollViewer.HorizontalScrollMode}"
+                            HorizontalScrollBarVisibility="{TemplateBinding ScrollViewer.HorizontalScrollBarVisibility}"
+                            VerticalScrollMode="{TemplateBinding ScrollViewer.VerticalScrollMode}"
+                            VerticalScrollBarVisibility="{TemplateBinding ScrollViewer.VerticalScrollBarVisibility}"
+                            IsHorizontalRailEnabled="{TemplateBinding ScrollViewer.IsHorizontalRailEnabled}"
+                            IsVerticalRailEnabled="{TemplateBinding ScrollViewer.IsVerticalRailEnabled}"
+                            IsDeferredScrollingEnabled="{TemplateBinding ScrollViewer.IsDeferredScrollingEnabled}"
+                            Padding="8,8,8,0"
+                            IsTabStop="False"
+                            AutomationProperties.AccessibilityView="Raw"
+                            Height="{TemplateBinding MinHeight}"
+                            VerticalAlignment="Stretch"
+                            HorizontalAlignment="Stretch"
+                            ZoomMode="Disabled"
+                            Grid.Row="1" />
+                        <ContentControl
+                            Visibility="Collapsed"
+                            x:Name="PlaceholderTextContentPresenter"
+                            Foreground="{ThemeResource TextBoxPlaceholderTextThemeBrush}"
+                            Padding="{TemplateBinding Padding}"
+                            IsTabStop="False"
+                            Content="{TemplateBinding PlaceholderText}"
+                            IsHitTestVisible="False"
+                            Grid.Row="1" />
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <SolidColorBrush
+        x:Key="FlipHeaderBrush"
+        Color="Black" />
+    <SolidColorBrush
+        x:Key="FlipBorderBrush"
+        Color="#19000000" />
+    <SolidColorBrush
+        x:Key="FlipTextBrush"
+        Color="#FF849DA3" />
+    <Style
+        x:Name="FlipBrTextBoxStyle"
+        TargetType="common:BrTextBox">
+        <Setter
+            Property="HorizontalAlignment"
+            Value="Stretch" />
+        <Setter
+            Property="MinHeight"
+            Value="60" />
+        <Setter
+            Property="Foreground"
+            Value="Black" />
+        <Setter
+            Property="Background"
+            Value="Transparent" />
+        <Setter
+            Property="BorderBrush"
+            Value="#B2000000" />
+        <Setter
+            Property="SelectionHighlightColor"
+            Value="Red" />
+        <Setter
+            Property="BorderThickness"
+            Value="0,0,0,4" />
+        <Setter
+            Property="FontWeight"
+            Value="Light" />
+        <Setter
+            Property="FontSize"
+            Value="32" />
+        <Setter
+            Property="Template">
+            <Setter.Value>
+                <ControlTemplate
+                    TargetType="common:BrTextBox">
+                    <Grid
+                        Width="{TemplateBinding Width}"
+                        MaxHeight="{TemplateBinding MaxWidth}">
+                        <Grid.RowDefinitions>
+                            <RowDefinition
+                                Height="Auto" />
+                            <RowDefinition
+                                Height="Auto" />
+                        </Grid.RowDefinitions>
+                        <VisualStateManager.VisualStateGroups>
+                            <VisualStateGroup
+                                x:Name="CommonStates">
+                                <VisualState
+                                    x:Name="Disabled" />
+                                <VisualState
+                                    x:Name="Normal" />
+                                <VisualState
+                                    x:Name="PointerOver" />
+                                <VisualState
+                                    x:Name="Focused" />
+                            </VisualStateGroup>
+                            <VisualStateGroup
+                                x:Name="ExpandStates">
+                                <VisualState
+                                    x:Name="Expand">
+                                    <Storyboard>
+                                        <DoubleAnimation
+                                            Duration="0:0:0.25"
+                                            BeginTime="0"
+                                            To="0"
+                                            From="-90"
+                                            Storyboard.TargetProperty="(UIElement.Projection).(PlaneProjection.RotationX)"
+                                            Storyboard.TargetName="FlipBorder" />
+                                        <DoubleAnimation
+                                            Duration="0:0:0.25"
+                                            BeginTime="0"
+                                            To="0"
+                                            From="1"
+                                            Storyboard.TargetProperty="(UIElement.RenderTransform).(CompositeTransform.ScaleY)"
+                                            Storyboard.TargetName="BorderElement" />
+                                    </Storyboard>
+                                </VisualState>
+                                <VisualState
+                                    x:Name="Collapse">
+                                    <Storyboard>
+                                        <DoubleAnimation
+                                            Duration="0:0:0.3"
+                                            BeginTime="0"
+                                            From="-1"
+                                            To="-90"
+                                            Storyboard.TargetProperty="(UIElement.Projection).(PlaneProjection.RotationX)"
+                                            Storyboard.TargetName="FlipBorder" />
+                                        <DoubleAnimation
+                                            Duration="0:0:0.3"
+                                            BeginTime="0"
+                                            To="1"
+                                            From="0"
+                                            Storyboard.TargetProperty="(UIElement.RenderTransform).(CompositeTransform.ScaleY)"
+                                            Storyboard.TargetName="BorderElement" />
+                                    </Storyboard>
+                                </VisualState>
+                            </VisualStateGroup>
+                            <VisualStateGroup
+                                x:Name="ButtonStates">
+                                <VisualState
+                                    x:Name="ButtonVisible" />
+                                <VisualState
+                                    x:Name="ButtonCollapsed" />
+                            </VisualStateGroup>
+                        </VisualStateManager.VisualStateGroups>
+                        <Border
+                            x:Name="BackgroundElement"
+                            Background="Transparent" />
+                        <Border
+                            Grid.Row="0" x:Name="FlipBorder"
+                            Height="60"
+                            Background="{StaticResource FlipBorderBrush}">
+                            <Border.Projection>
+                                <PlaneProjection
+                                    CenterOfRotationY="1"
+                                    RotationX="-90" />
+                            </Border.Projection>
+                        </Border>
+                        <Border
+                            Grid.Row="0" x:Name="BorderElement"
+                            MinHeight="{TemplateBinding MinHeight}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            RenderTransformOrigin="0.5,1">
+                            <Border.RenderTransform>
+                                <ScaleTransform />
+                            </Border.RenderTransform>
+                        </Border>
+                        <ContentPresenter
+                            x:Name="HeaderContentPresenter"
+                            FontSize="18"
+                            Foreground="{StaticResource FlipHeaderBrush}"
+                            Content="{TemplateBinding Header}"
+                            ContentTemplate="{TemplateBinding HeaderTemplate}"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Center"
+                            Margin="8"
+                            RenderTransformOrigin="0.5,0.5"
+                            Grid.Row="1">
+                            <ContentPresenter.RenderTransform>
+                                <CompositeTransform />
+                            </ContentPresenter.RenderTransform>
+                        </ContentPresenter>
+                        <ScrollViewer
+                            Grid.Row="0" x:Name="ContentElement"
+                            HorizontalScrollMode="{TemplateBinding ScrollViewer.HorizontalScrollMode}"
+                            HorizontalScrollBarVisibility="{TemplateBinding ScrollViewer.HorizontalScrollBarVisibility}"
+                            VerticalScrollMode="{TemplateBinding ScrollViewer.VerticalScrollMode}"
+                            VerticalScrollBarVisibility="{TemplateBinding ScrollViewer.VerticalScrollBarVisibility}"
+                            IsHorizontalRailEnabled="{TemplateBinding ScrollViewer.IsHorizontalRailEnabled}"
+                            IsVerticalRailEnabled="{TemplateBinding ScrollViewer.IsVerticalRailEnabled}"
+                            IsDeferredScrollingEnabled="{TemplateBinding ScrollViewer.IsDeferredScrollingEnabled}"
+                            Padding="8,8,8,0"
+                            IsTabStop="False"
+                            AutomationProperties.AccessibilityView="Raw"
+                            Height="{TemplateBinding MinHeight}"
+                            VerticalAlignment="Stretch"
+                            HorizontalAlignment="Stretch"
+                            ZoomMode="Disabled" />
+                        <ContentControl
+                            Grid.Row="0" Visibility="Collapsed"
+                            x:Name="PlaceholderTextContentPresenter"
+                            Foreground="{ThemeResource TextBoxPlaceholderTextThemeBrush}"
+                            Padding="{TemplateBinding Padding}"
+                            IsTabStop="False"
+                            Content="{TemplateBinding PlaceholderText}"
+                            IsHitTestVisible="False" />
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+</ResourceDictionary>

@@ -2,22 +2,20 @@
 using System.Diagnostics;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
+using Windows.UI;
+using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Media.Animation;
 using Windows.UI.Xaml.Navigation;
+using Shots.ViewModel;
 using Shots.Views;
 
 namespace Shots
 {
     public sealed partial class App
     {
-        #region Fields and Constants
-
-        private TransitionCollection transitions;
-
-        #endregion
-
         /// <summary>
         ///     Initializes the singleton application object.  This is the first line of authored code
         ///     executed, and as such is the logical equivalent of main() or WinMain().
@@ -28,6 +26,11 @@ namespace Shots
             Suspending += OnSuspending;
         }
 
+        public static ViewModelLocator Locator
+        {
+            get { return _locator ?? (_locator = (ViewModelLocator) Current.Resources["Locator"]); }
+        }
+
         /// <summary>
         ///     Invoked when the application is launched normally by the end user.  Other entry points
         ///     will be used when the application is launched to open a specific file, to display
@@ -36,11 +39,6 @@ namespace Shots
         /// <param name="e">Details about the launch request and process.</param>
         protected override void OnLaunched(LaunchActivatedEventArgs e)
         {
-#if DEBUG
-            if (Debugger.IsAttached)
-                DebugSettings.EnableFrameRateCounter = true;
-#endif
-
             var rootFrame = Window.Current.Content as Frame;
 
             // Do not repeat app initialization when the Window already has content,
@@ -64,9 +62,9 @@ namespace Shots
                 // Removes the turnstile navigation for startup.
                 if (rootFrame.ContentTransitions != null)
                 {
-                    transitions = new TransitionCollection();
+                    _transitions = new TransitionCollection();
                     foreach (var c in rootFrame.ContentTransitions)
-                        transitions.Add(c);
+                        _transitions.Add(c);
                 }
 
                 rootFrame.ContentTransitions = null;
@@ -75,7 +73,9 @@ namespace Shots
                 // When the navigation stack isn't restored navigate to the first page,
                 // configuring the new page by passing required information as a navigation
                 // parameter
-                if (!rootFrame.Navigate(typeof (HomePage), e.Arguments))
+                if (
+                    !rootFrame.Navigate(
+                        (Locator.ShotsService.IsAuthenticated ? typeof (HomePage) : typeof (WelcomePage)), e.Arguments))
                     throw new Exception("Failed to create initial page");
             }
 
@@ -106,8 +106,20 @@ namespace Shots
         private void RootFrame_FirstNavigated(object sender, NavigationEventArgs e)
         {
             var rootFrame = sender as Frame;
-            rootFrame.ContentTransitions = transitions ?? new TransitionCollection {new NavigationThemeTransition()};
+            rootFrame.ContentTransitions = _transitions ?? new TransitionCollection {new NavigationThemeTransition()};
             rootFrame.Navigated -= RootFrame_FirstNavigated;
+
+            var statusBar = StatusBar.GetForCurrentView();
+            statusBar.BackgroundColor = (Current.Resources["ShotsAccentColor"] as SolidColorBrush).Color;
+            statusBar.BackgroundOpacity = 1;
+            statusBar.ForegroundColor = Colors.White;
         }
+
+        #region Fields and Constants
+
+        private TransitionCollection _transitions;
+        private static ViewModelLocator _locator;
+
+        #endregion
     }
 }

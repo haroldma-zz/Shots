@@ -9,5 +9,15 @@
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
     DataContext="{Binding Source={StaticResource Locator}, Path=Main}">
 
-    <Grid />
+    <Grid>
+        <ListView ItemsSource="{Binding Feed}">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <Grid Height="{Binding Resource.RatioHeight}">
+                        <Image Source="{Binding Resource.Pic1080}" />
+                    </Grid>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+    </Grid>
 </Page>

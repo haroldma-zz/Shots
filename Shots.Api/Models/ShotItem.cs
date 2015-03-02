@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Newtonsoft.Json;
+using Shots.Api.Utilities;
 
 namespace Shots.Api.Models
 {
@@ -9,6 +10,7 @@ namespace Shots.Api.Models
         private DateTime _time;
 
         [JsonProperty("react_to")]
+        [JsonConverter(typeof(SingleOrArrayConverter<ShotItem>))]
         public List<ShotItem> ReactTo { get; set; }
 
         public Resource Resource { get; set; }

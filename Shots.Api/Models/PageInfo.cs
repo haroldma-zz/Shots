@@ -8,10 +8,10 @@ namespace Shots.Api.Models
         public bool IsFirstPage { get; set; }
 
         [JsonProperty("last_id")]
-        public long LastId { get; set; }
+        public string LastId { get; set; }
 
         [JsonProperty("min_id")]
-        public long MinId { get; set; }
+        public string MinId { get; set; }
         
         public long EntryCount { get; set; }
     }

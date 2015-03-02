@@ -68,11 +68,18 @@ namespace Shots.Api
         Task<SuggestedResponse> GetSuggestedUsersAsync();
 
         /// <summary>
-        ///     Gets the specified id user info.
+        ///     Gets the user info by id.
         /// </summary>
         /// <param name="id">The user identifier.</param>
         /// <returns></returns>
         Task<UserInfoReponse> GetUserAsync(string id);
+
+        /// <summary>
+        ///     Gets the user info by name.
+        /// </summary>
+        /// <param name="name">The user name.</param>
+        /// <returns></returns>
+        Task<UserInfoReponse> GetUserByNameAsync(string name);
 
         /// <summary>
         ///     Gets the user's followers.

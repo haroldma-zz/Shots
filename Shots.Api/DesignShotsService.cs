@@ -83,6 +83,11 @@ namespace Shots.Api
             return Task.FromResult(new UserInfoReponse {UserInfo = CurrentUser});
         }
 
+        public Task<UserInfoReponse> GetUserByNameAsync(string name)
+        {
+            throw new NotImplementedException();
+        }
+
         public Task<FollowersResponse> GetUserFollowersAsync(string id, string lastId = null)
         {
             return Task.FromResult(new FollowersResponse

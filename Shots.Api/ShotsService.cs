@@ -173,6 +173,19 @@ namespace Shots.Api
         }
 
         /// <summary>
+        ///     Gets the user info by name.
+        /// </summary>
+        /// <param name="name">The user name.</param>
+        /// <returns></returns>
+        public async Task<UserInfoReponse> GetUserByNameAsync(string name)
+        {
+            const string path = ShotsConstants.UserLoadPath;
+            var data = GetDefaultData(path);
+            data.Add("request_username", name);
+            return await PostAsync<UserInfoReponse>(path, data);
+        }
+
+        /// <summary>
         ///     Gets the user's followers.
         /// </summary>
         /// <param name="id">The user id. (Use "me" for the current account)</param>

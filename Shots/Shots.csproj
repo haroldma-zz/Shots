@@ -95,6 +95,7 @@
     <Compile Include="Converters\NullToVisibilityConverters.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Utilities\BlurImageTool.cs" />
+    <Compile Include="Utilities\InlineHyperlinks.cs" />
     <Compile Include="Utilities\ItemsControlExtensions.cs" />
     <Compile Include="Utilities\ParallaxConverter.cs" />
     <Compile Include="Utilities\ScrollListView.cs" />

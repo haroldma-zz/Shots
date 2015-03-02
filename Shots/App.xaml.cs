@@ -9,6 +9,7 @@ using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Media.Animation;
 using Windows.UI.Xaml.Navigation;
+using GalaSoft.MvvmLight.Threading;
 using Shots.ViewModel;
 using Shots.Views;
 
@@ -113,6 +114,7 @@ namespace Shots
             statusBar.BackgroundColor = (Current.Resources["ShotsAccentColor"] as SolidColorBrush).Color;
             statusBar.BackgroundOpacity = 1;
             statusBar.ForegroundColor = Colors.White;
+            DispatcherHelper.Initialize();
         }
 
         #region Fields and Constants

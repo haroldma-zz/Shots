@@ -5,19 +5,64 @@
     xmlns:local="using:Shots.Views"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:utilities="using:Shots.Utilities"
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
     DataContext="{Binding Source={StaticResource Locator}, Path=Main}">
 
-    <Grid>
-        <ListView ItemsSource="{Binding Feed}">
+    <Grid Background="Black">
+        <utilities:ScrollListView x:Name="FeedView" ItemsSource="{Binding Feed}">
             <ListView.ItemTemplate>
                 <DataTemplate>
-                    <Grid Height="{Binding Resource.RatioHeight}">
-                        <Image Source="{Binding Resource.Pic1080}" />
+                    <Grid>
+                        <Grid.Resources>
+                            <utilities:ParallaxConverter x:Key="ParallaxConverter" 
+                                                             Item="{Binding}" 
+                                                             List="{Binding ElementName=FeedView}"/>
+                        </Grid.Resources>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="*" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+                        <Grid>
+                            <Grid.Background>
+                                <ImageBrush Stretch="UniformToFill"
+                                            utilities:BlurImageTool.Source="{Binding Resource.Pic1080}">
+                                    <ImageBrush.Transform>
+                                        <TranslateTransform Y="{Binding ElementName=FeedView, Path=ScrollViewer.VerticalOffset, Converter={StaticResource ParallaxConverter}}"/>
+                                    </ImageBrush.Transform>
+                                </ImageBrush>
+                            </Grid.Background>
+                            <StackPanel Orientation="Horizontal" Margin="10">
+                                <Ellipse Width="50" Height="50">
+                                    <Ellipse.Fill>
+
+                                        <ImageBrush ImageSource="{Binding User.ProfilePhotoSmall}" />
+                                    </Ellipse.Fill>
+                                </Ellipse>
+                                <TextBlock Text="{Binding User.Username}" FontSize="25" Foreground="White"
+                                           VerticalAlignment="Center" Margin="10,0,0,0" />
+                            </StackPanel>
+                        </Grid>
+                        <Image Grid.Row="1" Height="{Binding Resource.RatioHeight}" Source="{Binding Resource.Pic1080}" />
+                        <Grid Grid.Row="2">
+                            <Grid.Background>
+                                <ImageBrush Stretch="UniformToFill"
+                                            utilities:BlurImageTool.Source="{Binding Resource.Pic1080}">
+                                    <ImageBrush.Transform>
+                                        <TranslateTransform Y="{Binding ElementName=FeedView, Path=ScrollViewer.VerticalOffset, Converter={StaticResource ParallaxConverter}}"/>
+                                    </ImageBrush.Transform>
+                                </ImageBrush>
+                            </Grid.Background>
+                            <Grid Margin="10">
+                                <TextBlock Text="{Binding Resource.Description}" FontSize="25" Foreground="White"
+                                           VerticalAlignment="Center" TextWrapping="Wrap"/>
+                            </Grid>
+                        </Grid>
                     </Grid>
                 </DataTemplate>
             </ListView.ItemTemplate>
-        </ListView>
+        </utilities:ScrollListView>
     </Grid>
 </Page>

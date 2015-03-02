@@ -26,6 +26,7 @@ namespace Shots.Api
                 return new AuthenticatedUserInfo
                 {
                     FirstName = "Liane V",
+                    Username = "lovelianev",
                     LastName = "",
                     Bio = "Shots on me��",
                     Color = 8,
@@ -181,7 +182,8 @@ namespace Shots.Api
                         },
                         Pic1080 =
                             "http://rocklivewests3-a.akamaihd.net/17665497/t/20074887_t08ubp02qpcgamq6nfe1t196oi0wsglkyhz4ojrw-1080.jpg"
-                    }
+                    },
+                    User = CurrentUser
                 }
             };
         }

@@ -13,6 +13,7 @@ namespace Shots.ViewModel
     {
         private readonly IShotsService _service;
         private PageInfo _pageInfo;
+        private ShotItem _currentShotItem;
 
         /// <summary>
         ///     Initializes a new instance of the MainViewModel class.

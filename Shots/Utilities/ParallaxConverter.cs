@@ -1,0 +1,76 @@
+﻿using System;
+using System.Globalization;
+using Windows.Foundation;
+using Windows.UI.Xaml;
+using Windows.UI.Xaml.Data;
+using Windows.UI.Xaml.Media;
+using Windows.UI.Xaml.Media.Imaging;
+using Shots.Api.Models;
+
+namespace Shots.Utilities
+{
+    /// <summary>
+    /// Source: http://w8isms.blogspot.nl/2012/06/metro-parallax-background-in-xaml.html
+    /// Used to create background parallex like on the Win8 start screen
+    /// </summary>
+    public class ParallaxConverter : DependencyObject, IValueConverter
+    {
+        public ShotItem Item { get { return (ShotItem) GetValue(ItemProperty); } set{SetValue(ItemProperty, value);} }
+
+        public static readonly DependencyProperty ListProperty = DependencyProperty.RegisterAttached(
+            "List",
+            typeof(ScrollListView),
+            typeof(ParallaxConverter),
+            new PropertyMetadata(null, null));
+
+        public static readonly DependencyProperty ItemProperty = DependencyProperty.RegisterAttached(
+            "Item",
+            typeof(ShotItem),
+            typeof(ParallaxConverter),
+            new PropertyMetadata(null, null));
+
+        public ScrollListView List { get { return (ScrollListView)GetValue(ListProperty); } set { SetValue(ListProperty, value); } }
+
+        /// <summary>
+        /// Parallax converter helper
+        /// </summary>
+        /// <param name="value"></param>
+        /// <param name="targetType"></param>
+        /// <param name="parameter"></param>
+        /// <param name="language"></param>
+        /// <returns></returns>
+        public object Convert(object value, Type targetType, object parameter, string language)
+        {
+            const int scrollExtent = 75;
+            var container = List.ContainerFromItem(Item) as UIElement;
+
+            if (container == null) return 0;
+
+            //Get the current point of this List item relative to the top of the parent LongListSelector control
+            var relativePoint = container.TransformToVisual(List).TransformPoint(new Point(0, 0));
+
+            //If this point is visible (ie. is within the bounds of the LongListSelector) then we can update its transform
+
+            var imageHeight = Item.Resource.RatioHeight;
+
+            if (((!(relativePoint.Y > (imageHeight*-1))) && imageHeight != 0) ||
+                (!(relativePoint.Y <= List.ActualHeight))) return 0;
+
+            var margin = (scrollExtent * -1) + ((relativePoint.Y / List.ActualHeight) * scrollExtent);
+            return margin;
+        }
+
+        /// <summary>
+        /// NotImplementedException
+        /// </summary>
+        /// <param name="value"></param>
+        /// <param name="targetType"></param>
+        /// <param name="parameter"></param>
+        /// <param name="language"></param>
+        /// <returns></returns>
+        public object ConvertBack(object value, Type targetType, object parameter, string language)
+        {
+            throw new NotImplementedException();
+        }
+    }
+}

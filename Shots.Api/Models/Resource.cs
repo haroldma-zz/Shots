@@ -59,13 +59,17 @@ namespace Shots.Api.Models
         public string WebIdent { get; set; }
         public int Width { get; set; }
 
+        private int _ratioHeight;
         public int RatioHeight
         {
             get
             {
+                if (_ratioHeight > 0) return _ratioHeight;
+                if (Window.Current == null || Window.Current.CoreWindow == null) return 533;
+
                 var ratio = (double)Width / Height;
-                var ratioHeight = Window.Current.CoreWindow.Bounds.Width/ratio;
-                return (int)ratioHeight;
+                _ratioHeight = (int)(Window.Current.CoreWindow.Bounds.Width/ratio);
+                return _ratioHeight;
             }
         }
     }

@@ -58,7 +58,7 @@ namespace Shots.Utilities
                                 using (var filters = new FilterEffect(source))
                                 {
                                     // Initialize the filter and add the filter to the FilterEffect collection
-                                    filters.Filters = new IFilter[] {new BlurFilter(240)};
+                                    filters.Filters = new IFilter[] {new BlurFilter(256)};
 
                                     // Create a target where the filtered image will be rendered to
                                     WriteableBitmap target = null;

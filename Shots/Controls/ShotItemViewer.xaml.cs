@@ -52,5 +52,23 @@ namespace Shots.Controls
         }
 
         public ShotItem ShotItem { get { return DataContext as ShotItem; } }
+
+        private void Image_DataContextChanged(FrameworkElement sender, DataContextChangedEventArgs args)
+        {
+            LoadingProgress.Begin();
+            image.Visibility = Visibility.Visible;
+        }
+
+        private void Image_ImageFailed(object sender, ExceptionRoutedEventArgs e)
+        {
+            LoadingProgress.Stop();
+            image.Visibility = Visibility.Collapsed;
+        }
+
+        private void Image_ImageOpened(object sender, RoutedEventArgs e)
+        {
+            LoadingProgress.Stop();
+            image.Visibility = Visibility.Collapsed;
+        }
     }
 }

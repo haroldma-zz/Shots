@@ -10,8 +10,13 @@
     x:Name="Viewer"
     d:DesignHeight="300"
     d:DesignWidth="400">
+	<UserControl.Resources>
+		<Storyboard x:Name="LoadingProgress" RepeatBehavior="Forever">
+			<DoubleAnimation Duration="0:0:0.5" To="360" Storyboard.TargetProperty="(UIElement.RenderTransform).(CompositeTransform.Rotation)" Storyboard.TargetName="image" d:IsOptimized="True"/>
+		</Storyboard>
+	</UserControl.Resources>
 
-    <Grid>
+    <Grid Background="#808080">
         <Grid.Resources>
             <utilities:ParallaxConverter x:Key="ParallaxConverter"
                                                          Item="{Binding}"
@@ -22,7 +27,7 @@
             <RowDefinition Height="*" />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
-        <Grid Background="Black">
+        <Grid Background="#FF393939">
             <Grid>
                 <Grid.Background>
                     <ImageBrush Opacity=".5" Stretch="UniformToFill"
@@ -57,8 +62,13 @@
                 </StackPanel>
             </Grid>
         </Grid>
-        <Image Grid.Row="1" Height="{Binding Resource.RatioHeight}" Source="{Binding Resource.Pic1080}" />
-        <Grid Background="Black" Grid.Row="2">
+        <Image x:Name="image" Grid.Row="1" Width="30" Source="/Assets/progress.png" RenderTransformOrigin="0.5,0.5" >
+        	<Image.RenderTransform>
+        		<CompositeTransform/>
+        	</Image.RenderTransform>
+        </Image>
+        <Image Grid.Row="1" Height="{Binding Resource.RatioHeight}" Source="{Binding Resource.Pic1080}" DataContextChanged="Image_DataContextChanged" ImageFailed="Image_ImageFailed" ImageOpened="Image_ImageOpened" />
+        <Grid Background="#FF393939" Grid.Row="2">
             <Grid>
                 <Grid.Background>
                     <ImageBrush Opacity=".5" Stretch="UniformToFill"

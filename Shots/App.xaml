@@ -6,7 +6,7 @@
         <ResourceDictionary>
             <vm:ViewModelLocator x:Key="Locator" xmlns:vm="using:Shots.ViewModel" />
 
-            <converters:NullToVisibilityConverters x:Key="NullToVisibilityConverters" />
+            <converters:NullToVisibilityConverter x:Key="NullToVisibilityConverters" />
             
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="ms-appx:///Styles.xaml" />

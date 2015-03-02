@@ -92,7 +92,8 @@
     </Compile>
     <Compile Include="Common\BrTextBox.cs" />
     <Compile Include="Common\IncrementalObservableCollection.cs" />
-    <Compile Include="Converters\NullToVisibilityConverters.cs" />
+    <Compile Include="Converters\BoolToImageConverter.cs" />
+    <Compile Include="Converters\NullToVisibilityConverter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Utilities\BlurImageTool.cs" />
     <Compile Include="Utilities\InlineHyperlinks.cs" />

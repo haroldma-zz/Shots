@@ -6,11 +6,30 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:utilities="using:Shots.Utilities"
+    xmlns:converters="using:Shots.Converters"
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
     DataContext="{Binding Source={StaticResource Locator}, Path=Main}">
 
     <Grid>
+        <Grid.Resources>
+            <converters:BoolToImageConverter x:Key="LikeBoolToImageConverter">
+                <converters:BoolToImageConverter.TrueContent>
+                    <BitmapImage UriSource="/Assets/Icons/liked.png" />
+                </converters:BoolToImageConverter.TrueContent>
+                <converters:BoolToImageConverter.FalseContent>
+                    <BitmapImage UriSource="/Assets/Icons/like.png" />
+                </converters:BoolToImageConverter.FalseContent>
+            </converters:BoolToImageConverter>
+            <converters:BoolToImageConverter x:Key="DescriptionLikeBoolToImageConverter">
+                <converters:BoolToImageConverter.TrueContent>
+                    <BitmapImage UriSource="/Assets/Icons/description_liked.png" />
+                </converters:BoolToImageConverter.TrueContent>
+                <converters:BoolToImageConverter.FalseContent>
+                    <BitmapImage UriSource="/Assets/Icons/description_like.png" />
+                </converters:BoolToImageConverter.FalseContent>
+            </converters:BoolToImageConverter>
+        </Grid.Resources>
         <utilities:ScrollListView x:Name="FeedView" IsItemClickEnabled="False" SelectionMode="None"
                                   ItemsSource="{Binding Feed}">
             <ListView.ItemTemplate>
@@ -49,7 +68,8 @@
                                 <StackPanel HorizontalAlignment="Right" Orientation="Horizontal"
                                             VerticalAlignment="Center" Margin="0,0,10,0">
                                     <Button Margin="0,0,5,0">
-                                        <Image Width="35" Source="/Assets/Icons/like.png" />
+                                        <Image Width="35"
+                                               Source="{Binding Resource.IsLike, Converter={StaticResource LikeBoolToImageConverter}}" />
                                     </Button>
                                     <Button Margin="5,0">
                                         <Image Width="35" Source="/Assets/Icons/react.png" />
@@ -86,7 +106,7 @@
                                             <ColumnDefinition Width="Auto" />
                                             <ColumnDefinition Width="*" />
                                         </Grid.ColumnDefinitions>
-                                        <Image Source="/Assets/Icons/description_like.png" Width="20" Margin="0,5,5,5" />
+                                        <Image Source="{Binding Resource.IsLike, Converter={StaticResource DescriptionLikeBoolToImageConverter}}" Width="20" Margin="0,5,5,5" />
                                         <TextBlock Grid.Column="1" Foreground="White"
                                                    VerticalAlignment="Center" TextWrapping="Wrap" FontSize="18">
                                             <Run Text="blah, blah and" />

@@ -4,7 +4,7 @@ using Windows.UI.Xaml.Data;
 
 namespace Shots.Converters
 {
-    public class NullToVisibilityConverters : IValueConverter
+    public class NullToVisibilityConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, string language)
         {

@@ -60,6 +60,7 @@ namespace Shots
 
             if (rootFrame.Content == null)
             {
+                DispatcherHelper.Initialize();
                 // Removes the turnstile navigation for startup.
                 if (rootFrame.ContentTransitions != null)
                 {
@@ -109,12 +110,7 @@ namespace Shots
             var rootFrame = sender as Frame;
             rootFrame.ContentTransitions = _transitions ?? new TransitionCollection {new NavigationThemeTransition()};
             rootFrame.Navigated -= RootFrame_FirstNavigated;
-
-            var statusBar = StatusBar.GetForCurrentView();
-            statusBar.BackgroundColor = (Current.Resources["ShotsAccentColor"] as SolidColorBrush).Color;
-            statusBar.BackgroundOpacity = 1;
-            statusBar.ForegroundColor = Colors.White;
-            DispatcherHelper.Initialize();
+            ApplicationView.GetForCurrentView().SetDesiredBoundsMode(ApplicationViewBoundsMode.UseCoreWindow);
         }
 
         #region Fields and Constants

@@ -11,7 +11,7 @@
     DataContext="{Binding Source={StaticResource Locator}, Path=Main}">
 
     <Grid>
-        <utilities:ScrollListView x:Name="FeedView" IsItemClickEnabled="False" ItemsSource="{Binding Feed}">
+        <utilities:ScrollListView x:Name="FeedView" IsItemClickEnabled="False" SelectionMode="None" ItemsSource="{Binding Feed}">
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <Grid>

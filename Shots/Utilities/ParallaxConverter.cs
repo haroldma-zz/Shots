@@ -41,7 +41,7 @@ namespace Shots.Utilities
         /// <returns></returns>
         public object Convert(object value, Type targetType, object parameter, string language)
         {
-            const int scrollExtent = 75;
+            const int scrollExtent = 85;
             var container = List.ContainerFromItem(Item) as UIElement;
 
             if (container == null) return 0;

@@ -152,7 +152,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Help\Lumia Imaging SDK.chm" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>

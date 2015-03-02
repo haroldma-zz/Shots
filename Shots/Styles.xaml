@@ -10,10 +10,6 @@
     <FontWeight x:Key="PhoneButtonFontWeight">Light</FontWeight>
     <x:Double x:Key="TextStyleLargeFontSize">30</x:Double>
     
-    <Style TargetType="TextBlock">
-        <Setter Property="FontSize" Value="25"/>
-    </Style>
-    
     <Style TargetType="Button">
         <Setter Property="Background" Value="Transparent"/>
         <Setter Property="Foreground" Value="{StaticResource ShotsAccentColor}"/>
@@ -21,9 +17,9 @@
         <Setter Property="FontFamily" Value="{ThemeResource PhoneFontFamilyNormal}"/>
         <Setter Property="FontWeight" Value="{ThemeResource PhoneButtonFontWeight}"/>
         <Setter Property="FontSize" Value="{ThemeResource TextStyleLargeFontSize}"/>
-        <Setter Property="MinWidth" Value="{ThemeResource PhoneButtonMinWidth}"/>
         <Setter Property="Padding" Value="0"/>
         <Setter Property="MinHeight" Value="0"/>
+        <Setter Property="MinWidth" Value="0"/>
         <Setter Property="HorizontalAlignment" Value="Stretch"/>
         <Setter Property="VerticalAlignment" Value="Top"/>
         <Setter Property="Template">
@@ -68,7 +64,7 @@
                                 </VisualState>
                             </VisualStateGroup>
                         </VisualStateManager.VisualStateGroups>
-                        <ContentPresenter x:Name="ContentPresenter" AutomationProperties.AccessibilityView="Raw" ContentTemplate="{TemplateBinding ContentTemplate}" Content="{TemplateBinding Content}" Foreground="{TemplateBinding Foreground}" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="10"/>
+                        <ContentPresenter x:Name="ContentPresenter" AutomationProperties.AccessibilityView="Raw" ContentTemplate="{TemplateBinding ContentTemplate}" Content="{TemplateBinding Content}" Foreground="{TemplateBinding Foreground}" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"/>
                     </Grid>
                 </ControlTemplate>
             </Setter.Value>

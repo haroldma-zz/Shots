@@ -92,6 +92,7 @@
     </Compile>
     <Compile Include="Common\BrTextBox.cs" />
     <Compile Include="Common\IncrementalObservableCollection.cs" />
+    <Compile Include="Converters\NullToVisibilityConverters.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Utilities\BlurImageTool.cs" />
     <Compile Include="Utilities\ItemsControlExtensions.cs" />
@@ -116,7 +117,42 @@
     </AppxManifest>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Assets\avatar_holder.png" />
+    <Content Include="Assets\Icons\description_like.png" />
+    <Content Include="Assets\Icons\description_liked.png" />
+    <Content Include="Assets\Icons\doubletaplikeheart.png" />
+    <Content Include="Assets\Icons\Follow\following_button.png" />
+    <Content Include="Assets\Icons\Follow\follow_add_amber.png" />
+    <Content Include="Assets\Icons\Follow\follow_add_candy.png" />
+    <Content Include="Assets\Icons\Follow\follow_add_cerulean.png" />
+    <Content Include="Assets\Icons\Follow\follow_add_helitrope.png" />
+    <Content Include="Assets\Icons\Follow\follow_add_lime.png" />
+    <Content Include="Assets\Icons\Follow\follow_add_ruby.png" />
+    <Content Include="Assets\Icons\Follow\follow_add_sapphire.png" />
+    <Content Include="Assets\Icons\Follow\follow_add_seafoam.png" />
+    <Content Include="Assets\Icons\Follow\follow_add_tangerine.png" />
+    <Content Include="Assets\Icons\Follow\follow_add_violet.png" />
+    <Content Include="Assets\Icons\Follow\follow_button.png" />
+    <Content Include="Assets\Icons\Follow\follow_requested_amber.png" />
+    <Content Include="Assets\Icons\Follow\follow_requested_candy.png" />
+    <Content Include="Assets\Icons\Follow\follow_requested_cerulean.png" />
+    <Content Include="Assets\Icons\Follow\follow_requested_helitrope.png" />
+    <Content Include="Assets\Icons\Follow\follow_requested_lime.png" />
+    <Content Include="Assets\Icons\Follow\follow_requested_ruby.png" />
+    <Content Include="Assets\Icons\Follow\follow_requested_sapphire.png" />
+    <Content Include="Assets\Icons\Follow\follow_requested_seafoam.png" />
+    <Content Include="Assets\Icons\Follow\follow_requested_tangerine.png" />
+    <Content Include="Assets\Icons\Follow\follow_requested_violet.png" />
+    <Content Include="Assets\Icons\Follow\follow_requested_white.png" />
+    <Content Include="Assets\Icons\like.png" />
+    <Content Include="Assets\Icons\liked.png" />
+    <Content Include="Assets\Icons\react.png" />
+    <Content Include="Assets\Icons\request_button.png" />
+    <Content Include="Assets\Icons\more.png" />
+    <Content Include="Assets\Icons\views.png" />
     <Content Include="Assets\Logo.scale-240.png" />
+    <Content Include="Assets\main_logo.png" />
+    <Content Include="Assets\progress.png" />
     <Content Include="Assets\SmallLogo.scale-240.png" />
     <Content Include="Assets\SplashScreen.scale-240.png" />
     <Content Include="Assets\Square71x71Logo.scale-240.png" />

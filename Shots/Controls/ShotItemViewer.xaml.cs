@@ -1,6 +1,8 @@
 ﻿using Windows.UI.Xaml;
+using Windows.UI.Xaml.Controls;
 using Shots.Api.Models;
 using Shots.Utilities;
+using Shots.Views;
 
 namespace Shots.Controls
 {
@@ -69,6 +71,11 @@ namespace Shots.Controls
         {
             LoadingProgress.Stop();
             image.Visibility = Visibility.Collapsed;
+        }
+
+        private void ProfileButton_Click(object sender, RoutedEventArgs e)
+        {
+            App.RootFrame.Navigate(typeof (ProfilePage), ShotItem.User);
         }
     }
 }

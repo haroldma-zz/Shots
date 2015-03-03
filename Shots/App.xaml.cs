@@ -40,14 +40,14 @@ namespace Shots
         /// <param name="e">Details about the launch request and process.</param>
         protected override void OnLaunched(LaunchActivatedEventArgs e)
         {
-            var rootFrame = Window.Current.Content as Frame;
+            RootFrame = Window.Current.Content as Frame;
 
             // Do not repeat app initialization when the Window already has content,
             // just ensure that the window is active
-            if (rootFrame == null)
+            if (RootFrame == null)
             {
                 // Create a Frame to act as the navigation context and navigate to the first page
-                rootFrame = new Frame();
+                RootFrame = new Frame();
 
                 if (e.PreviousExecutionState == ApplicationExecutionState.Terminated)
                 {
@@ -55,37 +55,37 @@ namespace Shots
                 }
 
                 // Place the frame in the current Window
-                Window.Current.Content = rootFrame;
+                Window.Current.Content = RootFrame;
             }
 
-            if (rootFrame.Content == null)
+            if (RootFrame.Content == null)
             {
                 DispatcherHelper.Initialize();
                 // Removes the turnstile navigation for startup.
-                if (rootFrame.ContentTransitions != null)
+                if (RootFrame.ContentTransitions != null)
                 {
                     _transitions = new TransitionCollection();
-                    foreach (var c in rootFrame.ContentTransitions)
+                    foreach (var c in RootFrame.ContentTransitions)
                         _transitions.Add(c);
                 }
 
-                rootFrame.ContentTransitions = null;
-                rootFrame.Navigated += RootFrame_FirstNavigated;
+                RootFrame.ContentTransitions = null;
+                RootFrame.Navigated += RootFrame_FirstNavigated;
 
                 // When the navigation stack isn't restored navigate to the first page,
                 // configuring the new page by passing required information as a navigation
                 // parameter
                 if (
-                    !rootFrame.Navigate(
+                    !RootFrame.Navigate(
                         (Locator.ShotsService.IsAuthenticated ? typeof (HomePage) : typeof (WelcomePage)), e.Arguments))
                     throw new Exception("Failed to create initial page");
-
-                StatusBar.GetForCurrentView().ForegroundColor = Colors.Black;
             }
 
             // Ensure the current window is active
             Window.Current.Activate();
         }
+
+        public static Frame RootFrame { get; set; }
 
         /// <summary>
         ///     Invoked when application execution is being suspended.  Application state is saved
@@ -109,9 +109,8 @@ namespace Shots
         /// <param name="e">Details about the navigation event.</param>
         private void RootFrame_FirstNavigated(object sender, NavigationEventArgs e)
         {
-            var rootFrame = sender as Frame;
-            rootFrame.ContentTransitions = _transitions ?? new TransitionCollection {new NavigationThemeTransition()};
-            rootFrame.Navigated -= RootFrame_FirstNavigated;
+            RootFrame.ContentTransitions = _transitions ?? new TransitionCollection {new NavigationThemeTransition()};
+            RootFrame.Navigated -= RootFrame_FirstNavigated;
             ApplicationView.GetForCurrentView().SetDesiredBoundsMode(ApplicationViewBoundsMode.UseCoreWindow);
         }
 

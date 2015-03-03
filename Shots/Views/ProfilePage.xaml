@@ -5,10 +5,53 @@
     xmlns:local="using:Shots.Views"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:utilities="using:Shots.Utilities"
     mc:Ignorable="d"
+    DataContext="{Binding Profile, Source={StaticResource Locator}}"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
     <Grid>
-
+        <utilities:ScrollListView>
+            <ListView.HeaderTemplate>
+                <DataTemplate>
+                    <Grid Background="{Binding UserInfo.ColorBrush}">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+                        <Grid Margin="0,25,0,5">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                            <Button HorizontalAlignment="Center" VerticalAlignment="Center">
+                                <StackPanel>
+                                    <Image Width="50" Source="/Assets/Icons/Follow/follow_button.png" />
+                                    <TextBlock Text="Add" FontSize="16" Foreground="White" HorizontalAlignment="Center" />
+                                </StackPanel>
+                            </Button>
+                            <Ellipse Width="100" Height="100" Grid.Column="1" VerticalAlignment="Center">
+                                <Ellipse.Fill>
+                                    <ImageBrush ImageSource="{Binding UserInfo.ProfilePhotoSmall}" />
+                                </Ellipse.Fill>
+                            </Ellipse>
+                            <Button Grid.Column="2" HorizontalAlignment="Center" VerticalAlignment="Center">
+                                <StackPanel>
+                                    <Image Source="/Assets/Icons/more.png" Height="35" />
+                                    <TextBlock Text="Options" FontSize="16" Foreground="White" HorizontalAlignment="Center" />
+                                </StackPanel>
+                            </Button>
+                        </Grid>
+                        <TextBlock Grid.Row="1" Foreground="White" FontSize="28" TextAlignment="Center" TextWrapping="Wrap">
+                            <Run Text="{Binding UserInfo.FirstName}" />
+                            <Run Text="{Binding UserInfo.LastName}" />
+                        </TextBlock>
+                        <TextBlock Grid.Row="2" Text="{Binding UserInfo.Bio}" Foreground="White" FontSize="14" TextAlignment="Center" TextWrapping="Wrap" Margin="0,0,0,15" />
+                    </Grid>
+                </DataTemplate>
+            </ListView.HeaderTemplate>
+        </utilities:ScrollListView>
     </Grid>
 </Page>

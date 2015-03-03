@@ -128,13 +128,13 @@ namespace Shots.Controls
             _lastOffsetValue = value;
         }
 
-        private void Show()
+        public void Show()
         {
             RaiseEvent(Showing);
             VisualStateManager.GoToState(this, ShowStateName, true);
         }
 
-        private void Hide()
+        public void Hide()
         {
             RaiseEvent(Hiding);
 

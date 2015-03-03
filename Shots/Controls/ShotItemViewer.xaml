@@ -38,15 +38,17 @@
                         </ImageBrush.Transform>
                     </ImageBrush>
                 </Grid.Background>
-                <StackPanel Orientation="Horizontal" Margin="10">
-                    <Ellipse Width="50" Height="50">
-                        <Ellipse.Fill>
-                            <ImageBrush ImageSource="{Binding User.ProfilePhotoSmall}" />
-                        </Ellipse.Fill>
-                    </Ellipse>
-                    <TextBlock Text="{Binding User.Username}" Foreground="White"
+                <Button Margin="10" HorizontalAlignment="Left" Click="ProfileButton_Click">
+                    <StackPanel Orientation="Horizontal">
+                        <Ellipse Width="50" Height="50">
+                            <Ellipse.Fill>
+                                <ImageBrush ImageSource="{Binding User.ProfilePhotoSmall}" />
+                            </Ellipse.Fill>
+                        </Ellipse>
+                        <TextBlock Text="{Binding User.Username}" Foreground="White"
                                                VerticalAlignment="Center" Margin="10,0,0,0" FontSize="22" />
-                </StackPanel>
+                    </StackPanel>
+                </Button>
                 <StackPanel HorizontalAlignment="Right" Orientation="Horizontal"
                                             VerticalAlignment="Center" Margin="0,0,10,0">
                     <Button Margin="0,0,5,0" Click="LikeButton_Click">

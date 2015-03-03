@@ -107,6 +107,7 @@
     <Compile Include="Utilities\ScrollListView.cs" />
     <Compile Include="Utilities\VisualTreeHelperExtensions.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
+    <Compile Include="ViewModel\ProfileViewModel.cs" />
     <Compile Include="ViewModel\ViewModelLocator.cs" />
     <Compile Include="Views\HomePage.xaml.cs">
       <DependentUpon>HomePage.xaml</DependentUpon>

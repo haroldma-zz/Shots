@@ -21,7 +21,7 @@
                 </DataTemplate>
             </ListView.ItemTemplate>
         </utilities:ScrollListView>
-        <controls:AutoHideBar Showing="AutoHideBar_OnShowing" Hiding="AutoHideBar_OnHiding" ScrollControl="{Binding ElementName=FeedView}"
+        <controls:AutoHideBar x:Name="AutoHideBar" Showing="AutoHideBar_OnShowing" Hiding="AutoHideBar_OnHiding" ScrollControl="{Binding ElementName=FeedView}"
                                 VerticalAlignment="Top">
             <Grid Height="80">
                 <Grid.RowDefinitions>

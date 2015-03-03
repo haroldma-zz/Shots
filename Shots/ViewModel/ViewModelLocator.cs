@@ -34,11 +34,17 @@ namespace Shots.ViewModel
             }
 
             SimpleIoc.Default.Register<MainViewModel>();
+            SimpleIoc.Default.Register<ProfileViewModel>();
         }
 
         public MainViewModel Main
         {
             get { return ServiceLocator.Current.GetInstance<MainViewModel>(); }
+        }
+
+        public ProfileViewModel Profile
+        {
+            get { return ServiceLocator.Current.GetInstance<ProfileViewModel>(); }
         }
 
         public IShotsService ShotsService

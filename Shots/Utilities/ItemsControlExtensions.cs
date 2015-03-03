@@ -6,6 +6,9 @@ using Windows.UI.Xaml.Controls;
 
 namespace Shots.Utilities
 {
+    /// <summary>
+    ///     Handy extension for items controls (listview, gridview, etc).
+    /// </summary>
     public static class ItemsControlExtensions
     {
         public static ScrollViewer GetScrollViewer(this ItemsControl itemsControl)
@@ -33,7 +36,8 @@ namespace Shots.Utilities
 
             if (sourcePanel == null)
             {
-                throw new InvalidOperationException("Can't get first visible index from an ItemsControl with no ItemsPanel.");
+                throw new InvalidOperationException(
+                    "Can't get first visible index from an ItemsControl with no ItemsPanel.");
             }
 
             var isp = sourcePanel as ItemsStackPanel;
@@ -58,13 +62,16 @@ namespace Shots.Utilities
 
             if (itemsControl.ActualWidth == 0)
             {
-                throw new InvalidOperationException("Can't get first visible index from an ItemsControl that is not loaded or has zero size.");
+                throw new InvalidOperationException(
+                    "Can't get first visible index from an ItemsControl that is not loaded or has zero size.");
             }
 
-            for (int i = 0; i < sourcePanel.Children.Count; i++)
+            for (var i = 0; i < sourcePanel.Children.Count; i++)
             {
-                var container = (FrameworkElement)sourcePanel.Children[i];
-                var bounds = container.TransformToVisual(itemsControl).TransformBounds(new Rect(0, 0, container.ActualWidth, container.ActualHeight));
+                var container = (FrameworkElement) sourcePanel.Children[i];
+                var bounds =
+                    container.TransformToVisual(itemsControl)
+                        .TransformBounds(new Rect(0, 0, container.ActualWidth, container.ActualHeight));
 
                 if (bounds.Left < itemsControl.ActualWidth &&
                     bounds.Top < itemsControl.ActualHeight &&

@@ -1,38 +1,43 @@
 ﻿using System;
-using System.Globalization;
 using Windows.Foundation;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Data;
-using Windows.UI.Xaml.Media;
-using Windows.UI.Xaml.Media.Imaging;
 using Shots.Api.Models;
 
 namespace Shots.Utilities
 {
     /// <summary>
-    /// Source: http://w8isms.blogspot.nl/2012/06/metro-parallax-background-in-xaml.html
-    /// Used to create background parallex like on the Win8 start screen
+    ///     Source: http://w8isms.blogspot.nl/2012/06/metro-parallax-background-in-xaml.html
+    ///     Used to create background parallex like on the Win8 start screen
     /// </summary>
     public class ParallaxConverter : DependencyObject, IValueConverter
     {
-        public ShotItem Item { get { return (ShotItem) GetValue(ItemProperty); } set{SetValue(ItemProperty, value);} }
-
         public static readonly DependencyProperty ListProperty = DependencyProperty.RegisterAttached(
             "List",
-            typeof(ScrollListView),
-            typeof(ParallaxConverter),
+            typeof (ScrollListView),
+            typeof (ParallaxConverter),
             new PropertyMetadata(null, null));
 
         public static readonly DependencyProperty ItemProperty = DependencyProperty.RegisterAttached(
             "Item",
-            typeof(ShotItem),
-            typeof(ParallaxConverter),
+            typeof (ShotItem),
+            typeof (ParallaxConverter),
             new PropertyMetadata(null, null));
 
-        public ScrollListView List { get { return (ScrollListView)GetValue(ListProperty); } set { SetValue(ListProperty, value); } }
+        public ShotItem Item
+        {
+            get { return (ShotItem) GetValue(ItemProperty); }
+            set { SetValue(ItemProperty, value); }
+        }
+
+        public ScrollListView List
+        {
+            get { return (ScrollListView) GetValue(ListProperty); }
+            set { SetValue(ListProperty, value); }
+        }
 
         /// <summary>
-        /// Parallax converter helper
+        ///     Parallax converter helper
         /// </summary>
         /// <param name="value"></param>
         /// <param name="targetType"></param>
@@ -58,12 +63,12 @@ namespace Shots.Utilities
             if (((!(relativePoint.Y > (imageHeight*-1))) && imageHeight != 0) ||
                 (!(relativePoint.Y <= List.ActualHeight))) return 0;
 
-            var margin = (scrollExtent * -1) + ((relativePoint.Y / List.ActualHeight) * scrollExtent);
+            var margin = (scrollExtent*-1) + ((relativePoint.Y/List.ActualHeight)*scrollExtent);
             return margin;
         }
 
         /// <summary>
-        /// NotImplementedException
+        ///     NotImplementedException
         /// </summary>
         /// <param name="value"></param>
         /// <param name="targetType"></param>

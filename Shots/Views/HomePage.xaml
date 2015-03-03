@@ -7,18 +7,39 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:utilities="using:Shots.Utilities"
     xmlns:controls="using:Shots.Controls"
+    xmlns:common="using:Shots.Common"
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
     DataContext="{Binding Source={StaticResource Locator}, Path=Main}">
 
     <Grid>
-        <utilities:ScrollListView IsItemClickEnabled="False" SelectionMode="None"
-                                  ItemsSource="{Binding Feed}" Padding="0,0,0,200">
+        <utilities:ScrollListView x:Name="FeedView" IsItemClickEnabled="False" SelectionMode="None"
+                                  ItemsSource="{Binding Feed}" Padding="0,80,0,200">
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <controls:ShotItemViewer ScrollListView="{Binding ElementName=FeedView}" />
                 </DataTemplate>
             </ListView.ItemTemplate>
         </utilities:ScrollListView>
+        <controls:AutoHideBar Showing="AutoHideBar_OnShowing" Hiding="AutoHideBar_OnHiding" ScrollControl="{Binding ElementName=FeedView}"
+                                VerticalAlignment="Top">
+            <Grid Height="80">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="25" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                <TextBox Grid.Row="1" PlaceholderText="Search Shotties" VerticalAlignment="Center" Margin="10,0" />
+                <Ellipse Grid.Row="1" Grid.Column="1" Height="35" Width="35" VerticalAlignment="Center" Margin="0,0,10,0">
+                    <Ellipse.Fill>
+                        <ImageBrush ImageSource="{Binding Service.CurrentUser.ProfilePhotoSmall}" />
+                    </Ellipse.Fill>
+                </Ellipse>
+            </Grid>
+        </controls:AutoHideBar>
+
     </Grid>
 </Page>

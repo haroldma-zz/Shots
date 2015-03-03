@@ -11,24 +11,23 @@ namespace Shots.ViewModel
 {
     public class MainViewModel : ViewModelBase
     {
-        private readonly IShotsService _service;
         private PageInfo _pageInfo;
-        private ShotItem _currentShotItem;
 
         /// <summary>
         ///     Initializes a new instance of the MainViewModel class.
         /// </summary>
         public MainViewModel(IShotsService service)
         {
-            _service = service;
-            _pageInfo = new PageInfo{LastId = ""};
+            Service = service;
+            _pageInfo = new PageInfo {LastId = ""};
             Feed = new IncrementalObservableCollection<ShotItem>(
                 () => _pageInfo != null && _pageInfo.LastId != null,
                 u =>
                 {
                     Func<Task<LoadMoreItemsResult>> taskFunc = async () =>
                     {
-                        var resp = await _service.GetHomeListAsync(Feed.Count != 0 ? Feed.LastOrDefault().Resource.Id : "");
+                        var resp =
+                            await Service.GetHomeListAsync(Feed.Count != 0 ? Feed.LastOrDefault().Resource.Id : "");
 
                         if (resp.Status != Status.Success) return new LoadMoreItemsResult {Count = 0};
 
@@ -45,6 +44,7 @@ namespace Shots.ViewModel
                 });
         }
 
+        public IShotsService Service { get; private set; }
         public IncrementalObservableCollection<ShotItem> Feed { get; set; }
     }
 }

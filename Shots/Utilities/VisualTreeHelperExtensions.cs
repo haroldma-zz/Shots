@@ -7,6 +7,9 @@ using Windows.UI.Xaml.Media;
 
 namespace Shots.Utilities
 {
+    /// <summary>
+    /// Extends the VisualTreeHelper class.
+    /// </summary>
     public static class VisualTreeHelperExtensions
     {
         public static T GetFirstDescendantOfType<T>(this DependencyObject start) where T : DependencyObject

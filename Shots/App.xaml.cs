@@ -79,6 +79,8 @@ namespace Shots
                     !rootFrame.Navigate(
                         (Locator.ShotsService.IsAuthenticated ? typeof (HomePage) : typeof (WelcomePage)), e.Arguments))
                     throw new Exception("Failed to create initial page");
+
+                StatusBar.GetForCurrentView().ForegroundColor = Colors.Black;
             }
 
             // Ensure the current window is active

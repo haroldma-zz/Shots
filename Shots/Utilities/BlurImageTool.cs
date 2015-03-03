@@ -1,12 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
-using System.Linq;
 using System.Net.Http;
-using System.Runtime.InteropServices.WindowsRuntime;
-using System.Text;
-using System.Threading.Tasks;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media;
@@ -17,11 +11,14 @@ using Lumia.Imaging.Adjustments;
 
 namespace Shots.Utilities
 {
+    /// <summary>
+    /// Creates a blur image and assings it to the Image/ImageBrush control.
+    /// </summary>
     public class BlurImageTool
     {
         public static string GetSource(DependencyObject element)
         {
-            return (string)element.GetValue(SourceProperty);
+            return (string) element.GetValue(SourceProperty);
         }
 
         public static void SetSource(DependencyObject element, string value)
@@ -46,12 +43,17 @@ namespace Shots.Utilities
             {
                 using (var resp = await client.GetAsync(url).ConfigureAwait(false))
                 {
+                    // If it fails, then abort!
                     if (!resp.IsSuccessStatusCode) return;
 
+                    // Read the content as a stream
                     using (var stream = await resp.Content.ReadAsStreamAsync().ConfigureAwait(false))
                     {
+                        // Going to need to convert it to a RandomAccessStream
                         using (var rnd = stream.AsRandomAccessStream())
                         {
+                            // Then we can create the Random Access Stream Image
+                            // Assuming all images from shots are JPEG
                             using (var source = new RandomAccessStreamImageSource(rnd, ImageFormat.Jpeg))
                             {
                                 // Create effect collection with the source stream
@@ -65,8 +67,8 @@ namespace Shots.Utilities
 
                                     // Need to switch to UI thread for this
                                     await DispatcherHelper.RunAsync(
-                                            () => target = new WriteableBitmap((int) (bounds.Width),
-                                                (int) (bounds.Height))).AsTask().ConfigureAwait(false);
+                                        () => target = new WriteableBitmap((int) (bounds.Width),
+                                            (int) (bounds.Height))).AsTask().ConfigureAwait(false);
 
                                     // Create a new renderer which outputs WriteableBitmaps
                                     using (var renderer = new WriteableBitmapRenderer(filters, target))
@@ -92,8 +94,8 @@ namespace Shots.Utilities
 
         public static readonly DependencyProperty SourceProperty = DependencyProperty.RegisterAttached(
             "Source",
-            typeof(string),
-            typeof(BlurImageTool),
+            typeof (string),
+            typeof (BlurImageTool),
             new PropertyMetadata(string.Empty, SourceCallback));
     }
 }

@@ -9,6 +9,9 @@ using Windows.UI.Xaml.Media;
 
 namespace Shots.Utilities
 {
+    /// <summary>
+    /// Convert @mentions and #hashtags to inlike links.
+    /// </summary>
     public class InlineHyperlinks : DependencyObject
     {
         public static string GetText(TextBlock element)

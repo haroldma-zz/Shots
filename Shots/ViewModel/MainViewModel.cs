@@ -19,9 +19,10 @@ namespace Shots.ViewModel
         public MainViewModel(IShotsService service)
         {
             Service = service;
-            _pageInfo = new PageInfo {LastId = ""};
+            _pageInfo = new PageInfo {EntryCount = -1};
             Feed = new IncrementalObservableCollection<ShotItem>(
-                () => _pageInfo != null && _pageInfo.LastId != null,
+                // If the page response had zero entries, then stop loading
+                () => _pageInfo != null && _pageInfo.EntryCount != 0,
                 u =>
                 {
                     Func<Task<LoadMoreItemsResult>> taskFunc = async () =>

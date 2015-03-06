@@ -3,6 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Windows.UI.Xaml.Data;
 using GalaSoft.MvvmLight;
+using GalaSoft.MvvmLight.Ioc;
 using Shots.Api;
 using Shots.Api.Models;
 using Shots.Common;
@@ -15,6 +16,18 @@ namespace Shots.ViewModel
         private SimpleUserInfo _userInfo;
         private PageInfo _pageInfo;
 
+        public ProfileViewModel(IShotsService service, SimpleUserInfo info) : this(service)
+        {
+            SetUser(info);
+        }
+
+        public ProfileViewModel(IShotsService service, string name)
+            : this(service)
+        {
+            SetUser(name);
+        }
+
+        [PreferredConstructor]
         public ProfileViewModel(IShotsService service)
         {
             Service = service;
@@ -35,6 +48,18 @@ namespace Shots.ViewModel
         {
             get { return _feed; }
             set { Set(ref _feed, value); }
+        }
+
+        public async void SetUser(string name)
+        {
+            var resp = await Service.GetUserByNameAsync(name);
+            if (resp.Status != Status.Success)
+            {
+                // TODO: report
+                return;
+            }
+
+            SetUser(resp.UserInfo);
         }
 
         public void SetUser(SimpleUserInfo info)

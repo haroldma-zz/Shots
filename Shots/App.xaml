@@ -23,6 +23,20 @@
                     <BitmapImage UriSource="/Assets/Icons/description_like.png" />
                 </converters:BoolToImageConverter.FalseContent>
             </converters:BoolToImageConverter>
+
+            <converters:FollowerStateToTextConverter x:Key="FollowerStateToTextConverter" />
+            
+            <converters:FollowerStateToImageConverter x:Key="FollowerStateToImageConverter">
+                <converters:FollowerStateToImageConverter.FollowingContent>
+                    <BitmapImage UriSource="/Assets/Icons/Follow/following_button.png" />
+                </converters:FollowerStateToImageConverter.FollowingContent>
+                <converters:FollowerStateToImageConverter.FollowingRequestedContent>
+                    <BitmapImage UriSource="/Assets/Icons/Follow/follow_requested_white.png" />
+                </converters:FollowerStateToImageConverter.FollowingRequestedContent>
+                <converters:FollowerStateToImageConverter.NotFollowingContent>
+                    <BitmapImage UriSource="/Assets/Icons/Follow/follow_button.png" />
+                </converters:FollowerStateToImageConverter.NotFollowingContent>
+            </converters:FollowerStateToImageConverter>
             
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="ms-appx:///Styles.xaml" />

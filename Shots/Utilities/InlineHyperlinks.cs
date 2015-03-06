@@ -6,6 +6,7 @@ using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Documents;
 using Windows.UI.Xaml.Media;
+using Shots.Views;
 
 namespace Shots.Utilities
 {
@@ -76,10 +77,14 @@ namespace Shots.Utilities
             return hyper;
         }
 
-        private static async void HyperOnClick(Hyperlink sender, HyperlinkClickEventArgs args)
+        private static void HyperOnClick(Hyperlink sender, HyperlinkClickEventArgs args)
         {
-            var link = sender.GetValue(LinkProperty) as ShotLink;
-            // TODO: open this link in the corresponding app page
+            var link = (ShotLink) sender.GetValue(LinkProperty);
+
+            if (link.Page == ShotLink.PageType.User)
+            {
+                App.RootFrame.Navigate(typeof (ProfilePage), link.Parameter);
+            }
         }
 
         private static Run GetRunControl(string text)

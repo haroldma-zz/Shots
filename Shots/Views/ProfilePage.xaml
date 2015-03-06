@@ -34,8 +34,8 @@
                             </Grid.ColumnDefinitions>
                             <Button HorizontalAlignment="Center" VerticalAlignment="Center">
                                 <StackPanel>
-                                    <Image Width="50" Source="/Assets/Icons/Follow/follow_button.png" />
-                                    <TextBlock Text="Add" FontSize="16" Foreground="White" HorizontalAlignment="Center" />
+                                    <Image Width="50" Source="{Binding UserInfo, Converter={StaticResource FollowerStateToImageConverter}}" />
+                                    <TextBlock Text="{Binding UserInfo, Converter={StaticResource FollowerStateToTextConverter}}" FontSize="16" Foreground="White" HorizontalAlignment="Center" />
                                 </StackPanel>
                             </Button>
                             <Ellipse Width="100" Height="100" Grid.Column="1" VerticalAlignment="Center">

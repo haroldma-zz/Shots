@@ -34,6 +34,8 @@ namespace Shots.ViewModel
             }
 
             SimpleIoc.Default.Register<MainViewModel>();
+
+            // Assigning profile just for design view
             SimpleIoc.Default.Register<ProfileViewModel>();
         }
 

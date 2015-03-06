@@ -1,4 +1,8 @@
-﻿using GalaSoft.MvvmLight;
+﻿using System;
+using System.Linq;
+using System.Threading.Tasks;
+using Windows.UI.Xaml.Data;
+using GalaSoft.MvvmLight;
 using Shots.Api;
 using Shots.Api.Models;
 using Shots.Common;
@@ -9,6 +13,7 @@ namespace Shots.ViewModel
     {
         private IncrementalObservableCollection<ShotItem> _feed;
         private SimpleUserInfo _userInfo;
+        private PageInfo _pageInfo;
 
         public ProfileViewModel(IShotsService service)
         {
@@ -35,6 +40,31 @@ namespace Shots.ViewModel
         public void SetUser(SimpleUserInfo info)
         {
             UserInfo = info;
+
+            _pageInfo = new PageInfo { EntryCount = -1 };
+            Feed = new IncrementalObservableCollection<ShotItem>(
+                // If the page response had zero entries, then stop loading
+                () => _pageInfo != null && _pageInfo.EntryCount != 0,
+                u =>
+                {
+                    Func<Task<LoadMoreItemsResult>> taskFunc = async () =>
+                    {
+                        var resp =
+                            await Service.GetUserListAsync(UserInfo.Id, Feed.Count != 0 ? Feed.LastOrDefault().Resource.Id : "");
+
+                        if (resp.Status != Status.Success) return new LoadMoreItemsResult { Count = 0 };
+
+                        _pageInfo = resp.PageInfo;
+
+                        foreach (var item in resp.Items)
+                        {
+                            Feed.Add(item);
+                        }
+                        return new LoadMoreItemsResult { Count = (uint)resp.Items.Count };
+                    };
+                    var loadMorePostsTask = taskFunc();
+                    return loadMorePostsTask.AsAsyncOperation();
+                });
         }
     }
 }

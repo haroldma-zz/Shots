@@ -238,7 +238,7 @@ namespace Shots.Api
         /// <returns></returns>
         public async Task<UserListResponse> GetUserListAsync(string id, string lastId = null)
         {
-            const string path = ShotsConstants.ListHomePath;
+            const string path = ShotsConstants.ListUserPath;
             var data = GetDefaultData(path);
             data.Add("request_user_id", id == "me" ? CurrentUser.Id : id);
             if (!string.IsNullOrEmpty(lastId)) data.Add("last_id", lastId);

@@ -6,12 +6,18 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:utilities="using:Shots.Utilities"
+    xmlns:controls="using:Shots.Controls"
     mc:Ignorable="d"
     DataContext="{Binding Profile, Source={StaticResource Locator}}"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
     <Grid>
-        <utilities:ScrollListView>
+        <utilities:ScrollListView x:Name="FeedView" ItemsSource="{Binding Feed}">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <controls:ShotItemViewer ScrollListView="{Binding ElementName=FeedView}" />
+                </DataTemplate>
+            </ListView.ItemTemplate>
             <ListView.HeaderTemplate>
                 <DataTemplate>
                     <Grid Background="{Binding UserInfo.ColorBrush}">

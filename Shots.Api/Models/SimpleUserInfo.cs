@@ -4,8 +4,28 @@ using Shots.Api.Utilities;
 
 namespace Shots.Api.Models
 {
-    public class SimpleUserInfo
+    public enum FriendState
     {
+        None,
+        Added,
+        Requested
+    }
+
+    public class SimpleUserInfo : NotifyPropertyChangedObject
+    {
+        private bool _isFriend;
+        private bool _isRequested;
+
+        [JsonIgnore]
+        public FriendState FriendState
+        {
+            get
+            {
+                if (IsRequested) return FriendState.Requested;
+                return IsFriend ? FriendState.Added : FriendState.None;
+            }
+        }
+
         public string Bio { get; set; }
         public int Color { get; set; }
 
@@ -19,8 +39,26 @@ namespace Shots.Api.Models
         public string FirstName { get; set; }
 
         public string Id { get; set; }
-        public bool IsFriend { get; set; }
-        public bool IsRequested { get; set; }
+
+        public bool IsFriend
+        {
+            get { return _isFriend; }
+            set
+            {
+                _isFriend = value;
+                OnPropertyChanged("FriendState");
+            }
+        }
+
+        public bool IsRequested
+        {
+            get { return _isRequested; }
+            set
+            {
+                _isRequested = value;
+                OnPropertyChanged("FriendState");
+            }
+        }
 
         [JsonProperty("lname")]
         public string LastName { get; set; }

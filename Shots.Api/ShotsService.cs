@@ -302,6 +302,21 @@ namespace Shots.Api
             return resp;
         }
 
+        /// <summary>
+        /// Toggles the shottie's relationship.
+        /// </summary>
+        /// <param name="id">The user identifier.</param>
+        /// <param name="add">if set to <c>true</c> It adds the user as a friend, else removes him.</param>
+        /// <returns></returns>
+        public async Task<BaseResponse> ToggleFriend(string id, bool add = true)
+        {
+            var path = add ? ShotsConstants.FriendsAddPath : ShotsConstants.FriendsRemovePath;
+            var data = GetDefaultData(path);
+            data.Add("friend_id", id);
+            
+            return await PostAsync<BaseResponse>(path, data);
+        }
+
         #region Helpers
 
         /// <summary>
@@ -450,6 +465,7 @@ namespace Shots.Api
                     var json = await resp.Content.ReadAsStringAsync();
 
                     T parseResp;
+
                     try
                     {
                         parseResp = JsonConvert.DeserializeObject<T>(json, new JsonEpochDateTimeConverter(),
@@ -459,6 +475,12 @@ namespace Shots.Api
                     {
                         parseResp = new T {Message = "Problem connecting to Shots."};
                     }
+
+                    if (parseResp.Status != Status.Success || resp.IsSuccessStatusCode) return parseResp;
+
+                    parseResp.Status = Status.Failed;
+                    if (string.IsNullOrEmpty(parseResp.Message))
+                        parseResp.Message = "Problem connecting to Shots.";
 
                     return parseResp;
                 }

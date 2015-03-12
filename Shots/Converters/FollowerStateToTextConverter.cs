@@ -8,11 +8,17 @@ namespace Shots.Converters
     {
         public object Convert(object value, Type targetType, object parameter, string language)
         {
-            var profile = value as SimpleUserInfo;
-            if (profile == null) return "Add";
+            var state = value as FriendState?;
 
-            if (profile.IsRequested) return "Requested";
-            return profile.IsFriend ? "Added" : "Add";
+            switch (state)
+            {
+                case FriendState.Requested:
+                    return "Requested";
+                case FriendState.Added:
+                    return "Added";
+                default:
+                    return "Add";
+            }
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, string language)

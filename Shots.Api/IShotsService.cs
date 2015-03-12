@@ -135,5 +135,13 @@ namespace Shots.Api
         /// <returns></returns>
         Task<BaseResponse> RegisterAsync(string username, string password, string email, string firstName,
             string lastName, DateTime birthday, Stream imageData);
+
+        /// <summary>
+        /// Toggles the shottie's relationship.
+        /// </summary>
+        /// <param name="id">The user identifier.</param>
+        /// <param name="add">if set to <c>true</c> It adds the user as a friend, else removes him.</param>
+        /// <returns></returns>
+        Task<BaseResponse> ToggleFriend(string id, bool add = true);
     }
 }

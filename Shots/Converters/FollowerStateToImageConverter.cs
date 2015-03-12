@@ -13,11 +13,16 @@ namespace Shots.Converters
 
         public object Convert(object value, Type targetType, object parameter, string language)
         {
-            var profile = value as SimpleUserInfo;
-            if (profile == null) return NotFollowingContent;
-
-            if (profile.IsRequested) return FollowingRequestedContent;
-            return profile.IsFriend ? FollowingContent : NotFollowingContent;
+            var state = value as FriendState?;
+            switch (state)
+            {
+                case FriendState.Requested:
+                    return FollowingRequestedContent;
+                case FriendState.Added:
+                    return FollowingContent;
+                default:
+                    return NotFollowingContent;
+            }
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, string language)

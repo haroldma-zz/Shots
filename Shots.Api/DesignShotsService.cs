@@ -133,6 +133,11 @@ namespace Shots.Api
             throw new NotImplementedException();
         }
 
+        public Task<BaseResponse> ToggleFriend(string id, bool add = true)
+        {
+            throw new NotImplementedException();
+        }
+
         private List<UserInfo> CreateUserList()
         {
             return new List<UserInfo>

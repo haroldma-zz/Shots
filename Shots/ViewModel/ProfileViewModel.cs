@@ -3,6 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Windows.UI.Xaml.Data;
 using GalaSoft.MvvmLight;
+using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Ioc;
 using Shots.Api;
 using Shots.Api.Models;
@@ -32,9 +33,39 @@ namespace Shots.ViewModel
         {
             Service = service;
 
+            FollowCommand = new RelayCommand(FollowExecute);
+
             if (IsInDesignMode)
                 SetUser(service.CurrentUser);
         }
+
+        private async void FollowExecute()
+        {
+            bool add;
+
+            if (UserInfo.Privacy)
+            {
+                UserInfo.IsRequested = !UserInfo.IsRequested;
+                add = UserInfo.IsRequested;
+            }
+            else
+            {
+                UserInfo.IsFriend = !UserInfo.IsFriend;
+                add = UserInfo.IsFriend;
+            }
+
+            var resp = await Service.ToggleFriend(UserInfo.Id, add);
+
+            if (resp.Status == Status.Success) return;
+
+            // TODO: Report error here
+            if (UserInfo.Privacy)
+                UserInfo.IsRequested = !UserInfo.IsRequested;
+            else
+                UserInfo.IsFriend = !UserInfo.IsFriend;
+        }
+
+        public RelayCommand FollowCommand { get; set; }
 
         public SimpleUserInfo UserInfo
         {

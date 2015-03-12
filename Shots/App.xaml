@@ -6,6 +6,7 @@
         <ResourceDictionary>
             <vm:ViewModelLocator x:Key="Locator" xmlns:vm="using:Shots.ViewModel" />
 
+            <converters:VisibilityConverter x:Key="VisibilityConverter" />
             <converters:NullToVisibilityConverter x:Key="NullToVisibilityConverters" />
             <converters:BoolToImageConverter x:Key="LikeBoolToImageConverter">
                 <converters:BoolToImageConverter.TrueContent>

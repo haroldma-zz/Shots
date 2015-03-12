@@ -38,6 +38,38 @@ namespace Shots.Api.Models
             }
         }
 
+        [JsonIgnore]
+        public string LikeParseText
+        {
+            get
+            {
+                // Using !@ it will not include @ on text, just link it.
+                // !<<{0}>> is utilized for like page
+                const string moreThanTwo = "!@{0}, !@{1} and !<<{2}>>{3} more";
+                const string onlyTwo = "!@{0} and !@{1}";
+                const string onlyOne = "!@{0}";
+                string fmt;
+
+                switch (LikeCount)
+                {
+                    case 0:
+                        return null;
+                    case 1:
+                        fmt = string.Format(onlyOne, Likes[0].Username);
+                        break;
+                    case 2:
+                        fmt = string.Format(onlyTwo, Likes[0].Username, Likes[1].Username);
+                        break;
+                    default:
+                        fmt = string.Format(moreThanTwo, Likes[0].Username, Likes[1].Username, Id, LikeCount);
+                        break;
+                }
+
+                return fmt;
+            }
+        }
+
+        public int Views { get; set; }
         public int LikeCount { get; set; }
         public List<Like> Likes { get; set; }
 

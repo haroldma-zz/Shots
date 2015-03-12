@@ -41,7 +41,7 @@ namespace Shots.Utilities
 
             var lowerText = text.ToLower();
 
-            if (lowerText.Contains("@") || text.ToLower().Contains("#"))
+            if (lowerText.Contains("@") || text.Contains("#") || text.Contains("!<<"))
                 AddInlineControls(tb, SplitSpace(text));
             else
                 tb.Inlines.Add(GetRunControl(text));
@@ -52,9 +52,19 @@ namespace Shots.Utilities
             for (var index = 0; index < splittedString.Length; index++)
             {
                 var tmp = splittedString[index];
-                if (Regex.IsMatch(tmp, "(@)((?:[A-Za-z0-9-_]*))"))
+                if (tmp.StartsWith("@"))
                     textBlock.Inlines.Add(GetHyperLink(tmp, new ShotLink(tmp.Replace("@", ""), ShotLink.PageType.User)));
-                else if (Regex.IsMatch(tmp, "(#)((?:[A-Za-z0-9-_]*))"))
+                else if (tmp.StartsWith("!@"))
+                    textBlock.Inlines.Add(GetHyperLink(tmp.Replace("!@", ""), new ShotLink(tmp.Replace("!@", ""), ShotLink.PageType.User)));
+                else if (tmp.StartsWith("!<<"))
+                {
+                    var text = tmp.Substring(tmp.LastIndexOf(">>", StringComparison.Ordinal) + 2);
+                    var postId = tmp.Substring(0, tmp.LastIndexOf(">>", StringComparison.Ordinal)).Replace("!<<", "");
+
+                    textBlock.Inlines.Add(GetHyperLink(text, new ShotLink(postId,
+                        ShotLink.PageType.Like)));
+                }
+                else if (tmp.StartsWith("#"))
                     textBlock.Inlines.Add(GetHyperLink(tmp, new ShotLink(tmp.Replace("#", ""), ShotLink.PageType.Tag)));
                 else
                     textBlock.Inlines.Add(GetRunControl(tmp));
@@ -119,7 +129,8 @@ namespace Shots.Utilities
         public enum PageType
         {
             User,
-            Tag
+            Tag,
+            Like
         }
 
         public ShotLink(string parameter, PageType page)

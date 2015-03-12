@@ -14,10 +14,17 @@ namespace Shots.Views
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
-            var info = e.Parameter as SimpleUserInfo;
-            DataContext = info != null 
-                ? new ProfileViewModel(App.Locator.ShotsService, info) 
-                : new ProfileViewModel(App.Locator.ShotsService, e.Parameter as string);
+            var info = e.Parameter as UserInfo;
+
+            if (info == null)
+            {
+                var userInfo = e.Parameter as SimpleUserInfo;
+                DataContext = userInfo != null
+                    ? new ProfileViewModel(App.Locator.ShotsService, userInfo.Username)
+                    : new ProfileViewModel(App.Locator.ShotsService, e.Parameter as string);
+            }
+            else
+                DataContext = new ProfileViewModel(App.Locator.ShotsService, info);
         }
     }
 }

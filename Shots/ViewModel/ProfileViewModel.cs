@@ -14,10 +14,10 @@ namespace Shots.ViewModel
     public class ProfileViewModel : ViewModelBase
     {
         private IncrementalObservableCollection<ShotItem> _feed;
-        private SimpleUserInfo _userInfo;
+        private UserInfo _userInfo;
         private PageInfo _pageInfo;
 
-        public ProfileViewModel(IShotsService service, SimpleUserInfo info) : this(service)
+        public ProfileViewModel(IShotsService service, UserInfo info) : this(service)
         {
             SetUser(info);
         }
@@ -67,7 +67,7 @@ namespace Shots.ViewModel
 
         public RelayCommand FollowCommand { get; set; }
 
-        public SimpleUserInfo UserInfo
+        public UserInfo UserInfo
         {
             get { return _userInfo; }
             set { Set(ref _userInfo, value); }
@@ -93,7 +93,7 @@ namespace Shots.ViewModel
             SetUser(resp.UserInfo);
         }
 
-        public void SetUser(SimpleUserInfo info)
+        public void SetUser(UserInfo info)
         {
             UserInfo = info;
 

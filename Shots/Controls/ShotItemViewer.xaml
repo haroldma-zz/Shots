@@ -98,12 +98,8 @@
                         <Button Click="LikeButton_Click">
                             <Image Source="{Binding Resource.IsLike, Converter={StaticResource DescriptionLikeBoolToImageConverter}}" Width="20" Margin="0,5,5,5" />
                         </Button>
-                        <TextBlock Grid.Column="1" Foreground="White"
-                                                   VerticalAlignment="Center" TextWrapping="Wrap" FontSize="18">
-                                            <Run Text="blah, blah and" />
-                                            <Run Text="{Binding Resource.LikeCount}" />
-                                            <Run Text="more" />
-                        </TextBlock>
+                        <TextBlock utilities:InlineHyperlinks.Text="{Binding Resource.LikeParseText}" Grid.Column="1" Foreground="White"
+                                                   VerticalAlignment="Center" TextWrapping="Wrap" FontSize="18"/>
                     </Grid>
                 </Grid>
             </Grid>

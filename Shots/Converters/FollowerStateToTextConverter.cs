@@ -16,6 +16,8 @@ namespace Shots.Converters
                     return "Requested";
                 case FriendState.Added:
                     return "Added";
+                case FriendState.Private:
+                    return "Request";
                 default:
                     return "Add";
             }

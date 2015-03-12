@@ -7,6 +7,7 @@ namespace Shots.Api.Models
     public enum FriendState
     {
         None,
+        Private,
         Added,
         Requested
     }
@@ -22,7 +23,7 @@ namespace Shots.Api.Models
             get
             {
                 if (IsRequested) return FriendState.Requested;
-                return IsFriend ? FriendState.Added : FriendState.None;
+                return IsFriend ? FriendState.Added : (Privacy ? FriendState.Private : FriendState.None);
             }
         }
 

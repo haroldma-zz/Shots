@@ -25,6 +25,7 @@
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
                         </Grid.RowDefinitions>
                         <Grid Margin="0,25,0,5">
                             <Grid.ColumnDefinitions>
@@ -38,6 +39,7 @@
                                     <TextBlock Text="{Binding UserInfo.FriendState, Converter={StaticResource FollowerStateToTextConverter}}" FontSize="16" Foreground="White" HorizontalAlignment="Center" />
                                 </StackPanel>
                             </Button>
+                            <Ellipse Width="120" Height="120" Grid.Column="1" VerticalAlignment="Center" Stroke="White" StrokeThickness="3"/>
                             <Ellipse Width="100" Height="100" Grid.Column="1" VerticalAlignment="Center">
                                 <Ellipse.Fill>
                                     <ImageBrush ImageSource="{Binding UserInfo.ProfilePhotoSmall}" />
@@ -54,7 +56,10 @@
                             <Run Text="{Binding UserInfo.FirstName}" />
                             <Run Text="{Binding UserInfo.LastName}" />
                         </TextBlock>
-                        <TextBlock Grid.Row="2" Text="{Binding UserInfo.Bio}" Foreground="White" FontSize="14" TextAlignment="Center" TextWrapping="Wrap" Margin="0,0,0,15" />
+                        <Border Visibility="{Binding UserInfo.FollowsMe, Converter={StaticResource VisibilityConverter}}" HorizontalAlignment="Center" BorderBrush="#7FFFFFFF" BorderThickness="1" CornerRadius="5" Grid.Row="2" Margin="0,0,0,5">
+                            <TextBlock Margin="5,3,5,3" Text="Added You" Foreground="#7FFFFFFF" FontSize="14" />
+                        </Border>
+                        <TextBlock Grid.Row="3" Text="{Binding UserInfo.Bio}" Foreground="White" FontSize="14" TextAlignment="Center" TextWrapping="Wrap" Margin="0,0,0,15" />
                     </Grid>
                 </DataTemplate>
             </ListView.HeaderTemplate>

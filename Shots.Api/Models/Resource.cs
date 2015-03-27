@@ -45,7 +45,7 @@ namespace Shots.Api.Models
             {
                 // Using !@ it will not include @ on text, just link it.
                 // !<<{0}>> is utilized for like page
-                const string moreThanTwo = "!@{0}, !@{1} and !<<{2}>>{3} more";
+                const string moreThanTwo = "!@{0}!@, !@{1} and !<<{2}>>{3} more";
                 const string onlyTwo = "!@{0} and !@{1}";
                 const string onlyOne = "!@{0}";
                 string fmt;

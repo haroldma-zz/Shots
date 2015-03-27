@@ -31,7 +31,7 @@
             <Grid>
                 <Grid.Background>
                     <ImageBrush Opacity=".5" Stretch="UniformToFill"
-                                                utilities:BlurImageTool.Source="{Binding Resource.Pic1080}">
+                                                utilities:BlurImageTool.Source="{Binding Resource.Url}">
                         <ImageBrush.Transform>
                             <TranslateTransform
                                                 Y="{Binding ElementName=Viewer, Path=ScrollListView.ScrollViewer.VerticalOffset, Converter={StaticResource ParallaxConverter}}" />
@@ -55,11 +55,17 @@
                         <Image Width="35"
                                                Source="{Binding Resource.IsLike, Converter={StaticResource LikeBoolToImageConverter}}" />
                     </Button>
-                    <Button Margin="5,0">
+                   <!-- <Button Margin="5,0">
                         <Image Width="35" Source="/Assets/Icons/react.png" />
-                    </Button>
+                    </Button>-->
                     <Button Margin="5,0,0,0">
                         <Image Width="35" Source="/Assets/Icons/more.png" />
+                        <Button.Flyout>
+                            <MenuFlyout>
+                                <MenuFlyoutItem Text="Share" Click="ShareMenuFlyoutItem_Click" />
+                                <MenuFlyoutItem Text="Save" Click="SaveMenuFlyoutItem_Click" />
+                            </MenuFlyout>
+                        </Button.Flyout>
                     </Button>
                 </StackPanel>
             </Grid>
@@ -69,12 +75,12 @@
         		<CompositeTransform/>
         	</Image.RenderTransform>
         </Image>
-        <Image Grid.Row="1" Height="{Binding Resource.RatioHeight}" Source="{Binding Resource.Pic1080}" DataContextChanged="Image_DataContextChanged" ImageFailed="Image_ImageFailed" ImageOpened="Image_ImageOpened" />
+        <Image Grid.Row="1" Height="{Binding Resource.RatioHeight}" Source="{Binding Resource.Url}" DataContextChanged="Image_DataContextChanged" ImageFailed="Image_ImageFailed" ImageOpened="Image_ImageOpened" />
         <Grid Background="#FF393939" Grid.Row="2">
             <Grid>
                 <Grid.Background>
                     <ImageBrush Opacity=".5" Stretch="UniformToFill"
-                                                utilities:BlurImageTool.Source="{Binding Resource.Pic1080}">
+                                                utilities:BlurImageTool.Source="{Binding Resource.Url}">
                         <ImageBrush.Transform>
                             <TranslateTransform
                                                 Y="{Binding ElementName=Viewer, Path=ScrollListView.ScrollViewer.VerticalOffset, Converter={StaticResource ParallaxConverter}}" />

@@ -55,7 +55,15 @@ namespace Shots.Utilities
                 if (tmp.StartsWith("@"))
                     textBlock.Inlines.Add(GetHyperLink(tmp, new ShotLink(tmp.Replace("@", ""), ShotLink.PageType.User)));
                 else if (tmp.StartsWith("!@"))
-                    textBlock.Inlines.Add(GetHyperLink(tmp.Replace("!@", ""), new ShotLink(tmp.Replace("!@", ""), ShotLink.PageType.User)));
+                {
+                    var last = tmp.LastIndexOf("!@", StringComparison.Ordinal);
+                    var lastTmp = last == 0 ? "" : tmp.Substring(last + 2);
+                    tmp = tmp.Substring(2, (last == 0 ? tmp.Length : last) - 2);
+
+                    textBlock.Inlines.Add(GetHyperLink(tmp,
+                        new ShotLink(tmp, ShotLink.PageType.User)));
+                    textBlock.Inlines.Add(GetRunControl(lastTmp));
+                }
                 else if (tmp.StartsWith("!<<"))
                 {
                     var text = tmp.Substring(tmp.LastIndexOf(">>", StringComparison.Ordinal) + 2);

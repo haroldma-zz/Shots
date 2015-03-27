@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
+using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Data;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
@@ -16,6 +17,7 @@ namespace Shots.ViewModel
         private IncrementalObservableCollection<ShotItem> _feed;
         private UserInfo _userInfo;
         private PageInfo _pageInfo;
+        private bool _isLoading;
 
         public ProfileViewModel(IShotsService service, UserInfo info) : this(service)
         {
@@ -67,6 +69,12 @@ namespace Shots.ViewModel
 
         public RelayCommand FollowCommand { get; set; }
 
+        public bool IsLoading
+        {
+            get { return _isLoading; }
+            set { Set(ref _isLoading, value); }
+        }
+
         public UserInfo UserInfo
         {
             get { return _userInfo; }
@@ -83,7 +91,9 @@ namespace Shots.ViewModel
 
         public async void SetUser(string name)
         {
+            IsLoading = true;
             var resp = await Service.GetUserByNameAsync(name);
+            IsLoading = false;
             if (resp.Status != Status.Success)
             {
                 // TODO: report

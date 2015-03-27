@@ -90,8 +90,8 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Common\BrTextBox.cs" />
     <Compile Include="Common\IncrementalObservableCollection.cs" />
+    <Compile Include="Common\PageBase.cs" />
     <Compile Include="Controls\AutoHideBar.cs" />
     <Compile Include="Controls\ShotItemViewer.xaml.cs">
       <DependentUpon>ShotItemViewer.xaml</DependentUpon>
@@ -108,6 +108,9 @@
     <Compile Include="Utilities\ItemsControlExtensions.cs" />
     <Compile Include="Utilities\ParallaxConverter.cs" />
     <Compile Include="Utilities\ScrollListView.cs" />
+    <Compile Include="Utilities\StatusBarHelper.cs" />
+    <Compile Include="Utilities\StorageFolderExtensions.cs" />
+    <Compile Include="Utilities\StorageHelper.cs" />
     <Compile Include="Utilities\VisualTreeHelperExtensions.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
     <Compile Include="ViewModel\ProfileViewModel.cs" />
@@ -230,9 +233,8 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Page>
     <Page Include="Themes\Generic.xaml">
-      <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="Views\HomePage.xaml">
       <SubType>Designer</SubType>

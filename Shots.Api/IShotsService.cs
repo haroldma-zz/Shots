@@ -112,7 +112,7 @@ namespace Shots.Api
         /// <param name="id">The user id. (Use "me" for the current account)</param>
         /// <param name="lastId">The id of the last item. (Paging)</param>
         /// <returns></returns>
-        Task<UserListResponse> GetUserListAsync(string id, string lastId = null);
+        Task<UserSuggestionResponse> GetUserListAsync(string id, string lastId = null);
 
         /// <summary>
         ///     Logins to shots.
@@ -143,5 +143,12 @@ namespace Shots.Api
         /// <param name="add">if set to <c>true</c> It adds the user as a friend, else removes him.</param>
         /// <returns></returns>
         Task<BaseResponse> ToggleFriend(string id, bool add = true);
+
+        /// <summary>
+        /// Search for users.
+        /// </summary>
+        /// <param name="query">The query.</param>
+        /// <returns></returns>
+        Task<UserListResponse> SearchUsersAsync(string query);
     }
 }

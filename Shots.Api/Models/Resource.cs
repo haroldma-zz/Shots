@@ -45,7 +45,7 @@ namespace Shots.Api.Models
             {
                 // Using !@ it will not include @ on text, just link it.
                 // !<<{0}>> is utilized for like page
-                const string moreThanTwo = "!@{0}!@, !@{1} and !<<{2}>>{3} more";
+                const string moreThanTwo = "!@{0}!@, !@{1} and {2} more";
                 const string onlyTwo = "!@{0} and !@{1}";
                 const string onlyOne = "!@{0}";
                 string fmt;
@@ -61,7 +61,7 @@ namespace Shots.Api.Models
                         fmt = string.Format(onlyTwo, Likes[0].Username, Likes[1].Username);
                         break;
                     default:
-                        fmt = string.Format(moreThanTwo, Likes[0].Username, Likes[1].Username, Id, LikeCount);
+                        fmt = string.Format(moreThanTwo, Likes[0].Username, Likes[1].Username, LikeCount);
                         break;
                 }
 

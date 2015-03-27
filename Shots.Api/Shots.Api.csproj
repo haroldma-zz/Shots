@@ -102,7 +102,7 @@
     <Compile Include="Models\SuggestedResponse.cs" />
     <Compile Include="Models\AuthenticatedUserInfo.cs" />
     <Compile Include="Models\UserInfo.cs" />
-    <Compile Include="Models\UserListResponse.cs" />
+    <Compile Include="Models\UserSuggestionResponse.cs" />
     <Compile Include="ShotsAuthHelper.cs" />
     <Compile Include="ShotsConstants.cs" />
     <Compile Include="ShotsService.cs" />

@@ -55,7 +55,10 @@ namespace Shots.Api
             }
         }
 
-        public bool IsAuthenticated { get { return CurrentUser != null; } }
+        public bool IsAuthenticated
+        {
+            get { return CurrentUser != null; }
+        }
 
         /// <summary>
         ///     Gets the current user.
@@ -72,7 +75,7 @@ namespace Shots.Api
         /// <returns>Success if is available.</returns>
         public async Task<BaseResponse> CheckEmailAsync(string email)
         {
-            const string path = ShotsConstants.UserLoginPath;
+            const string path = ShotsConstants.UserCheckPath;
             var data = GetDefaultData(path);
             data.Add("email", email);
 
@@ -132,7 +135,7 @@ namespace Shots.Api
         }
 
         /// <summary>
-        /// Likes the shot item.
+        ///     Likes the shot item.
         /// </summary>
         /// <param name="id">The resource id.</param>
         /// <param name="on">if set to <c>true</c> [on].</param>
@@ -236,14 +239,14 @@ namespace Shots.Api
         /// <param name="id">The user id. (Use "me" for the current account)</param>
         /// <param name="lastId">The id of the last item. (Paging)</param>
         /// <returns></returns>
-        public async Task<UserListResponse> GetUserListAsync(string id, string lastId = null)
+        public async Task<UserSuggestionResponse> GetUserListAsync(string id, string lastId = null)
         {
             const string path = ShotsConstants.ListUserPath;
             var data = GetDefaultData(path);
             data.Add("request_user_id", id == "me" ? CurrentUser.Id : id);
             if (!string.IsNullOrEmpty(lastId)) data.Add("last_id", lastId);
 
-            return await PostAsync<UserListResponse>(path, data);
+            return await PostAsync<UserSuggestionResponse>(path, data);
         }
 
         /// <summary>
@@ -279,7 +282,7 @@ namespace Shots.Api
         /// <param name="imageData">The image data. Use null to not include any.</param>
         /// <returns></returns>
         public async Task<BaseResponse> RegisterAsync(string username, string password, string email, string firstName,
-                                                      string lastName, DateTime birthday, Stream imageData)
+            string lastName, DateTime birthday, Stream imageData = null)
         {
             const string path = ShotsConstants.UserNewPath;
             var data = GetDefaultData(path);
@@ -303,7 +306,7 @@ namespace Shots.Api
         }
 
         /// <summary>
-        /// Toggles the shottie's relationship.
+        ///     Toggles the shottie's relationship.
         /// </summary>
         /// <param name="id">The user identifier.</param>
         /// <param name="add">if set to <c>true</c> It adds the user as a friend, else removes him.</param>
@@ -313,8 +316,22 @@ namespace Shots.Api
             var path = add ? ShotsConstants.FriendsAddPath : ShotsConstants.FriendsRemovePath;
             var data = GetDefaultData(path);
             data.Add("friend_id", id);
-            
+
             return await PostAsync<BaseResponse>(path, data);
+        }
+
+        /// <summary>
+        ///     Search for users.
+        /// </summary>
+        /// <param name="query">The query.</param>
+        /// <returns></returns>
+        public async Task<UserListResponse> SearchUsersAsync(string query)
+        {
+            const string path = ShotsConstants.UserSearchPath;
+            var data = GetDefaultData(path);
+            data.Add("search", query);
+
+            return await PostAsync<UserListResponse>(path, data);
         }
 
         #region Helpers

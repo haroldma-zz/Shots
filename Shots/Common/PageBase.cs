@@ -8,15 +8,7 @@ namespace Shots.Common
     {
         public PageBase()
         {
-            HardwareButtons.BackPressed += HardwareButtons_BackPressed;
             NavigationCacheMode = NavigationCacheMode.Required;
-        }
-
-        private void HardwareButtons_BackPressed(object sender, BackPressedEventArgs e)
-        {
-            if (!Frame.CanGoBack) return;
-            e.Handled = true;
-            Frame.GoBack();
         }
     }
 }

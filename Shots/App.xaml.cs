@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
+using Windows.Phone.UI.Input;
 using Windows.UI;
 using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
@@ -25,6 +26,27 @@ namespace Shots
         {
             InitializeComponent();
             Suspending += OnSuspending;
+
+            HardwareButtons.BackPressed += HardwareButtons_BackPressed;
+        }
+
+        public static bool SupressBackEvent { get; set; }
+        public static event EventHandler<BackPressedEventArgs> SupressedBackEvent;
+
+        private void HardwareButtons_BackPressed(object sender, BackPressedEventArgs e)
+        {
+            if (SupressBackEvent)
+            {
+                e.Handled = true;
+                if (SupressedBackEvent != null)
+                    SupressedBackEvent(sender, e);
+
+                return;
+            }
+
+            if (!RootFrame.CanGoBack) return;
+            e.Handled = true;
+            RootFrame.GoBack();
         }
 
         public static ViewModelLocator Locator

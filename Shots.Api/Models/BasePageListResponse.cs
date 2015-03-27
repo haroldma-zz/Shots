@@ -6,4 +6,9 @@ namespace Shots.Api.Models
     {
         public List<ShotItem> Items { get; set; }
     }
+
+    public class UserListResponse : BaseResponse
+    {
+        public List<UserInfo> Users { get; set; }
+    }
 }

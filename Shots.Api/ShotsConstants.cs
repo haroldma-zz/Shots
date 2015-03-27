@@ -4,12 +4,13 @@
     {
         public const string ApiBase = "api2.rocklive.com/1_04/rl/";
         public const string ApiKey = "JDoiw3g9wuFQewd*qc0x4FEvsJuzm1f5hwErh3";
-        public const string ClientHeader = "WindowsPhone (ThirdParty;Zumicts)";
+        public const string ClientHeader = "WindowsPhone/1.0 (ThirdParty;Zumicts)";
         public const string CredentialResouceName = "ShotsAccount";
 
         public const string SuggestedPath = "suggested";
         public const string UserPath = "user";
         public const string UserLoadPath = UserPath + "/load";
+        public const string UserSearchPath = UserPath + "/search";
         public const string UserFollowingPath = UserPath + "/following";
         public const string UserFollowersPath = UserPath + "/followers";
         public const string UserLoginPath = UserPath + "/login";

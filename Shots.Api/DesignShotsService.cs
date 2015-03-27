@@ -111,9 +111,9 @@ namespace Shots.Api
             });
         }
 
-        public Task<UserListResponse> GetUserListAsync(string id, string lastId = null)
+        public Task<UserSuggestionResponse> GetUserListAsync(string id, string lastId = null)
         {
-            return Task.FromResult(new UserListResponse
+            return Task.FromResult(new UserSuggestionResponse
             {
                 Status = Status.Success,
                 Suggestions = CreateUserList().Select(p => p as SimpleUserInfo).ToList(),
@@ -138,6 +138,15 @@ namespace Shots.Api
             throw new NotImplementedException();
         }
 
+        public Task<UserListResponse> SearchUsersAsync(string query)
+        {
+            return Task.FromResult(new UserListResponse
+            {
+                Users = CreateUserList(),
+                Status = Status.Success
+            });
+        }
+
         private List<UserInfo> CreateUserList()
         {
             return new List<UserInfo>
@@ -146,6 +155,7 @@ namespace Shots.Api
                 {
                     FirstName = "Liane V",
                     LastName = "",
+                    Username = "lianev",
                     Bio = "Shots on me��",
                     Color = 8,
                     ProfilePhotoBig =
@@ -157,6 +167,7 @@ namespace Shots.Api
                 {
                     FirstName = "Hailey",
                     LastName = "Baldwin",
+                    Username = "janedoe",
                     Color = 8,
                     ProfilePhotoBig =
                         "http://rocklivewests3-a.akamaihd.net/3213286/profile/qcv3q0uieeb8ewz9onfj.jpg",

@@ -5,7 +5,8 @@
     xmlns:local="using:Shots.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:utilities="using:Shots.Utilities"
+    xmlns:tools="using:Shots.Tools"
+    xmlns:converters="using:Shots.Tools.Converters"
     mc:Ignorable="d"
     x:Name="Viewer"
     d:DesignHeight="300"
@@ -18,7 +19,7 @@
 
     <Grid Background="#808080">
         <Grid.Resources>
-            <utilities:ParallaxConverter x:Key="ParallaxConverter"
+            <converters:ParallaxConverter x:Key="ParallaxConverter"
                                                          Item="{Binding}"
                                                          List="{Binding ElementName=Viewer, Path=ScrollListView}" />
         </Grid.Resources>
@@ -31,7 +32,7 @@
             <Grid>
                 <Grid.Background>
                     <ImageBrush Opacity=".5" Stretch="UniformToFill"
-                                                utilities:BlurImageTool.Source="{Binding Resource.Url}">
+                                                tools:BlurImageTool.Source="{Binding Resource.Url}">
                         <ImageBrush.Transform>
                             <TranslateTransform
                                                 Y="{Binding ElementName=Viewer, Path=ScrollListView.ScrollViewer.VerticalOffset, Converter={StaticResource ParallaxConverter}}" />
@@ -80,7 +81,7 @@
             <Grid>
                 <Grid.Background>
                     <ImageBrush Opacity=".5" Stretch="UniformToFill"
-                                                utilities:BlurImageTool.Source="{Binding Resource.Url}">
+                                                tools:BlurImageTool.Source="{Binding Resource.Url}">
                         <ImageBrush.Transform>
                             <TranslateTransform
                                                 Y="{Binding ElementName=Viewer, Path=ScrollListView.ScrollViewer.VerticalOffset, Converter={StaticResource ParallaxConverter}}" />
@@ -92,7 +93,7 @@
                         <RowDefinition Height="Auto" />
                         <RowDefinition Height="Auto" />
                     </Grid.RowDefinitions>
-                    <TextBlock utilities:InlineHyperlinks.Text="{Binding Resource.Description}"
+                    <TextBlock tools:InlineHyperlinks.Text="{Binding Resource.Description}"
                                                Visibility="{Binding Resource.Description, Converter={StaticResource NullToVisibilityConverters}}"
                                                Foreground="White"
                                                VerticalAlignment="Center" TextWrapping="Wrap" FontSize="22" />
@@ -104,7 +105,7 @@
                         <Button Click="LikeButton_Click">
                             <Image Source="{Binding Resource.IsLike, Converter={StaticResource DescriptionLikeBoolToImageConverter}}" Width="20" Margin="0,5,5,5" />
                         </Button>
-                        <TextBlock utilities:InlineHyperlinks.Text="{Binding Resource.LikeParseText}" Grid.Column="1" Foreground="White"
+                        <TextBlock tools:InlineHyperlinks.Text="{Binding Resource.LikeParseText}" Grid.Column="1" Foreground="White"
                                                    VerticalAlignment="Center" TextWrapping="Wrap" FontSize="18"/>
                     </Grid>
                 </Grid>

@@ -1,11 +1,9 @@
 ﻿using System;
-using System.Diagnostics;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Media.Animation;
-using Shots.Utilities;
 
 namespace Shots.Controls
 {
@@ -21,7 +19,6 @@ namespace Shots.Controls
         private const double MinimumOffsetScrollingDown = 10;
         private double _firstOffsetValue;
         private DoubleAnimation _hideAnimation;
-        private double _lastOffsetValue;
         private UIElement _scroller;
 
         public AutoHideBar()
@@ -44,7 +41,6 @@ namespace Shots.Controls
             AttachScroller(_scroller);
         }
 
-
         private UIElement FindScroller(UIElement start)
         {
             UIElement target = null;
@@ -61,14 +57,7 @@ namespace Shots.Controls
                 {
                     var el = VisualTreeHelper.GetChild(start, i) as UIElement;
 
-                    if (IsScroller(start))
-                    {
-                        target = el;
-                    }
-                    else
-                    {
-                        target = FindScroller(el);
-                    }
+                    target = IsScroller(start) ? el : FindScroller(el);
 
                     if (target != null)
                         break;
@@ -85,17 +74,19 @@ namespace Shots.Controls
 
         private void AttachScroller(UIElement scroller)
         {
-            if (scroller is ScrollBar)
+            var bar = scroller as ScrollBar;
+            if (bar != null)
             {
-                ((ScrollBar) scroller).ValueChanged += scrollbar_ValueChanged;
+                bar.ValueChanged += scrollbar_ValueChanged;
             }
         }
 
         private void DetachScroller(UIElement scroller)
         {
-            if (scroller is ScrollBar)
+            var bar = scroller as ScrollBar;
+            if (bar != null)
             {
-                ((ScrollBar) scroller).ValueChanged -= scrollbar_ValueChanged;
+                bar.ValueChanged -= scrollbar_ValueChanged;
             }
         }
 
@@ -124,8 +115,6 @@ namespace Shots.Controls
                     Show();
                 }
             }
-
-            _lastOffsetValue = value;
         }
 
         public void Show()
@@ -146,6 +135,11 @@ namespace Shots.Controls
 
         public event EventHandler<EventArgs> Showing;
         public event EventHandler<EventArgs> Hiding;
+
+        protected virtual void RaiseEvent(EventHandler<EventArgs> handler)
+        {
+            handler?.Invoke(this, EventArgs.Empty);
+        }
 
         #region ScrollControl (DependencyProperty)
 
@@ -199,10 +193,5 @@ namespace Shots.Controls
                 new PropertyMetadata(true));
 
         #endregion
-
-        protected virtual void RaiseEvent(EventHandler<EventArgs> handler)
-        {
-            if (handler != null) handler(this, EventArgs.Empty);
-        }
     }
 }

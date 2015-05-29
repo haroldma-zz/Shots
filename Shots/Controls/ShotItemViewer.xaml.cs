@@ -1,15 +1,16 @@
 ﻿using System;
 using System.IO;
-using Windows.ApplicationModel.DataTransfer;
-using Windows.Storage.Streams;
-using Windows.UI.Xaml;
-using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Media.Imaging;
-using Shots.Api.Models;
-using Shots.Utilities;
-using Shots.Views;
 using System.Net.Http;
+using Windows.ApplicationModel.DataTransfer;
 using Windows.Storage;
+using Windows.UI.Xaml;
+using Newtonsoft.Json;
+using Shots.Common;
+using Shots.Core.Helpers;
+using Shots.Helpers;
+using Shots.Views;
+using Shots.Web.Models;
+using Shots.Web.Services.Interface;
 
 namespace Shots.Controls
 {
@@ -32,6 +33,8 @@ namespace Shots.Controls
             set { SetValue(ScrollListViewProperty, value); }
         }
 
+        public ShotItem ShotItem => DataContext as ShotItem;
+
         public static ScrollListView GetScrollListView(DependencyObject element)
         {
             return (ScrollListView) element.GetValue(ScrollListViewProperty);
@@ -47,20 +50,18 @@ namespace Shots.Controls
             // Toggle the current like state
             ShotItem.Resource.IsLike = !ShotItem.Resource.IsLike;
 
+            var shotsService = App.Current.Kernel.Resolve<IShotsService>();
+
             // Now toggle the like over at the api
-            var resp = await App.Locator.ShotsService.LikeShotItemAsync(ShotItem.Resource.Id, ShotItem.Resource.IsLike);
+            var resp = await shotsService.LikeShotItemAsync(ShotItem.Resource.Id, ShotItem.Resource.IsLike);
 
             // Something happened
-            if (resp.Status != Status.Success)
-            {
-                // Reset back
-                ShotItem.Resource.IsLike = !ShotItem.Resource.IsLike;
+            if (resp.Status == Status.Success) return;
 
-                // TODO report error to user
-            }
+            // Reset back
+            ShotItem.Resource.IsLike = !ShotItem.Resource.IsLike;
+            CurtainPrompt.ShowError("Problem liking shot.");
         }
-
-        public ShotItem ShotItem { get { return DataContext as ShotItem; } }
 
         private void Image_DataContextChanged(FrameworkElement sender, DataContextChangedEventArgs args)
         {
@@ -82,7 +83,7 @@ namespace Shots.Controls
 
         private void ProfileButton_Click(object sender, RoutedEventArgs e)
         {
-            App.RootFrame.Navigate(typeof (ProfilePage), ShotItem.User);
+            App.Current.NavigationService.Navigate(typeof (ProfilePage), JsonConvert.SerializeObject(ShotItem.User));
         }
 
         private void ShareMenuFlyoutItem_Click(object sender, RoutedEventArgs e)
@@ -96,8 +97,8 @@ namespace Shots.Controls
             DataTransferManager.GetForCurrentView().DataRequested -= OnDataRequested;
             var package = new DataPackage();
 
-            package.Properties.Title = string.Format("Check out this Shot by @{0}", ShotItem.User.Username);
-            package.SetUri(new Uri(ShotItem.Resource.Url));
+            package.Properties.Title = $"Check out this Shot by @{ShotItem.User.Username}";
+            package.SetWebLink(new Uri(ShotItem.Resource.Url));
             package.Properties.Description = ShotItem.Resource.Description;
 
             args.Request.Data = package;
@@ -114,7 +115,10 @@ namespace Shots.Controls
                     {
                         using (var stream = await response.Content.ReadAsStreamAsync())
                         {
-                            var file = await StorageHelper.CreateFileAsync(Guid.NewGuid().ToString("n") + ".jpg", KnownFolders.SavedPictures);
+                            var file =
+                                await
+                                    StorageHelper.CreateFileAsync(Guid.NewGuid().ToString("n") + ".jpg",
+                                        KnownFolders.SavedPictures);
 
                             using (var fileStream = await file.OpenStreamForWriteAsync())
                             {
@@ -123,9 +127,7 @@ namespace Shots.Controls
                         }
                     }
                     else
-                    {
-                        // TODO: report error
-                    }
+                        CurtainPrompt.ShowError("Problem saving shot.");
                 }
             }
             StatusBarHelper.HideStatus();

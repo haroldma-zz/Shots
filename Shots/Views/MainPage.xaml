@@ -7,6 +7,8 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:navigationService="using:Shots.Services.NavigationService"
     xmlns:controls="using:Shots.Controls"
+    xmlns:interactivity="using:Microsoft.Xaml.Interactivity"
+    xmlns:core="using:Microsoft.Xaml.Interactions.Core"
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
     DataContext="{Binding Main, Source={StaticResource ViewModelLocator}}">
@@ -20,5 +22,40 @@
                 </DataTemplate>
             </ListView.ItemTemplate>
         </controls:ScrollListView>
+        <controls:AutoHideBar x:Name="AutoHideBar"
+                              ScrollControl="{Binding ElementName=FeedView}"
+                              VerticalAlignment="Top">
+            <interactivity:Interaction.Behaviors>
+                <core:EventTriggerBehavior EventName="Showing">
+                    <core:InvokeCommandAction Command="{Binding ShowingCommand}" />
+                </core:EventTriggerBehavior>
+                <core:EventTriggerBehavior EventName="Hiding">
+                    <core:InvokeCommandAction Command="{Binding HidingCommand}" />
+                </core:EventTriggerBehavior>
+            </interactivity:Interaction.Behaviors>
+            <Grid Height="80">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="25" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                <TextBox x:Name="SearchBox" Grid.Row="1" PlaceholderText="Search Shotties" VerticalAlignment="Center" Margin="10,0" GotFocus="TextBox_GotFocus">
+                    <interactivity:Interaction.Behaviors>
+                        <core:EventTriggerBehavior EventName="KeyDown">
+                            <core:InvokeCommandAction Command="{Binding KeyDownCommand}" />
+                        </core:EventTriggerBehavior>
+                    </interactivity:Interaction.Behaviors>
+                </TextBox>
+                <Ellipse Grid.Row="1" Grid.Column="1" Height="35" Width="35" VerticalAlignment="Center"
+                         Margin="0,0,10,0">
+                    <Ellipse.Fill>
+                        <ImageBrush ImageSource="{Binding ShotsService.CurrentUser.ProfilePhotoSmall}" />
+                    </Ellipse.Fill>
+                </Ellipse>
+            </Grid>
+        </controls:AutoHideBar>
     </Grid>
 </navigationService:NavigatablePage>

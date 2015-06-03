@@ -5,7 +5,7 @@ namespace Shots.Helpers
 {
     public static class StatusBarHelper
     {
-        public static StatusBar StatusBar => StatusBar.GetForCurrentView();
+        public static StatusBar Instance => StatusBar.GetForCurrentView();
 
         public static void ShowStatus(string message)
         {
@@ -14,16 +14,16 @@ namespace Shots.Helpers
 
         public static async void ShowStatus(string message, double? progress)
         {
-            StatusBar.ProgressIndicator.ProgressValue = progress;
-            StatusBar.ProgressIndicator.Text = message;
-            await StatusBar.ProgressIndicator.ShowAsync();
+            Instance.ProgressIndicator.ProgressValue = progress;
+            Instance.ProgressIndicator.Text = message;
+            await Instance.ProgressIndicator.ShowAsync();
         }
         
         
 
         public static async void HideStatus()
         {
-            await StatusBar.ProgressIndicator.HideAsync();
+            await Instance.ProgressIndicator.HideAsync();
         }
     }
 }

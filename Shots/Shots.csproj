@@ -111,6 +111,7 @@
     <Compile Include="Factories\AppKernelFactory.cs" />
     <Compile Include="Helpers\StatusBarHelper.cs" />
     <Compile Include="Tools\BlurImageTool.cs" />
+    <Compile Include="Tools\ClipToBounds.cs" />
     <Compile Include="Tools\Converters\BoolToImageConverter.cs" />
     <Compile Include="Tools\Converters\FollowerStateToImageConverter.cs" />
     <Compile Include="Tools\Converters\FollowerStateToTextConverter.cs" />
@@ -206,6 +207,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="Themes\Generic.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Views\MainPage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -246,6 +251,11 @@
       <Project>{bc764ee0-fe1b-4499-95c3-57a8e6b97601}</Project>
       <Name>Shots.Web</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <SDKReference Include="BehaviorsXamlSDKManaged, Version=12.0">
+      <Name>Behaviors SDK %28XAML%29</Name>
+    </SDKReference>
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '12.0' ">
     <VisualStudioVersion>12.0</VisualStudioVersion>

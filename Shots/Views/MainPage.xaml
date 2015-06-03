@@ -15,13 +15,30 @@
 
     <Grid>
         <controls:ScrollListView x:Name="FeedView" IsItemClickEnabled="False" SelectionMode="None"
-                                  ItemsSource="{Binding HomeList.Items}" Padding="0,80,0,200">
+                                 ItemsSource="{Binding HomeList.Items}" Padding="0,80,0,200">
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <controls:ShotItemViewer ScrollListView="{Binding ElementName=FeedView}" />
                 </DataTemplate>
             </ListView.ItemTemplate>
         </controls:ScrollListView>
+        <Grid x:Name="SearchGrid" Background="White" Visibility="Collapsed">
+            <ListView ItemsSource="{Binding SearchResults}" Padding="0,80,0,0">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel Margin="10,5" Orientation="Horizontal">
+                            <Ellipse Width="50" Height="50">
+                                <Ellipse.Fill>
+                                    <ImageBrush ImageSource="{Binding ProfilePhotoSmall}" />
+                                </Ellipse.Fill>
+                            </Ellipse>
+                            <TextBlock Text="{Binding Username}"
+                                       VerticalAlignment="Center" Margin="10,0,0,0" FontSize="22" />
+                        </StackPanel>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </Grid>
         <controls:AutoHideBar x:Name="AutoHideBar"
                               ScrollControl="{Binding ElementName=FeedView}"
                               VerticalAlignment="Top">
@@ -42,7 +59,8 @@
                     <ColumnDefinition Width="*" />
                     <ColumnDefinition Width="Auto" />
                 </Grid.ColumnDefinitions>
-                <TextBox x:Name="SearchBox" Grid.Row="1" PlaceholderText="Search Shotties" VerticalAlignment="Center" Margin="10,0" GotFocus="TextBox_GotFocus">
+                <TextBox x:Name="SearchBox" Grid.Row="1" PlaceholderText="Search Shotties" VerticalAlignment="Center"
+                         Margin="10,0" GotFocus="TextBox_GotFocus">
                     <interactivity:Interaction.Behaviors>
                         <core:EventTriggerBehavior EventName="KeyDown">
                             <core:InvokeCommandAction Command="{Binding KeyDownCommand}" />

@@ -1,7 +1,10 @@
 ﻿using System.Collections.Generic;
+using Windows.System;
 using Windows.UI;
+using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Navigation;
+using Shots.Common;
 using Shots.Helpers;
 using Shots.Mvvm;
 using Shots.Web.Models;
@@ -12,6 +15,7 @@ namespace Shots.ViewModels
     internal class MainViewModel : ViewModelBase
     {
         private HomeListResponse _homeList;
+        private List<UserInfo> _searchResults;
 
         public MainViewModel(IShotsService shotsService)
         {
@@ -20,8 +24,9 @@ namespace Shots.ViewModels
             HidingCommand = new Command(HidingExecute);
             KeyDownCommand = new Command<KeyRoutedEventArgs>(KeyDownExecute);
 
-            if (IsInDesignMode)
-                OnNavigatedTo(null, NavigationMode.New, null);
+            if (!IsInDesignMode) return;
+            OnNavigatedTo(null, NavigationMode.New, null);
+            KeyDownExecute(null);
         }
 
         public Command<KeyRoutedEventArgs> KeyDownCommand { get; set; }
@@ -35,16 +40,39 @@ namespace Shots.ViewModels
             private set { Set(ref _homeList, value); }
         }
 
-        private void KeyDownExecute(KeyRoutedEventArgs e)
+        public List<UserInfo> SearchResults
         {
+            get { return _searchResults; }
+            set { Set(ref _searchResults, value); }
         }
 
-        private void ShowingExecute()
+        private async void KeyDownExecute(KeyRoutedEventArgs e)
+        {
+            if (!IsInDesignMode && e.Key != VirtualKey.Enter) return;
+
+            var textBox = IsInDesignMode ? new TextBox() : (TextBox) e.OriginalSource;
+            var term = textBox.Text;
+            textBox.IsEnabled = false;
+
+            var response = await ShotsService.SearchUsersAsync(term);
+
+            textBox.IsEnabled = true;
+
+            if (response.Status != Status.Success)
+            {
+                CurtainPrompt.ShowError("Problem executing search.");
+                return;
+            }
+
+            SearchResults = response.Users;
+        }
+
+        public void ShowingExecute()
         {
             StatusBarHelper.Instance.ForegroundColor = Colors.Black;
         }
 
-        private void HidingExecute()
+        public void HidingExecute()
         {
             StatusBarHelper.Instance.ForegroundColor = Colors.White;
         }

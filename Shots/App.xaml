@@ -7,39 +7,45 @@
     xmlns:converters="using:Shots.Tools.Converters"
     RequestedTheme="Light">
     <common:BootStrapper.Resources>
-        <viewModels:ViewModelLocator x:Key="ViewModelLocator" />
+        <ResourceDictionary>
+            <viewModels:ViewModelLocator x:Key="ViewModelLocator" />
 
-        <converters:VisibilityConverter x:Key="VisibilityConverter" />
-        <converters:NullToVisibilityConverter x:Key="NullToVisibilityConverters" />
-        <converters:BoolToImageConverter x:Key="LikeBoolToImageConverter">
-            <converters:BoolToImageConverter.TrueContent>
-                <BitmapImage UriSource="/Assets/Icons/liked.png" />
-            </converters:BoolToImageConverter.TrueContent>
-            <converters:BoolToImageConverter.FalseContent>
-                <BitmapImage UriSource="/Assets/Icons/like.png" />
-            </converters:BoolToImageConverter.FalseContent>
-        </converters:BoolToImageConverter>
-        <converters:BoolToImageConverter x:Key="DescriptionLikeBoolToImageConverter">
-            <converters:BoolToImageConverter.TrueContent>
-                <BitmapImage UriSource="/Assets/Icons/description_liked.png" />
-            </converters:BoolToImageConverter.TrueContent>
-            <converters:BoolToImageConverter.FalseContent>
-                <BitmapImage UriSource="/Assets/Icons/description_like.png" />
-            </converters:BoolToImageConverter.FalseContent>
-        </converters:BoolToImageConverter>
+            <converters:VisibilityConverter x:Key="VisibilityConverter" />
+            <converters:NullToVisibilityConverter x:Key="NullToVisibilityConverters" />
+            <converters:BoolToImageConverter x:Key="LikeBoolToImageConverter">
+                <converters:BoolToImageConverter.TrueContent>
+                    <BitmapImage UriSource="/Assets/Icons/liked.png" />
+                </converters:BoolToImageConverter.TrueContent>
+                <converters:BoolToImageConverter.FalseContent>
+                    <BitmapImage UriSource="/Assets/Icons/like.png" />
+                </converters:BoolToImageConverter.FalseContent>
+            </converters:BoolToImageConverter>
+            <converters:BoolToImageConverter x:Key="DescriptionLikeBoolToImageConverter">
+                <converters:BoolToImageConverter.TrueContent>
+                    <BitmapImage UriSource="/Assets/Icons/description_liked.png" />
+                </converters:BoolToImageConverter.TrueContent>
+                <converters:BoolToImageConverter.FalseContent>
+                    <BitmapImage UriSource="/Assets/Icons/description_like.png" />
+                </converters:BoolToImageConverter.FalseContent>
+            </converters:BoolToImageConverter>
 
-        <converters:FollowerStateToTextConverter x:Key="FollowerStateToTextConverter" />
+            <converters:FollowerStateToTextConverter x:Key="FollowerStateToTextConverter" />
 
-        <converters:FollowerStateToImageConverter x:Key="FollowerStateToImageConverter">
-            <converters:FollowerStateToImageConverter.FollowingContent>
-                <BitmapImage UriSource="/Assets/Icons/Follow/following_button.png" />
-            </converters:FollowerStateToImageConverter.FollowingContent>
-            <converters:FollowerStateToImageConverter.FollowingRequestedContent>
-                <BitmapImage UriSource="/Assets/Icons/Follow/follow_requested_white.png" />
-            </converters:FollowerStateToImageConverter.FollowingRequestedContent>
-            <converters:FollowerStateToImageConverter.NotFollowingContent>
-                <BitmapImage UriSource="/Assets/Icons/Follow/follow_button.png" />
-            </converters:FollowerStateToImageConverter.NotFollowingContent>
-        </converters:FollowerStateToImageConverter>
+            <converters:FollowerStateToImageConverter x:Key="FollowerStateToImageConverter">
+                <converters:FollowerStateToImageConverter.FollowingContent>
+                    <BitmapImage UriSource="/Assets/Icons/Follow/following_button.png" />
+                </converters:FollowerStateToImageConverter.FollowingContent>
+                <converters:FollowerStateToImageConverter.FollowingRequestedContent>
+                    <BitmapImage UriSource="/Assets/Icons/Follow/follow_requested_white.png" />
+                </converters:FollowerStateToImageConverter.FollowingRequestedContent>
+                <converters:FollowerStateToImageConverter.NotFollowingContent>
+                    <BitmapImage UriSource="/Assets/Icons/Follow/follow_button.png" />
+                </converters:FollowerStateToImageConverter.NotFollowingContent>
+            </converters:FollowerStateToImageConverter>
+
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="ms-appx:///Styles.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
     </common:BootStrapper.Resources>
 </common:BootStrapper>

@@ -1,38 +1,54 @@
 using System;
-using System.Net;
-using System.Text.RegularExpressions;
+using System.Runtime.Serialization.Formatters;
+using Newtonsoft.Json;
 using Shots.Core.Helpers;
 
 namespace Shots.Core.Extensions
 {
     public static class StringExtensions
     {
-        /// <summary>
-        ///     Slugifies the text using the Audiotica algorith.
-        ///     Used to compared song titles/artists without worrying about unimportant variations.
-        /// </summary>
-        /// <example>
-        ///     before:
-        ///     Skrillex and Diplo - Where Are Ü Now (with Justin Bieber)
-        ///     after:
-        ///     skrillex diplo where are u now with justin bieber
-        /// </example>
-        /// <param name="text">The text.</param>
-        /// <returns></returns>
-        public static string ToAudioticaSlug(this string text)
+        public static T TryDeserializeJson<T>(this string json)
         {
-            if (string.IsNullOrEmpty(text)) return null;
+            try
+            {
+                return JsonConvert.DeserializeObject<T>(json);
+            }
+            catch
+            {
+                return default(T);
+            }
+        }
 
-            var str = WebUtility.HtmlDecode(text.ToLower());
-            str = str.Replace(" and ", " ").Replace("feat.", "ft");
+        public static object TryDeserializeJsonWithTypeInfo(this string json)
+        {
+            try
+            {
+                return JsonConvert.DeserializeObject(json, new JsonSerializerSettings
+                {
+                    TypeNameHandling = TypeNameHandling.Objects,
+                    TypeNameAssemblyFormat = FormatterAssemblyStyle.Full
+                });
+            }
+            catch
+            {
+                return null;
+            }
+        }
 
-            str = str.ToUnaccentedText();
-            // invalid chars           
-            str = Regex.Replace(str, @"[^a-z0-9\s]", "");
-            // convert multiple spaces into one space   
-            str = Regex.Replace(str, @"\s+", " ").Trim();
-
-            return str;
+        public static string SerializeJsonWithTypeInfo(this object obj)
+        {
+            try
+            {
+                return JsonConvert.SerializeObject(obj, new JsonSerializerSettings
+                {
+                    TypeNameHandling = TypeNameHandling.Objects,
+                    TypeNameAssemblyFormat = FormatterAssemblyStyle.Full
+                });
+            }
+            catch
+            {
+                return null;
+            }
         }
 
         public static string ToUnaccentedText(this string accentedString)

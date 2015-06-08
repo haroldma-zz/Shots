@@ -11,7 +11,7 @@ namespace Shots.Mvvm
     {
         public bool IsInDesignMode => DesignMode.DesignModeEnabled;
 
-        public virtual void OnNavigatedTo(string parameter, NavigationMode mode, Dictionary<string, object> state)
+        public virtual void OnNavigatedTo(object parameter, NavigationMode mode, Dictionary<string, object> state)
         {   
         }
 

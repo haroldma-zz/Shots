@@ -83,7 +83,7 @@ namespace Shots.Controls
 
         private void ProfileButton_Click(object sender, RoutedEventArgs e)
         {
-            App.Current.NavigationService.Navigate(typeof (ProfilePage), JsonConvert.SerializeObject(ShotItem.User));
+            App.Current.NavigationService.Navigate(typeof (ProfilePage), ShotItem.User.Username);
         }
 
         private void ShareMenuFlyoutItem_Click(object sender, RoutedEventArgs e)

@@ -77,7 +77,7 @@ namespace Shots.ViewModels
             StatusBarHelper.Instance.ForegroundColor = Colors.White;
         }
 
-        public override sealed async void OnNavigatedTo(string parameter, NavigationMode mode,
+        public override sealed async void OnNavigatedTo(object parameter, NavigationMode mode,
             Dictionary<string, object> state)
         {
             object homeListState;

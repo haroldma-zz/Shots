@@ -8,6 +8,7 @@ namespace Shots.AppEngine.Modules
         protected override void Load(ContainerBuilder builder)
         {
             builder.RegisterType<MainViewModel>();
+            builder.RegisterType<ProfileViewModel>();
         }
     }
 }

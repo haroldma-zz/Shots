@@ -3,6 +3,7 @@ using System.Runtime.Serialization.Formatters;
 using System.Text;
 using Windows.Storage;
 using Newtonsoft.Json;
+using Shots.Core.Extensions;
 using Shots.Core.Helpers;
 using Shots.Core.Interfaces.Utilities;
 
@@ -73,10 +74,7 @@ namespace Shots.Core.Utilities
 
             try
             {
-                obj = JsonConvert.DeserializeObject<T>(value, new JsonSerializerSettings {
-                    TypeNameHandling = TypeNameHandling.Objects,
-                    TypeNameAssemblyFormat = FormatterAssemblyStyle.Full
-                });
+                obj = (T)value.TryDeserializeJsonWithTypeInfo();
             }
             catch
             {
@@ -102,10 +100,7 @@ namespace Shots.Core.Utilities
 
         public void WriteAsJson(string key, object value)
         {
-            var json = JsonConvert.SerializeObject(value, new JsonSerializerSettings {
-                TypeNameHandling = TypeNameHandling.Objects,
-                TypeNameAssemblyFormat = FormatterAssemblyStyle.Full
-            });
+            var json = value.SerializeJsonWithTypeInfo();
             try
             {
                 Write(key, json);

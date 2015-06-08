@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Reflection;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
+using Shots.Core.Extensions;
 using Shots.Core.Interfaces.Utilities;
 using Shots.Views;
 
@@ -58,18 +60,23 @@ namespace Shots.Services.NavigationService
 
             var page = _frame.Content as FrameworkElement;
             var dataContext = page?.DataContext as INavigatable;
-            
-            dataContext?.OnNavigatedTo(parameter, mode, _sessions[key]);
+
+            // By using WithTypeInfo, we don't need to know the type of the object for deserializing.
+            dataContext?.OnNavigatedTo(parameter.TryDeserializeJsonWithTypeInfo(), mode, _sessions[key]);
         }
 
-        public bool Navigate(Type page, string parameter = null)
+        public bool Navigate(Type page, object parameter = null)
         {
+            // Seriailizing, if we use non-primitive objects we can still save the nav state.
+            // The OnNavigatedTo auto-deserialized, so the ViewModel looks the same as using any object.
+            var paramString = parameter.SerializeJsonWithTypeInfo();
+
             if (page == null)
                 throw new ArgumentNullException(nameof(page));
             if (page.FullName.Equals(LastNavigationType)
-                && parameter == LastNavigationParameter)
+                && paramString == LastNavigationParameter)
                 return false;
-            return _frame.Navigate(page, parameter);
+            return _frame.Navigate(page, paramString);
         }
 
         public void RestoreSavedNavigation()

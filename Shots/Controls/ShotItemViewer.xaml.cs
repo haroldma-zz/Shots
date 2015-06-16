@@ -125,6 +125,7 @@ namespace Shots.Controls
                                 await stream.CopyToAsync(fileStream);
                             }
                         }
+                        CurtainPrompt.Show("Shot saved.");
                     }
                     else
                         CurtainPrompt.ShowError("Problem saving shot.");

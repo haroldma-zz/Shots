@@ -1,10 +1,9 @@
 ﻿using System.Threading.Tasks;
 using Windows.ApplicationModel.Activation;
-using Windows.UI;
 using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
-using Shots.Helpers;
 using Shots.Views;
+using Shots.Web.Services.Interface;
 
 namespace Shots
 {
@@ -32,8 +31,15 @@ namespace Shots
 
         public override Task OnLaunchedAsync(ILaunchActivatedEventArgs e)
         {
+            var service = Kernel.Resolve<IShotsService>();
+
             // Navigate to default page
-            NavigationService.Navigate(typeof (MainPage));
+            var page = typeof (MainPage);
+
+            if (!service.IsAuthenticated)
+                page = typeof (WelcomePage);
+
+            NavigationService.Navigate(page);
             return Task.FromResult(0);
         }
     }

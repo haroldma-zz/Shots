@@ -91,9 +91,8 @@ namespace Shots.ViewModels
                 ShotsService.AttachLoadMore(HomeList);
             }
 
-            if (HomeList != null)
-                return;
-            HomeList = await ShotsService.GetHomeListAsync();
+            if (HomeList == null)
+                HomeList = await ShotsService.GetHomeListAsync();
         }
 
         public override void OnNavigatedFrom(bool suspending, Dictionary<string, object> state)

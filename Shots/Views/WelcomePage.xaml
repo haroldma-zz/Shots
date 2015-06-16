@@ -1,0 +1,139 @@
+﻿<navigationService:NavigatablePage
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Shots.Views"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:navigationService="using:Shots.Services.NavigationService"
+    xmlns:interactivity="using:Microsoft.Xaml.Interactivity" 
+    xmlns:core="using:Microsoft.Xaml.Interactions.Core"
+    xmlns:media="using:Microsoft.Xaml.Interactions.Media"
+    x:Class="Shots.Views.WelcomePage"
+    RequestedTheme="Dark"
+    mc:Ignorable="d"
+    Background="{ThemeResource ShotsAccentColor}">
+    <navigationService:NavigatablePage.Resources>
+        <Storyboard x:Name="ShowLogin">
+            <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Visibility)"
+                                           Storyboard.TargetName="LoginPanel">
+                <DiscreteObjectKeyFrame KeyTime="0">
+                    <DiscreteObjectKeyFrame.Value>
+                        <Visibility>Visible</Visibility>
+                    </DiscreteObjectKeyFrame.Value>
+                </DiscreteObjectKeyFrame>
+            </ObjectAnimationUsingKeyFrames>
+            <DoubleAnimationUsingKeyFrames EnableDependentAnimation="True"
+                                           Storyboard.TargetProperty="(FrameworkElement.Height)"
+                                           Storyboard.TargetName="LoginPanel">
+                <EasingDoubleKeyFrame KeyTime="0:0:0.2" Value="116">
+                    <EasingDoubleKeyFrame.EasingFunction>
+                        <ExponentialEase EasingMode="EaseIn" />
+                    </EasingDoubleKeyFrame.EasingFunction>
+                </EasingDoubleKeyFrame>
+            </DoubleAnimationUsingKeyFrames>
+        </Storyboard>
+        <Storyboard x:Name="ShowSignUp">
+            <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Visibility)"
+                                           Storyboard.TargetName="SignUpPanel">
+                <DiscreteObjectKeyFrame KeyTime="0">
+                    <DiscreteObjectKeyFrame.Value>
+                        <Visibility>Visible</Visibility>
+                    </DiscreteObjectKeyFrame.Value>
+                </DiscreteObjectKeyFrame>
+            </ObjectAnimationUsingKeyFrames>
+            <DoubleAnimationUsingKeyFrames EnableDependentAnimation="True"
+                                           Storyboard.TargetProperty="(FrameworkElement.Height)"
+                                           Storyboard.TargetName="SignUpPanel">
+                <EasingDoubleKeyFrame KeyTime="0:0:0.2" Value="340">
+                    <EasingDoubleKeyFrame.EasingFunction>
+                        <ExponentialEase EasingMode="EaseIn" />
+                    </EasingDoubleKeyFrame.EasingFunction>
+                </EasingDoubleKeyFrame>
+            </DoubleAnimationUsingKeyFrames>
+        </Storyboard>
+
+        <Storyboard x:Name="HideLogin">
+            <DoubleAnimationUsingKeyFrames EnableDependentAnimation="True"
+                                           Storyboard.TargetProperty="(FrameworkElement.Height)"
+                                           Storyboard.TargetName="LoginPanel">
+                <EasingDoubleKeyFrame KeyTime="0:0:0.2" Value="0">
+                    <EasingDoubleKeyFrame.EasingFunction>
+                        <ExponentialEase EasingMode="EaseIn" />
+                    </EasingDoubleKeyFrame.EasingFunction>
+                </EasingDoubleKeyFrame>
+            </DoubleAnimationUsingKeyFrames>
+            <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Visibility)"
+                                           Storyboard.TargetName="LoginPanel">
+                <DiscreteObjectKeyFrame KeyTime="0:0:0.2">
+                    <DiscreteObjectKeyFrame.Value>
+                        <Visibility>Collapsed</Visibility>
+                    </DiscreteObjectKeyFrame.Value>
+                </DiscreteObjectKeyFrame>
+            </ObjectAnimationUsingKeyFrames>
+        </Storyboard>
+        <Storyboard x:Name="HideSignUp">
+            <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Visibility)"
+                                           Storyboard.TargetName="SignUpPanel">
+                <DiscreteObjectKeyFrame KeyTime="0:0:0.2">
+                    <DiscreteObjectKeyFrame.Value>
+                        <Visibility>Collapsed</Visibility>
+                    </DiscreteObjectKeyFrame.Value>
+                </DiscreteObjectKeyFrame>
+            </ObjectAnimationUsingKeyFrames>
+            <DoubleAnimationUsingKeyFrames EnableDependentAnimation="True"
+                                           Storyboard.TargetProperty="(FrameworkElement.Height)"
+                                           Storyboard.TargetName="SignUpPanel">
+                <EasingDoubleKeyFrame KeyTime="0:0:0.2" Value="0">
+                    <EasingDoubleKeyFrame.EasingFunction>
+                        <ExponentialEase EasingMode="EaseIn" />
+                    </EasingDoubleKeyFrame.EasingFunction>
+                </EasingDoubleKeyFrame>
+            </DoubleAnimationUsingKeyFrames>
+        </Storyboard>
+    </navigationService:NavigatablePage.Resources>
+
+    <navigationService:NavigatablePage.DataContext>
+        <Binding Path="Welcome" Source="{StaticResource ViewModelLocator}" />
+    </navigationService:NavigatablePage.DataContext>
+
+    <StackPanel Margin="20,-100,20,0" VerticalAlignment="Center">
+        <Image Source="/Assets/StoreLogo.scale-240.png" Width="100" />
+        <TextBlock Text="Shotty for Shots" TextAlignment="Center" Foreground="White" FontSize="30" FontFamily="Segoe UI Light"
+                   FontWeight="Thin" Margin="0,0,0,10" />
+
+        <StackPanel x:Name="LoginPanel" Visibility="Collapsed" Height="0">
+            <TextBox x:Name="LoginUsernameTextBox" PlaceholderText="Username" Text="{Binding LoginUsername, Mode=TwoWay}" KeyDown="TextBox_KeyDown" />
+            <PasswordBox x:Name="LoginPasswordTextBox" PlaceholderText="Password" Password="{Binding LoginPassword, Mode=TwoWay}" KeyDown="LoginPasswordTextBox_KeyDown" />
+        </StackPanel>
+
+        <Button x:Name="LoginButton" Content="Login" Command="{Binding LoginCommand}" Foreground="White"
+                BorderThickness="2" Padding="5,2" Margin="0,2">
+            <interactivity:Interaction.Behaviors>
+                <core:EventTriggerBehavior EventName="Click">
+                    <media:ControlStoryboardAction Storyboard="{StaticResource ShowLogin}" />
+                    <media:ControlStoryboardAction Storyboard="{StaticResource HideSignUp}" />
+                </core:EventTriggerBehavior>
+            </interactivity:Interaction.Behaviors>
+        </Button>
+
+        <StackPanel x:Name="SignUpPanel" Visibility="Collapsed" Height="0">
+            <TextBox x:Name="FirstNameTextBox" PlaceholderText="First Name" Text="{Binding SignUpFirstName, Mode=TwoWay}" KeyDown="TextBox_KeyDown" />
+            <TextBox x:Name="LastNameTextBox" PlaceholderText="Last Name" Text="{Binding SignUpLastName, Mode=TwoWay}" KeyDown="TextBox_KeyDown" />
+            <TextBox x:Name="UsernameTextBox" PlaceholderText="Username" Text="{Binding SignUpUsername, Mode=TwoWay}" KeyDown="TextBox_KeyDown" />
+            <TextBox x:Name="EmailTextBox" PlaceholderText="Email" Text="{Binding SignUpEmail, Mode=TwoWay}" KeyDown="TextBox_KeyDown" />
+            <PasswordBox x:Name="PasswordBox" PlaceholderText="Password" Password="{Binding SignUpPassword, Mode=TwoWay}" KeyDown="TextBox_KeyDown" />
+            <DatePicker x:Name="DatePicker" Date="{Binding SignUpBirthDate, Mode=TwoWay}" />
+        </StackPanel>
+
+        <Button x:Name="SignUpButton" Content="Sign Up" Command="{Binding SignUpCommand}" Foreground="White"
+                BorderThickness="2" Padding="5,2"
+                Margin="0,2">
+            <interactivity:Interaction.Behaviors>
+                <core:EventTriggerBehavior EventName="Click">
+                    <media:ControlStoryboardAction Storyboard="{StaticResource ShowSignUp}" />
+                    <media:ControlStoryboardAction Storyboard="{StaticResource HideLogin}" />
+                </core:EventTriggerBehavior>
+            </interactivity:Interaction.Behaviors>
+        </Button>
+    </StackPanel>
+</navigationService:NavigatablePage>

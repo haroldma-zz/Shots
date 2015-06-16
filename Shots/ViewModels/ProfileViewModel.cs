@@ -1,9 +1,7 @@
 ﻿using System.Collections.Generic;
 using Windows.UI.Xaml.Navigation;
-using Newtonsoft.Json;
 using Shots.Common;
 using Shots.Core.Common;
-using Shots.Core.Extensions;
 using Shots.Mvvm;
 using Shots.Web.Models;
 using Shots.Web.Services.Interface;
@@ -91,7 +89,7 @@ namespace Shots.ViewModels
         public async void SetUser(UserInfo info)
         {
             UserInfo = info;
-            
+
             var resp = await Service.GetUserListAsync(info.Id);
 
             if (resp.Status != Status.Success)

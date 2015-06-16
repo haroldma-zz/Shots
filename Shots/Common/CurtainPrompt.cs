@@ -90,7 +90,7 @@ namespace Shots.Common
         {
             _current?.Dismiss();
 
-            var curtain = new CurtainPrompt(color, msg, action)
+            var curtain = new CurtainPrompt(color, msg, action, color == Colors.DarkRed)
             {
                 _millisecondsToHide = milliseconds
             };

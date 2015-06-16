@@ -12,6 +12,7 @@ namespace Shots.ViewModels
             _kernel = App.Current?.Kernel ?? AppKernelFactory.Create();
         }
 
+        public WelcomeViewModel Welcome => _kernel.Resolve<WelcomeViewModel>();
         public MainViewModel Main => _kernel.Resolve<MainViewModel>();
         public ProfileViewModel Profile => _kernel.Resolve<ProfileViewModel>();
     }

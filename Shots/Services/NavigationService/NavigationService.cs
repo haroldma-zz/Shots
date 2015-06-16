@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Windows.ApplicationModel;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
@@ -134,7 +135,8 @@ namespace Shots.Services.NavigationService
     {
         protected override void OnNavigatedTo(Windows.UI.Xaml.Navigation.NavigationEventArgs e)
         {
-            App.Current.NavigationService.NavigatedTo(e.NavigationMode, e.Parameter?.ToString());
+            if (!DesignMode.DesignModeEnabled)
+                App.Current.NavigationService.NavigatedTo(e.NavigationMode, e.Parameter?.ToString());
         }
     }
 }

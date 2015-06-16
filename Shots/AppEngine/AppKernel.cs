@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using Windows.ApplicationModel;
 using Windows.UI.Core;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -25,8 +26,13 @@ namespace Shots.AppEngine
 
         public void Load(ContainerBuilder builder, IEnumerable<Module> modules)
         {
-            builder.Register(context => App.Current.RootFrame).As<Frame>();
-            builder.Register(context => Window.Current.Dispatcher).As<CoreDispatcher>().SingleInstance().AutoActivate();
+            builder.Register(context => App.Current?.RootFrame ?? new Frame()).As<Frame>();
+
+            if (!DesignMode.DesignModeEnabled)
+                builder.Register(context => Window.Current.Dispatcher)
+                    .As<CoreDispatcher>()
+                    .SingleInstance()
+                    .AutoActivate();
 
             foreach (var module in modules)
             {

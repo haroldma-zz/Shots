@@ -16,6 +16,7 @@ namespace Shots.ViewModels
     {
         private HomeListResponse _homeList;
         private List<UserInfo> _searchResults;
+        private bool _showingBar = true;
 
         public MainViewModel(IShotsService shotsService)
         {
@@ -69,17 +70,22 @@ namespace Shots.ViewModels
 
         public void ShowingExecute()
         {
+            _showingBar = true;
             StatusBarHelper.Instance.ForegroundColor = Colors.Black;
         }
 
         public void HidingExecute()
         {
+            _showingBar = false;
             StatusBarHelper.Instance.ForegroundColor = Colors.White;
         }
 
         public override sealed async void OnNavigatedTo(object parameter, NavigationMode mode,
             Dictionary<string, object> state)
         {
+            if (_showingBar)
+                StatusBarHelper.Instance.ForegroundColor = Colors.Black;
+
             object homeListState;
             if (mode == NavigationMode.Back && HomeList == null
                 && state.TryGetValue("homeList", out homeListState))
@@ -98,6 +104,7 @@ namespace Shots.ViewModels
         public override void OnNavigatedFrom(bool suspending, Dictionary<string, object> state)
         {
             state["homeList"] = HomeList;
+            StatusBarHelper.Instance.ForegroundColor = Colors.White;
         }
     }
 }

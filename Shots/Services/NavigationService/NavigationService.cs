@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Reflection;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
@@ -18,7 +17,9 @@ namespace Shots.Services.NavigationService
         private const string SettingsSessions = SettingsPrefix + "NavigationSessions";
         private readonly NavigationFacade _frame;
         private readonly ISettingsUtility _settingsUtility;
-        private Dictionary<string, Dictionary<string, object>> _sessions = new Dictionary<string, Dictionary<string, object>>();
+
+        private Dictionary<string, Dictionary<string, object>> _sessions =
+            new Dictionary<string, Dictionary<string, object>>();
 
         public NavigationService(Frame frame, ISettingsUtility settingsUtility)
         {
@@ -46,7 +47,7 @@ namespace Shots.Services.NavigationService
         public void NavigatedTo(NavigationMode mode, string parameter)
         {
             _frame.CurrentPageType = _frame.Content.GetType();
-           LastNavigationParameter = parameter;
+            LastNavigationParameter = parameter;
             LastNavigationType = _frame.Content.GetType().FullName;
             var key = LastNavigationType + "-depth-" + _frame.BackStackDepth;
 
@@ -82,7 +83,8 @@ namespace Shots.Services.NavigationService
         public void RestoreSavedNavigation()
         {
             var state = _settingsUtility.Read(SettingsNavigationState);
-            _sessions = _settingsUtility.ReadJsonAs<Dictionary<string, Dictionary<string, object>>>(SettingsSessions) ?? new Dictionary<string, Dictionary<string, object>>();
+            _sessions = _settingsUtility.ReadJsonAs<Dictionary<string, Dictionary<string, object>>>(SettingsSessions) ??
+                        new Dictionary<string, Dictionary<string, object>>();
 
             if (string.IsNullOrEmpty(state))
                 Navigate(typeof (MainPage));
@@ -115,7 +117,7 @@ namespace Shots.Services.NavigationService
 
             var state = _frame.GetNavigationState();
             _settingsUtility.Write(SettingsNavigationState, state);
-            _settingsUtility.WriteAsJson(SettingsSessions, _sessions); 
+            _settingsUtility.WriteAsJson(SettingsSessions, _sessions);
         }
 
         public void Show(SettingsFlyout flyout, string parameter = null)

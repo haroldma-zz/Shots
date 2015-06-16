@@ -15,7 +15,7 @@ namespace Shots.AppEngine.Modules
 
         public override void LoadRunTime(ContainerBuilder builder)
         {
-            builder.RegisterType<NavigationService>();
+            builder.RegisterType<NavigationService>().SingleInstance();
             builder.RegisterType<ShotsService>().As<IShotsService>();
         }
     }

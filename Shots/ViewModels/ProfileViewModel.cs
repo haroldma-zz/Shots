@@ -90,6 +90,9 @@ namespace Shots.ViewModels
         {
             UserInfo = info;
 
+            // Don't load feeds for private profiles.
+            if (UserInfo.Privacy) return;
+
             var resp = await Service.GetUserListAsync(info.Id);
 
             if (resp.Status != Status.Success)

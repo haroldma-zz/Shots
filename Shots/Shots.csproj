@@ -113,6 +113,7 @@
     <Compile Include="Tools\BlurImageTool.cs" />
     <Compile Include="Tools\ClipToBounds.cs" />
     <Compile Include="Tools\Converters\BoolToImageConverter.cs" />
+    <Compile Include="Tools\Converters\BoolToOppositeConverter.cs" />
     <Compile Include="Tools\Converters\FollowerStateToImageConverter.cs" />
     <Compile Include="Tools\Converters\FollowerStateToTextConverter.cs" />
     <Compile Include="Tools\Converters\NullToVisibilityConverter.cs" />

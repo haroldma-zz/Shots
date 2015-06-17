@@ -22,10 +22,19 @@ namespace Shots.Web.Converters
             JsonSerializer serializer)
         {
             var token = JToken.Load(reader);
+
+            var type = token.SelectToken("$type");
+            if (type != null)
+            {
+                // When deserializing from json that has the $type token
+                // it will be recognized as an object but can be deserialized as a List directly
+                return token.ToObject<List<T>>(serializer);
+            }
+
             // If it is an array, then cast it as a list, 
             // other wise we are deailing with a single object, so make a new list with it
-            return token.Type == JTokenType.Array 
-                ? token.ToObject<List<T>>(serializer) 
+            return token.Type == JTokenType.Array
+                ? token.ToObject<List<T>>(serializer)
                 : new List<T> {token.ToObject<T>(serializer)};
         }
 

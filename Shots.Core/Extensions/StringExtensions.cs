@@ -28,8 +28,8 @@ namespace Shots.Core.Extensions
             {
                 return JsonConvert.DeserializeObject(json, new JsonSerializerSettings
                 {
-                    TypeNameHandling = TypeNameHandling.Objects,
-                    TypeNameAssemblyFormat = FormatterAssemblyStyle.Full
+                    TypeNameHandling = TypeNameHandling.All,
+                    TypeNameAssemblyFormat = FormatterAssemblyStyle.Simple
                 });
             }
             catch
@@ -44,8 +44,8 @@ namespace Shots.Core.Extensions
             {
                 return JsonConvert.SerializeObject(obj, new JsonSerializerSettings
                 {
-                    TypeNameHandling = TypeNameHandling.Objects,
-                    TypeNameAssemblyFormat = FormatterAssemblyStyle.Full
+                    TypeNameHandling = TypeNameHandling.All,
+                    TypeNameAssemblyFormat = FormatterAssemblyStyle.Simple
                 });
             }
             catch

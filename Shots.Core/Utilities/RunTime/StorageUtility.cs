@@ -53,6 +53,8 @@ namespace Shots.Core.Utilities.RunTime
             {
                 if (stream.Position > 0)
                     stream.Seek(0, SeekOrigin.Begin);
+                if (fileStream.Length > 0)
+                    fileStream.SetLength(0);
                 await stream.CopyToAsync(fileStream).DontMarshall();
             }
         }
@@ -63,6 +65,8 @@ namespace Shots.Core.Utilities.RunTime
             var file = await StorageHelper.GetFileAsync(path, location).DontMarshall();
             using (var fileStream = await file.OpenStreamForWriteAsync().DontMarshall())
             {
+                if (fileStream.Length > 0)
+                    fileStream.SetLength(0);
                 await fileStream.WriteAsync(bytes, 0, bytes.Length).DontMarshall();
             }
         }

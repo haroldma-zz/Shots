@@ -12,6 +12,7 @@
 
             <converters:VisibilityConverter x:Key="VisibilityConverter" />
             <converters:NullToVisibilityConverter x:Key="NullToVisibilityConverters" />
+            <converters:BoolToOppositeConverter x:Key="BoolToOppositeConverter" />
             <converters:BoolToImageConverter x:Key="LikeBoolToImageConverter">
                 <converters:BoolToImageConverter.TrueContent>
                     <BitmapImage UriSource="/Assets/Icons/liked.png" />

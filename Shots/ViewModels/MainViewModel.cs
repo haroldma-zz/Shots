@@ -21,6 +21,7 @@ namespace Shots.ViewModels
         private List<UserInfo> _searchResults;
         private string _searchText;
         private bool _showingBar = true;
+        private bool _isBusy;
 
         public MainViewModel(IShotsService shotsService)
         {
@@ -28,14 +29,14 @@ namespace Shots.ViewModels
             ShowingCommand = new Command(ShowingExecute);
             HidingCommand = new Command(HidingExecute);
             KeyDownCommand = new Command<KeyRoutedEventArgs>(KeyDownExecute);
-            GotFocusCommand = new Command<RoutedEventArgs>(GotFocusExecute);
+            GotFocusCommand = new Command(GotFocusExecute);
 
             if (!IsInDesignMode) return;
             OnNavigatedTo(null, NavigationMode.New, null);
             KeyDownExecute(null);
         }
 
-        public Command<RoutedEventArgs> GotFocusCommand { get; set; }
+        public Command GotFocusCommand { get; set; }
         public Command<KeyRoutedEventArgs> KeyDownCommand { get; set; }
         public Command HidingCommand { get; }
         public Command ShowingCommand { get; }
@@ -65,7 +66,13 @@ namespace Shots.ViewModels
             set { Set(ref _searchMode, value); }
         }
 
-        private void GotFocusExecute(RoutedEventArgs obj)
+        public bool IsBusy
+        {
+            get { return _isBusy; }
+            set { Set(ref _isBusy, value); }
+        }
+
+        private void GotFocusExecute()
         {
             if (SearchMode) return;
 
@@ -85,14 +92,10 @@ namespace Shots.ViewModels
         private async void KeyDownExecute(KeyRoutedEventArgs e)
         {
             if (!IsInDesignMode && e.Key != VirtualKey.Enter) return;
-
-            var textBox = IsInDesignMode ? new TextBox() : (TextBox) e.OriginalSource;
-            var term = textBox.Text;
-            textBox.IsEnabled = false;
-
-            var response = await ShotsService.SearchUsersAsync(term);
-
-            textBox.IsEnabled = true;
+            
+            IsBusy = true;
+            var response = await ShotsService.SearchUsersAsync(SearchText);
+            IsBusy = false;
 
             if (response.Status != Status.Success)
             {
@@ -118,7 +121,7 @@ namespace Shots.ViewModels
         public override sealed async void OnNavigatedTo(object parameter, NavigationMode mode,
             Dictionary<string, object> state)
         {
-            if (_showingBar)
+            if (_showingBar && !IsInDesignMode)
                 StatusBarHelper.Instance.ForegroundColor = Colors.Black;
 
             object homeListState;

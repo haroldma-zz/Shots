@@ -57,8 +57,8 @@
                     <ColumnDefinition Width="*" />
                     <ColumnDefinition Width="Auto" />
                 </Grid.ColumnDefinitions>
-                <TextBox x:Name="SearchBox" Text="{Binding SearchText, Mode=TwoWay}" Grid.Row="1" PlaceholderText="Search Shotties" VerticalAlignment="Center"
-                         Margin="10,0">
+                <TextBox x:Name="SearchBox" Text="{Binding SearchText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Grid.Row="1" PlaceholderText="Search Shotties" VerticalAlignment="Center"
+                         Margin="10,0" KeyDown="SearchBox_OnKeyDown">
                     <interactivity:Interaction.Behaviors>
                         <core:EventTriggerBehavior EventName="KeyDown">
                             <core:InvokeCommandAction Command="{Binding KeyDownCommand}" />
@@ -76,5 +76,12 @@
                 </Ellipse>
             </Grid>
         </controls:AutoHideBar>
+        <!--busy indicator-->
+        <Grid Visibility="{Binding IsBusy, Converter={StaticResource VisibilityConverter}}" Background="#7F000000">
+            <StackPanel VerticalAlignment="Center">
+                <ProgressRing IsActive="{Binding IsBusy}" Background="{x:Null}" Foreground="White" />
+                <TextBlock Text="Working..." FontSize="18" HorizontalAlignment="Center" FontFamily="Segoe UI Light" FontWeight="Thin" Foreground="White" />
+            </StackPanel>
+        </Grid>
     </Grid>
 </navigationService:NavigatablePage>

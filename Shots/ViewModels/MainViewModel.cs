@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
+using Windows.Phone.UI.Input;
 using Windows.System;
 using Windows.UI;
+using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Navigation;
@@ -15,7 +17,9 @@ namespace Shots.ViewModels
     internal class MainViewModel : ViewModelBase
     {
         private HomeListResponse _homeList;
+        private bool _searchMode;
         private List<UserInfo> _searchResults;
+        private string _searchText;
         private bool _showingBar = true;
 
         public MainViewModel(IShotsService shotsService)
@@ -24,12 +28,14 @@ namespace Shots.ViewModels
             ShowingCommand = new Command(ShowingExecute);
             HidingCommand = new Command(HidingExecute);
             KeyDownCommand = new Command<KeyRoutedEventArgs>(KeyDownExecute);
+            GotFocusCommand = new Command<RoutedEventArgs>(GotFocusExecute);
 
             if (!IsInDesignMode) return;
             OnNavigatedTo(null, NavigationMode.New, null);
             KeyDownExecute(null);
         }
 
+        public Command<RoutedEventArgs> GotFocusCommand { get; set; }
         public Command<KeyRoutedEventArgs> KeyDownCommand { get; set; }
         public Command HidingCommand { get; }
         public Command ShowingCommand { get; }
@@ -45,6 +51,35 @@ namespace Shots.ViewModels
         {
             get { return _searchResults; }
             set { Set(ref _searchResults, value); }
+        }
+
+        public string SearchText
+        {
+            get { return _searchText; }
+            set { Set(ref _searchText, value); }
+        }
+
+        public bool SearchMode
+        {
+            get { return _searchMode; }
+            set { Set(ref _searchMode, value); }
+        }
+
+        private void GotFocusExecute(RoutedEventArgs obj)
+        {
+            if (SearchMode) return;
+
+            SearchMode = true;
+            App.Current.BackRequested += AppOnSupressedBackEvent;
+        }
+
+        private void AppOnSupressedBackEvent(object sender, BackPressedEventArgs e)
+        {
+            e.Handled = true;
+            SearchText = "";
+            SearchMode = false;
+            App.Current.BackRequested -= AppOnSupressedBackEvent;
+            SearchResults = null;
         }
 
         private async void KeyDownExecute(KeyRoutedEventArgs e)

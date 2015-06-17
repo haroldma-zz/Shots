@@ -20,7 +20,7 @@
                 </DataTemplate>
             </ListView.ItemTemplate>
         </controls:ScrollListView>
-        <Grid x:Name="SearchGrid" Background="White" Visibility="Collapsed">
+        <Grid x:Name="SearchGrid" Background="White" Visibility="{Binding SearchMode, Converter={StaticResource VisibilityConverter}}">
             <ListView ItemsSource="{Binding SearchResults}" Padding="0,80,0,0">
                 <ListView.ItemTemplate>
                     <DataTemplate>
@@ -57,11 +57,14 @@
                     <ColumnDefinition Width="*" />
                     <ColumnDefinition Width="Auto" />
                 </Grid.ColumnDefinitions>
-                <TextBox x:Name="SearchBox" Grid.Row="1" PlaceholderText="Search Shotties" VerticalAlignment="Center"
-                         Margin="10,0" GotFocus="TextBox_GotFocus">
+                <TextBox x:Name="SearchBox" Text="{Binding SearchText, Mode=TwoWay}" Grid.Row="1" PlaceholderText="Search Shotties" VerticalAlignment="Center"
+                         Margin="10,0">
                     <interactivity:Interaction.Behaviors>
                         <core:EventTriggerBehavior EventName="KeyDown">
                             <core:InvokeCommandAction Command="{Binding KeyDownCommand}" />
+                        </core:EventTriggerBehavior>
+                        <core:EventTriggerBehavior EventName="GotFocus">
+                            <core:InvokeCommandAction Command="{Binding GotFocusCommand}" />
                         </core:EventTriggerBehavior>
                     </interactivity:Interaction.Behaviors>
                 </TextBox>

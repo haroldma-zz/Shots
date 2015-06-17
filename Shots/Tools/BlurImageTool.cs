@@ -8,7 +8,7 @@ using Windows.UI.Xaml.Media.Imaging;
 using Lumia.Imaging;
 using Lumia.Imaging.Adjustments;
 using Shots.Core.Extensions;
-using Shots.Core.Interfaces.Utilities;
+using Shots.Core.Utilities.Interfaces;
 
 namespace Shots.Tools
 {

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 
-namespace Shots.Core.Interfaces.Utilities
+namespace Shots.Core.Utilities.Interfaces
 {
     public interface IDispatcherUtility
     {

@@ -5,7 +5,7 @@ using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
 using Shots.Core.Extensions;
-using Shots.Core.Interfaces.Utilities;
+using Shots.Core.Utilities.Interfaces;
 using Shots.Views;
 
 namespace Shots.Services.NavigationService

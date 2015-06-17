@@ -1,5 +1,6 @@
 ﻿using System;
 using Shots.Common;
+using Shots.Core.Extensions;
 using Shots.Mvvm;
 using Shots.Services.NavigationService;
 using Shots.Views;
@@ -60,8 +61,16 @@ namespace Shots.ViewModels
         {
             if (CurrentMode == WelcomeMode.SignUp)
             {
+                if (StringExtensions.IsAnyNullOrEmpty(SignUpUsername, SignUpPassword, SignUpEmail, SignUpFirstName,
+                    SignUpLastName))
+                {
+                    CurtainPrompt.ShowError("Make sure to fill up everything.");
+                    return;
+                }
+
                 IsBusy = true;
-                var results = await _shotsService.RegisterAsync(SignUpUsername, SignUpPassword, SignUpEmail, SignUpFirstName,
+                var results =
+                    await _shotsService.RegisterAsync(SignUpUsername, SignUpPassword, SignUpEmail, SignUpFirstName,
                         SignUpLastName, SignUpBirthDate.Date, null);
                 IsBusy = false;
 
@@ -78,6 +87,12 @@ namespace Shots.ViewModels
         {
             if (CurrentMode == WelcomeMode.Login)
             {
+                if (StringExtensions.IsAnyNullOrEmpty(LoginUsername, LoginPassword))
+                {
+                    CurtainPrompt.ShowError("Make sure to fill up everything.");
+                    return;
+                }
+
                 IsBusy = true;
                 var results = await _shotsService.LoginAsync(LoginUsername, LoginPassword);
                 IsBusy = false;

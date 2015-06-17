@@ -96,44 +96,56 @@
         <Binding Path="Welcome" Source="{StaticResource ViewModelLocator}" />
     </navigationService:NavigatablePage.DataContext>
 
-    <StackPanel Margin="20,-100,20,0" VerticalAlignment="Center">
-        <Image Source="/Assets/StoreLogo.scale-240.png" Width="100" />
-        <TextBlock Text="Shotty for Shots" TextAlignment="Center" Foreground="White" FontSize="30" FontFamily="Segoe UI Light"
+    
+    
+    <Grid>
+        <StackPanel Margin="20,-100,20,0" VerticalAlignment="Center">
+            <Image Source="/Assets/StoreLogo.scale-240.png" Width="100" />
+            <TextBlock Text="Shotty for Shots" TextAlignment="Center" Foreground="White" FontSize="30" FontFamily="Segoe UI Light"
                    FontWeight="Thin" Margin="0,0,0,10" />
 
-        <StackPanel x:Name="LoginPanel" Visibility="Collapsed" Height="0">
-            <TextBox x:Name="LoginUsernameTextBox" PlaceholderText="Username" Text="{Binding LoginUsername, Mode=TwoWay}" KeyDown="TextBox_KeyDown" />
-            <PasswordBox x:Name="LoginPasswordTextBox" PlaceholderText="Password" Password="{Binding LoginPassword, Mode=TwoWay}" KeyDown="LoginPasswordTextBox_KeyDown" />
-        </StackPanel>
+            <StackPanel x:Name="LoginPanel" Visibility="Collapsed" Height="0">
+                <TextBox x:Name="LoginUsernameTextBox" PlaceholderText="Username" Text="{Binding LoginUsername, Mode=TwoWay}" KeyDown="TextBox_KeyDown" />
+                <PasswordBox x:Name="LoginPasswordTextBox" PlaceholderText="Password" Password="{Binding LoginPassword, Mode=TwoWay}" KeyDown="LoginPasswordTextBox_KeyDown" />
+            </StackPanel>
 
-        <Button x:Name="LoginButton" Content="Login" Command="{Binding LoginCommand}" Foreground="White"
+            <Button x:Name="LoginButton" Content="Login" Command="{Binding LoginCommand}" Foreground="White"
                 BorderThickness="2" Padding="5,2" Margin="0,2">
-            <interactivity:Interaction.Behaviors>
-                <core:EventTriggerBehavior EventName="Click">
-                    <media:ControlStoryboardAction Storyboard="{StaticResource ShowLogin}" />
-                    <media:ControlStoryboardAction Storyboard="{StaticResource HideSignUp}" />
-                </core:EventTriggerBehavior>
-            </interactivity:Interaction.Behaviors>
-        </Button>
+                <interactivity:Interaction.Behaviors>
+                    <core:EventTriggerBehavior EventName="Click">
+                        <media:ControlStoryboardAction Storyboard="{StaticResource ShowLogin}" />
+                        <media:ControlStoryboardAction Storyboard="{StaticResource HideSignUp}" />
+                    </core:EventTriggerBehavior>
+                </interactivity:Interaction.Behaviors>
+            </Button>
 
-        <StackPanel x:Name="SignUpPanel" Visibility="Collapsed" Height="0">
-            <TextBox x:Name="FirstNameTextBox" PlaceholderText="First Name" Text="{Binding SignUpFirstName, Mode=TwoWay}" KeyDown="TextBox_KeyDown" />
-            <TextBox x:Name="LastNameTextBox" PlaceholderText="Last Name" Text="{Binding SignUpLastName, Mode=TwoWay}" KeyDown="TextBox_KeyDown" />
-            <TextBox x:Name="UsernameTextBox" PlaceholderText="Username" Text="{Binding SignUpUsername, Mode=TwoWay}" KeyDown="TextBox_KeyDown" />
-            <TextBox x:Name="EmailTextBox" PlaceholderText="Email" Text="{Binding SignUpEmail, Mode=TwoWay}" KeyDown="TextBox_KeyDown" />
-            <PasswordBox x:Name="PasswordBox" PlaceholderText="Password" Password="{Binding SignUpPassword, Mode=TwoWay}" KeyDown="TextBox_KeyDown" />
-            <DatePicker x:Name="DatePicker" Date="{Binding SignUpBirthDate, Mode=TwoWay}" />
-        </StackPanel>
+            <StackPanel x:Name="SignUpPanel" Visibility="Collapsed" Height="0">
+                <TextBox x:Name="FirstNameTextBox" PlaceholderText="First Name" Text="{Binding SignUpFirstName, Mode=TwoWay}" KeyDown="TextBox_KeyDown" />
+                <TextBox x:Name="LastNameTextBox" PlaceholderText="Last Name" Text="{Binding SignUpLastName, Mode=TwoWay}" KeyDown="TextBox_KeyDown" />
+                <TextBox x:Name="UsernameTextBox" PlaceholderText="Username" Text="{Binding SignUpUsername, Mode=TwoWay}" KeyDown="TextBox_KeyDown" />
+                <TextBox x:Name="EmailTextBox" PlaceholderText="Email" Text="{Binding SignUpEmail, Mode=TwoWay}" KeyDown="TextBox_KeyDown" />
+                <PasswordBox x:Name="PasswordBox" PlaceholderText="Password" Password="{Binding SignUpPassword, Mode=TwoWay}" KeyDown="TextBox_KeyDown" />
+                <DatePicker x:Name="DatePicker" Date="{Binding SignUpBirthDate, Mode=TwoWay}" />
+            </StackPanel>
 
-        <Button x:Name="SignUpButton" Content="Sign Up" Command="{Binding SignUpCommand}" Foreground="White"
+            <Button x:Name="SignUpButton" Content="Sign Up" Command="{Binding SignUpCommand}" Foreground="White"
                 BorderThickness="2" Padding="5,2"
                 Margin="0,2">
-            <interactivity:Interaction.Behaviors>
-                <core:EventTriggerBehavior EventName="Click">
-                    <media:ControlStoryboardAction Storyboard="{StaticResource ShowSignUp}" />
-                    <media:ControlStoryboardAction Storyboard="{StaticResource HideLogin}" />
-                </core:EventTriggerBehavior>
-            </interactivity:Interaction.Behaviors>
-        </Button>
-    </StackPanel>
+                <interactivity:Interaction.Behaviors>
+                    <core:EventTriggerBehavior EventName="Click">
+                        <media:ControlStoryboardAction Storyboard="{StaticResource ShowSignUp}" />
+                        <media:ControlStoryboardAction Storyboard="{StaticResource HideLogin}" />
+                    </core:EventTriggerBehavior>
+                </interactivity:Interaction.Behaviors>
+            </Button>
+        </StackPanel>
+        
+        <!--busy indicator-->
+        <Grid Visibility="{Binding IsBusy, Converter={StaticResource VisibilityConverter}}" Background="#7F000000">
+            <StackPanel VerticalAlignment="Center">
+                <ProgressRing IsActive="{Binding IsBusy}" Background="{x:Null}" Foreground="White" />
+                <TextBlock Text="Working..." FontSize="18" HorizontalAlignment="Center" FontFamily="Segoe UI Light" FontWeight="Thin" />
+            </StackPanel>
+        </Grid>
+    </Grid>
 </navigationService:NavigatablePage>

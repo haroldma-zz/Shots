@@ -2,7 +2,7 @@
 using System.Threading.Tasks;
 using Shots.Core.Helpers;
 
-namespace Shots.Core.Interfaces.Utilities
+namespace Shots.Core.Utilities.Interfaces
 {
     public interface IStorageUtility
     {

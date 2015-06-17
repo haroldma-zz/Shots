@@ -1,8 +1,8 @@
 ﻿using System.Linq;
 using Windows.Security.Credentials;
-using Shots.Core.Interfaces.Utilities;
+using Shots.Core.Utilities.Interfaces;
 
-namespace Shots.Core.Utilities
+namespace Shots.Core.Utilities.RunTime
 {
     public class CredentialUtility : ICredentialUtility
     {

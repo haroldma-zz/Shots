@@ -1,13 +1,18 @@
 ﻿using Autofac;
-using Shots.Core.Interfaces.Utilities;
-using Shots.Core.Utilities;
+using Shots.Core.Utilities.DesignTime;
+using Shots.Core.Utilities.Interfaces;
+using Shots.Core.Utilities.RunTime;
 
 namespace Shots.AppEngine.Modules
 {
-    class UtilityModule : AppModule
+    internal class UtilityModule : AppModule
     {
         public override void LoadDesignTime(ContainerBuilder builder)
         {
+            builder.RegisterType<DesignDispatcherUtility>().As<IDispatcherUtility>();
+            builder.RegisterType<DesignCredentialUtility>().As<ICredentialUtility>();
+            builder.RegisterType<DesignSettingsUtility>().As<ISettingsUtility>();
+            builder.RegisterType<DesignStorageUtility>().As<IStorageUtility>();
         }
 
         public override void LoadRunTime(ContainerBuilder builder)

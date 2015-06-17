@@ -1,13 +1,9 @@
-﻿using System;
-using System.Runtime.Serialization.Formatters;
-using System.Text;
-using Windows.Storage;
-using Newtonsoft.Json;
+﻿using Windows.Storage;
 using Shots.Core.Extensions;
 using Shots.Core.Helpers;
-using Shots.Core.Interfaces.Utilities;
+using Shots.Core.Utilities.Interfaces;
 
-namespace Shots.Core.Utilities
+namespace Shots.Core.Utilities.RunTime
 {
     public class SettingsUtility : ISettingsUtility
     {

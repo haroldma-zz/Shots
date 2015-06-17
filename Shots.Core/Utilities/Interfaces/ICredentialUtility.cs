@@ -1,4 +1,4 @@
-﻿namespace Shots.Core.Interfaces.Utilities
+﻿namespace Shots.Core.Utilities.Interfaces
 {
     public interface ICredentialUtility
     {

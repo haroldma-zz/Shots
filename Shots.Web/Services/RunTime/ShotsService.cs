@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 using Windows.UI.Xaml.Data;
 using Newtonsoft.Json;
 using Shots.Core.Extensions;
-using Shots.Core.Interfaces.Utilities;
+using Shots.Core.Utilities.Interfaces;
 using Shots.Web.Converters;
 using Shots.Web.Helpers;
 using Shots.Web.Models;

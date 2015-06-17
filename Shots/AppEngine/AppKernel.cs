@@ -6,7 +6,7 @@ using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Autofac;
 using Shots.AppEngine.Bootstrppers;
-using Shots.Core.Interfaces.Utilities;
+using Shots.Core.Utilities.Interfaces;
 
 namespace Shots.AppEngine
 {

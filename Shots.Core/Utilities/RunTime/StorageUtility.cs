@@ -3,9 +3,9 @@ using System.Text;
 using System.Threading.Tasks;
 using Shots.Core.Extensions;
 using Shots.Core.Helpers;
-using Shots.Core.Interfaces.Utilities;
+using Shots.Core.Utilities.Interfaces;
 
-namespace Shots.Core.Utilities
+namespace Shots.Core.Utilities.RunTime
 {
     /// <summary>
     /// A wrapper for AppStorageHelper that simplifies it and makes it DI compatible (interface support).

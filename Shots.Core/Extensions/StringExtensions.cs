@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Runtime.Serialization.Formatters;
 using Newtonsoft.Json;
 using Shots.Core.Helpers;
@@ -7,6 +8,8 @@ namespace Shots.Core.Extensions
 {
     public static class StringExtensions
     {
+        public static bool IsAnyNullOrEmpty(params string[] values) => values.Any(string.IsNullOrEmpty);
+
         public static T TryDeserializeJson<T>(this string json)
         {
             try

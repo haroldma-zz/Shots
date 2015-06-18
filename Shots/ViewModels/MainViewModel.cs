@@ -2,13 +2,13 @@
 using Windows.Phone.UI.Input;
 using Windows.System;
 using Windows.UI;
-using Windows.UI.Xaml;
-using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Navigation;
 using Shots.Common;
 using Shots.Helpers;
 using Shots.Mvvm;
+using Shots.Services.NavigationService;
+using Shots.Views;
 using Shots.Web.Models;
 using Shots.Web.Services.Interface;
 
@@ -16,26 +16,30 @@ namespace Shots.ViewModels
 {
     internal class MainViewModel : ViewModelBase
     {
+        private readonly NavigationService _navigationService;
         private HomeListResponse _homeList;
+        private bool _isBusy;
         private bool _searchMode;
         private List<UserInfo> _searchResults;
         private string _searchText;
         private bool _showingBar = true;
-        private bool _isBusy;
 
-        public MainViewModel(IShotsService shotsService)
+        public MainViewModel(IShotsService shotsService, NavigationService navigationService)
         {
+            _navigationService = navigationService;
             ShotsService = shotsService;
             ShowingCommand = new Command(ShowingExecute);
             HidingCommand = new Command(HidingExecute);
             KeyDownCommand = new Command<KeyRoutedEventArgs>(KeyDownExecute);
             GotFocusCommand = new Command(GotFocusExecute);
+            GoToProfileCommand = new Command(GoToProfileExecute);
 
             if (!IsInDesignMode) return;
             OnNavigatedTo(null, NavigationMode.New, null);
             KeyDownExecute(null);
         }
 
+        public Command GoToProfileCommand { get; set; }
         public Command GotFocusCommand { get; set; }
         public Command<KeyRoutedEventArgs> KeyDownCommand { get; set; }
         public Command HidingCommand { get; }
@@ -72,6 +76,11 @@ namespace Shots.ViewModels
             set { Set(ref _isBusy, value); }
         }
 
+        private void GoToProfileExecute()
+        {
+            _navigationService.Navigate(typeof (ProfilePage), ShotsService.CurrentUser.Username);
+        }
+
         private void GotFocusExecute()
         {
             if (SearchMode) return;
@@ -92,7 +101,7 @@ namespace Shots.ViewModels
         private async void KeyDownExecute(KeyRoutedEventArgs e)
         {
             if (!IsInDesignMode && e.Key != VirtualKey.Enter) return;
-            
+
             IsBusy = true;
             var response = await ShotsService.SearchUsersAsync(SearchText);
             IsBusy = false;

@@ -68,12 +68,14 @@
                         </core:EventTriggerBehavior>
                     </interactivity:Interaction.Behaviors>
                 </TextBox>
-                <Ellipse Grid.Row="1" Grid.Column="1" Height="35" Width="35" VerticalAlignment="Center"
+                <Button Command="{Binding GoToProfileCommand}" Grid.Row="1" Grid.Column="1" VerticalAlignment="Center">
+                    <Ellipse Height="35" Width="35"
                          Margin="0,0,10,0">
-                    <Ellipse.Fill>
-                        <ImageBrush ImageSource="{Binding ShotsService.CurrentUser.ProfilePhotoSmall}" />
-                    </Ellipse.Fill>
-                </Ellipse>
+                        <Ellipse.Fill>
+                            <ImageBrush ImageSource="{Binding ShotsService.CurrentUser.ProfilePhotoSmall}" />
+                        </Ellipse.Fill>
+                    </Ellipse>
+                </Button>
             </Grid>
         </controls:AutoHideBar>
         <!--busy indicator-->

@@ -13,6 +13,7 @@ namespace Shots.ViewModels
         private IncrementalObservableCollection<ShotItem> _feed;
         private bool _isLoading;
         private UserInfo _userInfo;
+        private string _statusMessage;
 
         public ProfileViewModel(IShotsService service)
         {
@@ -44,6 +45,12 @@ namespace Shots.ViewModels
         {
             get { return _feed; }
             set { Set(ref _feed, value); }
+        }
+
+        public string StatusMessage
+        {
+            get { return _statusMessage; }
+            set { Set(ref _statusMessage, value); }
         }
 
         private async void FollowExecute()
@@ -88,10 +95,15 @@ namespace Shots.ViewModels
 
         public async void SetUser(UserInfo info)
         {
+            StatusMessage = null;
             UserInfo = info;
 
             // Don't load feeds for private profiles.
-            if (UserInfo.Privacy) return;
+            if (UserInfo.Privacy && !UserInfo.IsFriend)
+            {
+                StatusMessage = "This profile is private.";
+                return;
+            }
 
             var resp = await Service.GetUserListAsync(info.Id);
 

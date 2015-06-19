@@ -21,6 +21,7 @@ namespace Shots.Core.Common
                 return false;
 
             field = newValue;
+            // ReSharper disable once ExplicitCallerInfoArgument
             RaisePropertyChanged(propertyName);
 
             return true;

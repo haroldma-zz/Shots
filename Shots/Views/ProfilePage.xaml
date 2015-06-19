@@ -20,50 +20,71 @@
             </ListView.ItemTemplate>
             <ListView.HeaderTemplate>
                 <DataTemplate>
-                    <Grid Background="{Binding UserInfo.ColorBrush}">
+                    <Grid>
                         <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="*" />
                             <RowDefinition Height="Auto" />
                         </Grid.RowDefinitions>
-                        <Grid Margin="0,25,0,5">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*" />
-                                <ColumnDefinition Width="*" />
-                                <ColumnDefinition Width="*" />
-                            </Grid.ColumnDefinitions>
-                            <Button Command="{Binding FollowCommand}" HorizontalAlignment="Center" VerticalAlignment="Center">
-                                <StackPanel>
-                                    <Image Width="50" Source="{Binding UserInfo.FriendState, Converter={StaticResource FollowerStateToImageConverter}}" />
-                                    <TextBlock Text="{Binding UserInfo.FriendState, Converter={StaticResource FollowerStateToTextConverter}}" FontSize="16" Foreground="White" HorizontalAlignment="Center" />
-                                </StackPanel>
-                            </Button>
-                            <Ellipse Width="120" Height="120" Grid.Column="1" VerticalAlignment="Center" Stroke="White" StrokeThickness="3"/>
-                            <Ellipse Width="100" Height="100" Grid.Column="1" VerticalAlignment="Center">
-                                <Ellipse.Fill>
-                                    <ImageBrush ImageSource="{Binding UserInfo.ProfilePhotoSmall}" />
-                                </Ellipse.Fill>
-                            </Ellipse>
-                            <Button Grid.Column="2" HorizontalAlignment="Center" VerticalAlignment="Center">
-                                <StackPanel>
-                                    <Image Source="/Assets/Icons/more.png" Height="35" />
-                                    <TextBlock Text="Options" FontSize="16" Foreground="White" HorizontalAlignment="Center" />
-                                </StackPanel>
-                            </Button>
+                        <Grid Background="{Binding UserInfo.ColorBrush}">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
+                            <Grid Margin="0,25,0,5">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+                                <Button Command="{Binding FollowCommand}" HorizontalAlignment="Center"
+                                        VerticalAlignment="Center">
+                                    <StackPanel>
+                                        <Image Width="50"
+                                               Source="{Binding UserInfo.FriendState, Converter={StaticResource FollowerStateToImageConverter}}" />
+                                        <TextBlock
+                                            Text="{Binding UserInfo.FriendState, Converter={StaticResource FollowerStateToTextConverter}}"
+                                            FontSize="16" Foreground="White" HorizontalAlignment="Center" />
+                                    </StackPanel>
+                                </Button>
+                                <Ellipse Width="120" Height="120" Grid.Column="1" VerticalAlignment="Center"
+                                         Stroke="White" StrokeThickness="3" />
+                                <Ellipse Width="100" Height="100" Grid.Column="1" VerticalAlignment="Center">
+                                    <Ellipse.Fill>
+                                        <ImageBrush ImageSource="{Binding UserInfo.ProfilePhotoSmall}" />
+                                    </Ellipse.Fill>
+                                </Ellipse>
+                                <Button Grid.Column="2" HorizontalAlignment="Center" VerticalAlignment="Center">
+                                    <StackPanel>
+                                        <Image Source="/Assets/Icons/more.png" Height="35" />
+                                        <TextBlock Text="Options" FontSize="16" Foreground="White"
+                                                   HorizontalAlignment="Center" />
+                                    </StackPanel>
+                                </Button>
+                            </Grid>
+                            <TextBlock Grid.Row="1" Foreground="White" FontSize="28" TextAlignment="Center"
+                                       TextWrapping="Wrap">
+                                <Run Text="{Binding UserInfo.FirstName}" />
+                                <Run Text="{Binding UserInfo.LastName}" />
+                            </TextBlock>
+                            <Border
+                                Visibility="{Binding UserInfo.FollowsMe, Converter={StaticResource VisibilityConverter}}"
+                                HorizontalAlignment="Center" BorderBrush="#7FFFFFFF" BorderThickness="1"
+                                CornerRadius="5" Grid.Row="2" Margin="0,0,0,5">
+                                <TextBlock Margin="5,3,5,3" Text="Added You" Foreground="#7FFFFFFF" FontSize="14" />
+                            </Border>
+                            <TextBlock Grid.Row="3" Text="{Binding UserInfo.Bio}" Foreground="White" FontSize="14"
+                                       TextAlignment="Center" TextWrapping="Wrap" Margin="0,0,0,15" />
                         </Grid>
-                        <TextBlock Grid.Row="1" Foreground="White" FontSize="28" TextAlignment="Center" TextWrapping="Wrap">
-                            <Run Text="{Binding UserInfo.FirstName}" />
-                            <Run Text="{Binding UserInfo.LastName}" />
-                        </TextBlock>
-                        <Border Visibility="{Binding UserInfo.FollowsMe, Converter={StaticResource VisibilityConverter}}" HorizontalAlignment="Center" BorderBrush="#7FFFFFFF" BorderThickness="1" CornerRadius="5" Grid.Row="2" Margin="0,0,0,5">
-                            <TextBlock Margin="5,3,5,3" Text="Added You" Foreground="#7FFFFFFF" FontSize="14" />
-                        </Border>
-                        <TextBlock Grid.Row="3" Text="{Binding UserInfo.Bio}" Foreground="White" FontSize="14" TextAlignment="Center" TextWrapping="Wrap" Margin="0,0,0,15" />
+                        <Grid Margin="0,10" Grid.Row="1" Visibility="{Binding StatusMessage, Converter={StaticResource NullToVisibilityConverters}}">
+                            <TextBlock Text="{Binding StatusMessage}" FontSize="18" TextWrapping="Wrap" TextAlignment="Center" />
+                        </Grid>
                     </Grid>
                 </DataTemplate>
             </ListView.HeaderTemplate>
         </controls:ScrollListView>
-        <ProgressRing Visibility="{Binding IsLoading, Converter={StaticResource VisibilityConverter}}" IsActive="{Binding IsLoading}" />
+        <ProgressRing Visibility="{Binding IsLoading, Converter={StaticResource VisibilityConverter}}"
+                      IsActive="{Binding IsLoading}" />
     </Grid>
 </navigationService:NavigatablePage>

@@ -47,6 +47,9 @@ namespace Shots.Services.NavigationService
 
         public void NavigatedTo(NavigationMode mode, string parameter)
         {
+            if (_frame.CurrentPageType == typeof (WelcomePage))
+                _frame.BackStack.RemoveAt(_frame.BackStack.Count - 1);
+
             _frame.CurrentPageType = _frame.Content.GetType();
             LastNavigationParameter = parameter;
             LastNavigationType = _frame.Content.GetType().FullName;

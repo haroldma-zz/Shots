@@ -10,7 +10,7 @@ using Shots.Views;
 
 namespace Shots.Services.NavigationService
 {
-    public class NavigationService
+    public class NavigationService : INavigationService
     {
         private const string EmptyNavigation = "1,0";
         private const string SettingsPrefix = "NavService_";

@@ -214,8 +214,8 @@ namespace Shots.Web.Services.DesignTime
                             FsVenueName = "Los Angeles, CA",
                             Id = 15
                         },
-                        Pic1080 =
-                            "http://rocklivewests3-a.akamaihd.net/17665497/t/20074887_t08ubp02qpcgamq6nfe1t196oi0wsglkyhz4ojrw-1080.jpg"
+                        Url =
+                            "http://rocklivewests3-a.akamaihd.net/17665497/t/20074887_t08ubp02qpcgamq6nfe1t196oi0wsglkyhz4ojrw.jpg"
                     },
                     User = CurrentUser
                 }

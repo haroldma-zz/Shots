@@ -18,12 +18,12 @@ namespace Shots.ViewModels
             SignUp
         }
 
-        private readonly NavigationService _navigationService;
+        private readonly INavigationService _navigationService;
         private readonly IShotsService _shotsService;
         private WelcomeMode _currentMode;
         private bool _isBusy;
 
-        public WelcomeViewModel(IShotsService shotsService, NavigationService navigationService)
+        public WelcomeViewModel(IShotsService shotsService, INavigationService navigationService)
         {
             _shotsService = shotsService;
             _navigationService = navigationService;

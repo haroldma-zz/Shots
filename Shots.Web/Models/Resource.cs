@@ -113,7 +113,7 @@ namespace Shots.Web.Models
             get
             {
                 if (_ratioHeight > 0) return _ratioHeight;
-                if (Window.Current == null || Window.Current.CoreWindow == null) return 533;
+                if (Window.Current?.CoreWindow == null) return 533;
 
                 var ratio = (double) Width/Height;
                 _ratioHeight = (int) (Window.Current.CoreWindow.Bounds.Width/ratio);

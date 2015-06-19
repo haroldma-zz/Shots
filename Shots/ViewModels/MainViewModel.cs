@@ -16,7 +16,7 @@ namespace Shots.ViewModels
 {
     internal class MainViewModel : ViewModelBase
     {
-        private readonly NavigationService _navigationService;
+        private readonly INavigationService _navigationService;
         private HomeListResponse _homeList;
         private bool _isBusy;
         private bool _searchMode;
@@ -24,7 +24,7 @@ namespace Shots.ViewModels
         private string _searchText;
         private bool _showingBar = true;
 
-        public MainViewModel(IShotsService shotsService, NavigationService navigationService)
+        public MainViewModel(IShotsService shotsService, INavigationService navigationService)
         {
             _navigationService = navigationService;
             ShotsService = shotsService;

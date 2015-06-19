@@ -63,7 +63,7 @@ namespace Shots.Common
 
             RootFrame = RootFrame ?? new Frame();
             RootFrame.Language = ApplicationLanguages.Languages[0];
-            NavigationService = Kernel.Resolve<NavigationService>();
+            NavigationService = Kernel.Resolve<INavigationService>();
 
             // the user may override to set custom content
             await OnInitializeAsync();
@@ -122,7 +122,7 @@ namespace Shots.Common
 
         public AppKernel Kernel { get; set; }
         public Frame RootFrame { get; set; }
-        public NavigationService NavigationService { get; private set; }
+        public INavigationService NavigationService { get; private set; }
         protected Func<SplashScreen, Page> SplashFactory { get; set; }
 
         #endregion

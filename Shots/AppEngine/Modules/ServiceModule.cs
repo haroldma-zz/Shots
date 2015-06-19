@@ -8,19 +8,15 @@ namespace Shots.AppEngine.Modules
 {
     internal class ServiceModule : AppModule
     {
-        protected override void Load(ContainerBuilder builder)
-        {
-            builder.RegisterType<NavigationService>().SingleInstance();
-            base.Load(builder);
-        }
-
         public override void LoadDesignTime(ContainerBuilder builder)
         {
+            builder.RegisterType<DesignNavigationService>().As<INavigationService>();
             builder.RegisterType<DesignShotsService>().As<IShotsService>();
         }
 
         public override void LoadRunTime(ContainerBuilder builder)
         {
+            builder.RegisterType<NavigationService>().As<INavigationService>().SingleInstance();
             builder.RegisterType<ShotsService>().As<IShotsService>();
         }
     }

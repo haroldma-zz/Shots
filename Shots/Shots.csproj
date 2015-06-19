@@ -110,6 +110,8 @@
     <Compile Include="Extensions\VisualTreeHelperExtensions.cs" />
     <Compile Include="Factories\AppKernelFactory.cs" />
     <Compile Include="Helpers\StatusBarHelper.cs" />
+    <Compile Include="Services\NavigationService\DesignNavigationService.cs" />
+    <Compile Include="Services\NavigationService\INavigationService.cs" />
     <Compile Include="Tools\BlurImageTool.cs" />
     <Compile Include="Tools\ClipToBounds.cs" />
     <Compile Include="Tools\Converters\BoolToImageConverter.cs" />

@@ -5,7 +5,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:navigationService="using:Shots.Services.NavigationService"
-    xmlns:interactivity="using:Microsoft.Xaml.Interactivity" 
+    xmlns:interactivity="using:Microsoft.Xaml.Interactivity"
     xmlns:core="using:Microsoft.Xaml.Interactions.Core"
     xmlns:media="using:Microsoft.Xaml.Interactions.Media"
     x:Class="Shots.Views.WelcomePage"
@@ -96,21 +96,30 @@
         <Binding Path="Welcome" Source="{StaticResource ViewModelLocator}" />
     </navigationService:NavigatablePage.DataContext>
 
-    
-    
+
     <Grid>
         <StackPanel Margin="20,-100,20,0" VerticalAlignment="Center">
-            <Image Source="/Assets/StoreLogo.scale-240.png" Width="100" />
-            <TextBlock Text="Shotty for Shots" TextAlignment="Center" Foreground="White" FontSize="30" FontFamily="Segoe UI Light"
-                   FontWeight="Thin" Margin="0,0,0,10" />
+            <Path Fill="White"
+                  Data="M545.1,32.3H385.7c-158.9,0-182.3,74.2-182.3,202v59.3c-2.9,170.4,18.5,231,178.4,234.1h173.6
+	c119,0.1,200.9-19.3,200.9-164.3V196.1C756.2,64.8,700.6,32.3,545.1,32.3z M318.4,207.9c0-16.2,14.7-29.3,32.9-29.3
+	s32.9,13.1,32.9,29.3c0,16.2-14.7,29.3-32.9,29.3S318.4,224.1,318.4,207.9z M633.9,309.3c-12.1,17.9-30.3,31.1-49,41.5
+	c-40.4,22.5-87.8,35.4-134,36.7c-37.5,1.1-83.5-6.3-104.4-41.6c-3-5,4.8-9.5,7.8-4.5c10,16.8,27.4,26.7,45.8,31.8
+	c41.1,11.5,87.2,4.5,127.3-7.9c20.7-6.4,40.8-14.8,59.3-25.9c14.9-9,29.6-20,39.4-34.6C629.3,299.9,637.1,304.5,633.9,309.3z
+	 M608.7,237.2c-18.2,0-32.9-13.1-32.9-29.3c0-16.2,14.7-29.3,32.9-29.3c18.2,0,32.9,13.1,32.9,29.3
+	C641.6,224.1,626.9,237.2,608.7,237.2z" Height="75" Stretch="Uniform" UseLayoutRounding="False" Margin="0,0,0,10" />
+            <TextBlock Text="Shotty for Shots" TextAlignment="Center" Foreground="White" FontSize="30"
+                       FontFamily="Segoe UI Light"
+                       FontWeight="Thin" Margin="0,0,0,10" />
 
             <StackPanel x:Name="LoginPanel" Visibility="Collapsed" Height="0">
-                <TextBox x:Name="LoginUsernameTextBox" PlaceholderText="Username" Text="{Binding LoginUsername, Mode=TwoWay}" KeyDown="TextBox_KeyDown" />
-                <PasswordBox x:Name="LoginPasswordTextBox" PlaceholderText="Password" Password="{Binding LoginPassword, Mode=TwoWay}" KeyDown="LoginPasswordTextBox_KeyDown" />
+                <TextBox x:Name="LoginUsernameTextBox" PlaceholderText="Username"
+                         Text="{Binding LoginUsername, Mode=TwoWay}" KeyDown="TextBox_KeyDown" />
+                <PasswordBox x:Name="LoginPasswordTextBox" PlaceholderText="Password"
+                             Password="{Binding LoginPassword, Mode=TwoWay}" KeyDown="LoginPasswordTextBox_KeyDown" />
             </StackPanel>
 
             <Button x:Name="LoginButton" Content="Login" Command="{Binding LoginCommand}" Foreground="White"
-                BorderThickness="2" Padding="5,2" Margin="0,2">
+                    BorderThickness="2" Padding="5,2" Margin="0,2">
                 <interactivity:Interaction.Behaviors>
                     <core:EventTriggerBehavior EventName="Click">
                         <media:ControlStoryboardAction Storyboard="{StaticResource ShowLogin}" />
@@ -120,17 +129,22 @@
             </Button>
 
             <StackPanel x:Name="SignUpPanel" Visibility="Collapsed" Height="0">
-                <TextBox x:Name="FirstNameTextBox" PlaceholderText="First Name" Text="{Binding SignUpFirstName, Mode=TwoWay}" KeyDown="TextBox_KeyDown" />
-                <TextBox x:Name="LastNameTextBox" PlaceholderText="Last Name" Text="{Binding SignUpLastName, Mode=TwoWay}" KeyDown="TextBox_KeyDown" />
-                <TextBox x:Name="UsernameTextBox" PlaceholderText="Username" Text="{Binding SignUpUsername, Mode=TwoWay}" KeyDown="TextBox_KeyDown" />
-                <TextBox x:Name="EmailTextBox" PlaceholderText="Email" Text="{Binding SignUpEmail, Mode=TwoWay}" KeyDown="TextBox_KeyDown" />
-                <PasswordBox x:Name="PasswordBox" PlaceholderText="Password" Password="{Binding SignUpPassword, Mode=TwoWay}" KeyDown="TextBox_KeyDown" />
+                <TextBox x:Name="FirstNameTextBox" PlaceholderText="First Name"
+                         Text="{Binding SignUpFirstName, Mode=TwoWay}" KeyDown="TextBox_KeyDown" />
+                <TextBox x:Name="LastNameTextBox" PlaceholderText="Last Name"
+                         Text="{Binding SignUpLastName, Mode=TwoWay}" KeyDown="TextBox_KeyDown" />
+                <TextBox x:Name="UsernameTextBox" PlaceholderText="Username"
+                         Text="{Binding SignUpUsername, Mode=TwoWay}" KeyDown="TextBox_KeyDown" />
+                <TextBox x:Name="EmailTextBox" PlaceholderText="Email" Text="{Binding SignUpEmail, Mode=TwoWay}"
+                         KeyDown="TextBox_KeyDown" />
+                <PasswordBox x:Name="PasswordBox" PlaceholderText="Password"
+                             Password="{Binding SignUpPassword, Mode=TwoWay}" KeyDown="TextBox_KeyDown" />
                 <DatePicker x:Name="DatePicker" Date="{Binding SignUpBirthDate, Mode=TwoWay}" />
             </StackPanel>
 
             <Button x:Name="SignUpButton" Content="Sign Up" Command="{Binding SignUpCommand}" Foreground="White"
-                BorderThickness="2" Padding="5,2"
-                Margin="0,2">
+                    BorderThickness="2" Padding="5,2"
+                    Margin="0,2">
                 <interactivity:Interaction.Behaviors>
                     <core:EventTriggerBehavior EventName="Click">
                         <media:ControlStoryboardAction Storyboard="{StaticResource ShowSignUp}" />
@@ -139,12 +153,13 @@
                 </interactivity:Interaction.Behaviors>
             </Button>
         </StackPanel>
-        
+
         <!--busy indicator-->
         <Grid Visibility="{Binding IsBusy, Converter={StaticResource VisibilityConverter}}" Background="#7F000000">
             <StackPanel VerticalAlignment="Center">
                 <ProgressRing IsActive="{Binding IsBusy}" Background="{x:Null}" Foreground="White" />
-                <TextBlock Text="Working..." FontSize="18" HorizontalAlignment="Center" FontFamily="Segoe UI Light" FontWeight="Thin" />
+                <TextBlock Text="Working..." FontSize="18" HorizontalAlignment="Center" FontFamily="Segoe UI Light"
+                           FontWeight="Thin" />
             </StackPanel>
         </Grid>
     </Grid>

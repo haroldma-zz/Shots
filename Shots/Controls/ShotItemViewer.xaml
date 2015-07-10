@@ -11,102 +11,102 @@
     x:Name="Viewer"
     d:DesignHeight="300"
     d:DesignWidth="400">
-	<UserControl.Resources>
-		<Storyboard x:Name="LoadingProgress" RepeatBehavior="Forever">
-			<DoubleAnimation Duration="0:0:0.5" To="360" Storyboard.TargetProperty="(UIElement.RenderTransform).(CompositeTransform.Rotation)" Storyboard.TargetName="image" d:IsOptimized="True"/>
-		</Storyboard>
-	</UserControl.Resources>
+    <UserControl.Resources>
+        <Storyboard x:Name="LoadingProgress" RepeatBehavior="Forever">
+            <DoubleAnimation Duration="0:0:0.5" To="360"
+                             Storyboard.TargetProperty="(UIElement.RenderTransform).(CompositeTransform.Rotation)"
+                             Storyboard.TargetName="image" d:IsOptimized="True" />
+        </Storyboard>
+    </UserControl.Resources>
 
-    <Grid Background="#808080">
-        <Grid.Resources>
-            <converters:ParallaxConverter x:Key="ParallaxConverter"
-                                                         Item="{Binding}"
-                                                         List="{Binding ElementName=Viewer, Path=ScrollListView}" />
-        </Grid.Resources>
+    <Grid Margin="0,0,0,5">
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
-        <Grid Background="#FF393939">
-            <Grid>
-                <Grid.Background>
-                    <ImageBrush Opacity=".5" Stretch="UniformToFill"
-                                                tools:BlurImageTool.Source="{Binding Resource.Url}">
-                        <ImageBrush.Transform>
-                            <TranslateTransform
-                                                Y="{Binding ElementName=Viewer, Path=ScrollListView.ScrollViewer.VerticalOffset, Converter={StaticResource ParallaxConverter}}" />
-                        </ImageBrush.Transform>
-                    </ImageBrush>
-                </Grid.Background>
-                <Button Margin="10" HorizontalAlignment="Left" Click="ProfileButton_Click">
-                    <StackPanel Orientation="Horizontal">
-                        <Ellipse Width="50" Height="50">
-                            <Ellipse.Fill>
-                                <ImageBrush ImageSource="{Binding User.ProfilePhotoSmall}" />
-                            </Ellipse.Fill>
-                        </Ellipse>
-                        <TextBlock Text="{Binding User.Username}" Foreground="White"
-                                               VerticalAlignment="Center" Margin="10,0,0,0" FontSize="22" />
-                    </StackPanel>
-                </Button>
-                <StackPanel HorizontalAlignment="Right" Orientation="Horizontal"
-                                            VerticalAlignment="Center" Margin="0,0,10,0">
-                    <Button Margin="0,0,5,0" Click="LikeButton_Click">
-                        <Image Width="35"
-                                               Source="{Binding Resource.IsLike, Converter={StaticResource LikeBoolToImageConverter}}" />
-                    </Button>
-                   <!-- <Button Margin="5,0">
-                        <Image Width="35" Source="/Assets/Icons/react.png" />
-                    </Button>-->
-                    <Button Margin="5,0,0,0">
-                        <Image Width="35" Source="/Assets/Icons/more.png" />
-                        <Button.Flyout>
-                            <MenuFlyout>
-                                <MenuFlyoutItem Text="Share" Click="ShareMenuFlyoutItem_Click" />
-                                <MenuFlyoutItem Text="Save" Click="SaveMenuFlyoutItem_Click" />
-                            </MenuFlyout>
-                        </Button.Flyout>
-                    </Button>
-                </StackPanel>
-            </Grid>
+        <Grid Background="#808080">
+            <Image x:Name="image" Width="30" Source="/Assets/progress.png" RenderTransformOrigin="0.5,0.5">
+                <Image.RenderTransform>
+                    <CompositeTransform />
+                </Image.RenderTransform>
+            </Image>
+            <Image Height="{Binding Resource.RatioHeight}" Source="{Binding Resource.Url}"
+                   DataContextChanged="Image_DataContextChanged" ImageFailed="Image_ImageFailed"
+                   ImageOpened="Image_ImageOpened" />
+            <MediaElement AutoPlay="True" Source="{Binding Resource.VideoUrl}" IsMuted="True" IsLooping="True"
+                          x:Name="MediaElement" Visibility="Collapsed" />
+            <Rectangle Height="75" VerticalAlignment="Bottom">
+                <Rectangle.Fill>
+                    <LinearGradientBrush StartPoint="1,0" EndPoint="1,1">
+                        <GradientStop Color="Transparent" Offset="0" />
+                        <GradientStop Color="#0C000000" Offset="0.3" />
+                        <GradientStop Color="#3F000000" Offset="0.6" />
+                        <GradientStop Color="#99000000" Offset="1" />
+                    </LinearGradientBrush>
+                </Rectangle.Fill>
+            </Rectangle>
+            <StackPanel VerticalAlignment="Bottom" Margin="10,0,0,5">
+                <AppBarToggleButton x:Name="MuteButton" VerticalAlignment="Bottom"
+                                    IsChecked="{Binding ElementName=MediaElement, Path=IsMuted, Mode=TwoWay}"
+                                    Icon="Mute"
+                                    RequestedTheme="Dark" Visibility="Collapsed" RenderTransformOrigin="0.5,0.5"
+                                    IsCompact="True" Margin="-10,0,0,-8">
+                    <AppBarToggleButton.RenderTransform>
+                        <CompositeTransform ScaleX="0.6" ScaleY="0.6" />
+                    </AppBarToggleButton.RenderTransform>
+                </AppBarToggleButton>
+                <TextBlock Text="{Binding User.Username}"
+                           Visibility="{Binding User.Username, Converter={StaticResource NullToVisibilityConverters}}"
+                           Foreground="White" FontSize="14" />
+                <TextBlock Text="{Binding Resource.FsVenueInfo.FsVenueName}"
+                           Visibility="{Binding Resource.FsVenueInfo, Converter={StaticResource NullToVisibilityConverters}}"
+                           Foreground="#7FFFFFFF" FontSize="12" />
+            </StackPanel>
         </Grid>
-        <Image x:Name="image" Grid.Row="1" Width="30" Source="/Assets/progress.png" RenderTransformOrigin="0.5,0.5" >
-        	<Image.RenderTransform>
-        		<CompositeTransform/>
-        	</Image.RenderTransform>
-        </Image>
-        <Image Grid.Row="1" Height="{Binding Resource.RatioHeight}" Source="{Binding Resource.Url}" DataContextChanged="Image_DataContextChanged" ImageFailed="Image_ImageFailed" ImageOpened="Image_ImageOpened" />
-        <Grid Background="#FF393939" Grid.Row="2">
+        <Button Grid.Row="0" Width="100" Margin="0,0,2,-5"
+                Visibility="{Binding ReactTo, Converter={StaticResource NullToVisibilityConverters}}"
+                HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.ZIndex="1" HorizontalContentAlignment="Stretch">
             <Grid>
-                <Grid.Background>
-                    <ImageBrush Opacity=".5" Stretch="UniformToFill"
-                                                tools:BlurImageTool.Source="{Binding Resource.Url}">
-                        <ImageBrush.Transform>
-                            <TranslateTransform
-                                                Y="{Binding ElementName=Viewer, Path=ScrollListView.ScrollViewer.VerticalOffset, Converter={StaticResource ParallaxConverter}}" />
-                        </ImageBrush.Transform>
-                    </ImageBrush>
-                </Grid.Background>
-                <Grid Margin="15">
+                <Border Background="#3F000000"
+                        Margin="0,0,0,-1" CornerRadius="5" />
+                <Border Background="White" Padding="2" CornerRadius="5">
+                    <Image Source="{Binding ReactTo.Resource.ThumbUrl}" Stretch="Uniform" />
+                </Border>
+                <Border BorderBrush="White" BorderThickness="2" Padding="2" CornerRadius="5" />
+            </Grid>
+        </Button>
+        <Grid Grid.Row="1">
+            <Rectangle Fill="#7FA7A7A7" Margin="0,2,0,0" />
+            <Grid Background="White" Margin="0,0,0,2">
+                <Grid Margin="10,9,0,0">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto" />
                         <RowDefinition Height="Auto" />
                     </Grid.RowDefinitions>
-                    <TextBlock tools:InlineHyperlinks.Text="{Binding Resource.Description}"
-                                               Visibility="{Binding Resource.Description, Converter={StaticResource NullToVisibilityConverters}}"
-                                               Foreground="White"
-                                               VerticalAlignment="Center" TextWrapping="Wrap" FontSize="22" />
-                    <Grid Grid.Row="1" Margin="0,5,0,0">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="Auto" />
-                            <ColumnDefinition Width="*" />
-                        </Grid.ColumnDefinitions>
-                        <Button Click="LikeButton_Click">
-                            <Image Source="{Binding Resource.IsLike, Converter={StaticResource DescriptionLikeBoolToImageConverter}}" Width="20" Margin="0,5,5,5" />
+                    <TextBlock tools:InlineHyperlinks.Text="{Binding DescriptionFormatted}"
+                               Visibility="{Binding Resource.Description, Converter={StaticResource NullToVisibilityConverters}}"
+                               Text="Hello, World!"
+                               Foreground="#737373"
+                               VerticalAlignment="Center" TextWrapping="Wrap" FontSize="14" />
+                    <Grid Grid.Row="1" Margin="0,0,0,2">
+                        <Button Background="White" Click="LikeButton_Click" HorizontalAlignment="Left">
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+                                <Path
+                                    Data="{Binding Resource.IsLike, Converter={StaticResource BoolToLikePathConverter}}"
+                                    Width="12" Margin="0,5,5,5" Fill="#FF979797" StrokeThickness="0.5"
+                                    Stroke="#FF979797" Stretch="Uniform" />
+                                <TextBlock
+                                    Text="{Binding Resource.IsLike, Converter={StaticResource BoolToLikeTextConverter}}"
+                                    Foreground="#FF979797" FontSize="10" VerticalAlignment="Center" Margin="-3,-1,0,0" />
+                            </StackPanel>
                         </Button>
-                        <TextBlock tools:InlineHyperlinks.Text="{Binding Resource.LikeParseText}" Grid.Column="1" Foreground="White"
-                                                   VerticalAlignment="Center" TextWrapping="Wrap" FontSize="18"/>
+                        <Button Background="White" HorizontalAlignment="Right" Margin="0,0,10,0"
+                                VerticalAlignment="Center">
+                            <Path Stretch="Uniform" Width="25" Height="15" Stroke="#FF979797" StrokeThickness="1"
+                                  Data="M459.6,281c0,5.9-4.8,10.6-10.6,10.6c-5.9,0-10.6-4.8-10.6-10.6s4.8-10.6,10.6-10.6
+	C454.9,270.4,459.6,275.1,459.6,281z M481,270.4c-5.9,0-10.6,4.8-10.6,10.6s4.8,10.6,10.6,10.6c5.9,0,10.6-4.8,10.6-10.6
+	S486.9,270.4,481,270.4z M513,270.4c-5.9,0-10.6,4.8-10.6,10.6s4.8,10.6,10.6,10.6s10.6-4.8,10.6-10.6S518.9,270.4,513,270.4z" />
+                        </Button>
                     </Grid>
                 </Grid>
             </Grid>

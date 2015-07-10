@@ -5,6 +5,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
     <SolidColorBrush x:Key="ShotsAccentColor" Color="#26D1F3" />
+    <SolidColorBrush x:Key="ApplicationPageBackgroundThemeBrush" Color="#e8e9e4" />
     <FontFamily x:Key="PhoneFontFamilyNormal">Segoe UI</FontFamily>
     <FontWeight x:Key="PhoneButtonFontWeight">Light</FontWeight>
     <x:Double x:Key="TextStyleLargeFontSize">24</x:Double>

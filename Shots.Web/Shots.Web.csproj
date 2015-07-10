@@ -86,11 +86,13 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Converters\ArrayForNullConverter.cs" />
     <Compile Include="Converters\JsonEpochDateTimeConverter.cs" />
     <Compile Include="Converters\JsonIntBoolConverter.cs" />
     <Compile Include="Converters\SingleOrArrayConverter.cs" />
     <Compile Include="Extensions\UriExtensions.cs" />
     <Compile Include="Helpers\ShotsColorHelper.cs" />
+    <Compile Include="Models\Ad.cs" />
     <Compile Include="Models\AuthenticatedUserInfo.cs" />
     <Compile Include="Models\BaseListResponse.cs" />
     <Compile Include="Models\BasePageListResponse.cs" />

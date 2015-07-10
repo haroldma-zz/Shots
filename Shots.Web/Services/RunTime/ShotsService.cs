@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -83,18 +84,27 @@ namespace Shots.Web.Services.RunTime
         ///     Gets the home list.
         /// </summary>
         /// <param name="lastId">The id of the last item. (Paging)</param>
+        /// <param name="perPage">Results per page</param>
         /// <param name="configureLoadMore">If set to [true] it will configure HasMoreItem and LoadMoreItemsFunc.</param>
         /// <returns></returns>
-        public async Task<HomeListResponse> GetHomeListAsync(string lastId = null, bool configureLoadMore = true)
+        public async Task<HomeListResponse> GetHomeListAsync(string lastId = null, int perPage = 8, bool configureLoadMore = true)
         {
             const string path = ShotsConstants.ListHomePath;
             var data = GetDefaultData(path);
+            data.Add("per_page", perPage.ToString());
             if (!string.IsNullOrEmpty(lastId)) data.Add("last_id", lastId);
 
             var response = await PostAsync<HomeListResponse>(path, data);
 
             if (configureLoadMore)
                 AttachLoadMore(response);
+
+            if (lastId == null && response.Status == Status.Success)
+            {
+                var item = response.Items?.FirstOrDefault();
+                if (item?.Resource?.Description?.Contains("shots.com/update") ?? false)
+                    item.Resource.Description = "*Shotty for Shots (Windows) update schedule differs, check the store for updates.*";
+            }
 
             return response;
         }
@@ -109,7 +119,7 @@ namespace Shots.Web.Services.RunTime
                 Func<Task<LoadMoreItemsResult>> taskFunc = async () =>
                 {
                     // Make sure to set configureLoadMore to [false]
-                    var resp = await GetHomeListAsync(response.Items.LastOrDefault()?.Resource.Id ?? "", false);
+                    var resp = await GetHomeListAsync(response.Items.LastOrDefault()?.Resource.Id ?? "", configureLoadMore: false);
 
                     if (resp != null)
                     {
@@ -554,8 +564,8 @@ namespace Shots.Web.Services.RunTime
 
             var data = new SortedDictionary<string, string>
             {
-                {"appId", "8"},
-                {"appVersion", "3.1.7"},
+                {"appId", "7"},
+                {"appVersion", "4.1"},
                 {"lang", "en"},
                 {"langs", "en"},
                 {"locale", "en_US"},

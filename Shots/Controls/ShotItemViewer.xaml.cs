@@ -65,6 +65,18 @@ namespace Shots.Controls
 
         private void Image_DataContextChanged(FrameworkElement sender, DataContextChangedEventArgs args)
         {
+            if (ShotItem?.Resource?.Type == "video")
+            {
+                MuteButton.Visibility = Visibility.Visible;
+                MediaElement.Visibility = Visibility.Visible;
+            }
+            else
+            {
+                MuteButton.Visibility = Visibility.Collapsed;
+                MediaElement.Visibility = Visibility.Collapsed;
+            }
+            MediaElement.IsMuted = true;
+
             LoadingProgress.Begin();
             image.Visibility = Visibility.Visible;
         }

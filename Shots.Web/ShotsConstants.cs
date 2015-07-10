@@ -25,7 +25,7 @@
         public const string PostByResourceIdPath = PostBasePath + "/byResource";
 
         public const string ListsBasePath = "lists";
-        public const string ListHomePath = ListsBasePath + "/home";
+        public const string ListHomePath = ListsBasePath + "/hybrid";
         public const string ListUserPath = ListsBasePath + "/user";
         public const string ListDiscoverPath = ListsBasePath + "/discover";
         public const string ListExplorePath = ListsBasePath + "/explore";

@@ -101,7 +101,6 @@
     <Compile Include="AppEngine\Providers\ProviderHelper.cs" />
     <Compile Include="Common\BootStrapper.cs" />
     <Compile Include="Common\CurtainPrompt.cs" />
-    <Compile Include="Controls\AutoHideBar.cs" />
     <Compile Include="Controls\ScrollListView.cs" />
     <Compile Include="Controls\ShotItemViewer.xaml.cs">
       <DependentUpon>ShotItemViewer.xaml</DependentUpon>
@@ -112,16 +111,16 @@
     <Compile Include="Helpers\StatusBarHelper.cs" />
     <Compile Include="Services\NavigationService\DesignNavigationService.cs" />
     <Compile Include="Services\NavigationService\INavigationService.cs" />
-    <Compile Include="Tools\BlurImageTool.cs" />
     <Compile Include="Tools\ClipToBounds.cs" />
     <Compile Include="Tools\Converters\BoolToImageConverter.cs" />
     <Compile Include="Tools\Converters\BoolToOppositeConverter.cs" />
+    <Compile Include="Tools\Converters\BoolToStringConverter.cs" />
     <Compile Include="Tools\Converters\FollowerStateToImageConverter.cs" />
     <Compile Include="Tools\Converters\FollowerStateToTextConverter.cs" />
     <Compile Include="Tools\Converters\NullToVisibilityConverter.cs" />
-    <Compile Include="Tools\Converters\ParallaxConverter.cs" />
     <Compile Include="Tools\Converters\VisibilityConverter.cs" />
     <Compile Include="Tools\InlineHyperlinks.cs" />
+    <Compile Include="Tools\Selectors\ShotFeedTemplateSelector.cs" />
     <Compile Include="ViewModels\ProfileViewModel.cs" />
     <Compile Include="ViewModels\WelcomeViewModel.cs" />
     <Compile Include="Views\MainPage.xaml.cs">
@@ -153,8 +152,6 @@
     <Content Include="Assets\BadgeLogo.scale-100.png" />
     <Content Include="Assets\BadgeLogo.scale-140.png" />
     <Content Include="Assets\BadgeLogo.scale-240.png" />
-    <Content Include="Assets\Icons\description_like.png" />
-    <Content Include="Assets\Icons\description_liked.png" />
     <Content Include="Assets\Icons\doubletaplikeheart.png" />
     <Content Include="Assets\Icons\Follow\following_button.png" />
     <Content Include="Assets\Icons\Follow\follow_add_amber.png" />
@@ -179,8 +176,6 @@
     <Content Include="Assets\Icons\Follow\follow_requested_tangerine.png" />
     <Content Include="Assets\Icons\Follow\follow_requested_violet.png" />
     <Content Include="Assets\Icons\Follow\follow_requested_white.png" />
-    <Content Include="Assets\Icons\like.png" />
-    <Content Include="Assets\Icons\liked.png" />
     <Content Include="Assets\Icons\more.png" />
     <Content Include="Assets\Icons\react.png" />
     <Content Include="Assets\Icons\request_button.png" />
@@ -218,10 +213,6 @@
     <Page Include="Styles.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Themes\Generic.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
     </Page>
     <Page Include="Views\MainPage.xaml">
       <Generator>MSBuild:Compile</Generator>

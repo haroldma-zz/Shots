@@ -8,81 +8,38 @@
     xmlns:controls="using:Shots.Controls"
     xmlns:interactivity="using:Microsoft.Xaml.Interactivity"
     xmlns:core="using:Microsoft.Xaml.Interactions.Core"
+    xmlns:selectors="using:Shots.Tools.Selectors"
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
     DataContext="{Binding Main, Source={StaticResource ViewModelLocator}}">
 
-    <Grid>
-        <controls:ScrollListView x:Name="FeedView" IsItemClickEnabled="False" SelectionMode="None" ItemsSource="{Binding HomeList.Items}" Padding="0,80,0,200">
-            <ListView.ItemTemplate>
+    <Page.Resources>
+        <selectors:ShotFeedTemplateSelector x:Key="ShotFeedTemplateSelector">
+            <selectors:ShotFeedTemplateSelector.ShotTemplate>
                 <DataTemplate>
                     <controls:ShotItemViewer ScrollListView="{Binding ElementName=FeedView}" />
                 </DataTemplate>
-            </ListView.ItemTemplate>
-        </controls:ScrollListView>
-        <Grid x:Name="SearchGrid" Background="White" Visibility="{Binding SearchMode, Converter={StaticResource VisibilityConverter}}">
-            <ListView ItemsSource="{Binding SearchResults}" Padding="0,80,0,0">
-                <ListView.ItemTemplate>
-                    <DataTemplate>
-                        <StackPanel Margin="10,5" Orientation="Horizontal">
-                            <Ellipse Width="50" Height="50">
-                                <Ellipse.Fill>
-                                    <ImageBrush ImageSource="{Binding ProfilePhotoSmall}" />
-                                </Ellipse.Fill>
-                            </Ellipse>
-                            <TextBlock Text="{Binding Username}"
-                                       VerticalAlignment="Center" Margin="10,0,0,0" FontSize="22" />
-                        </StackPanel>
-                    </DataTemplate>
-                </ListView.ItemTemplate>
-            </ListView>
-        </Grid>
-        <controls:AutoHideBar x:Name="AutoHideBar"
-                              ScrollControl="{Binding ElementName=FeedView}"
-                              VerticalAlignment="Top">
-            <interactivity:Interaction.Behaviors>
-                <core:EventTriggerBehavior EventName="Showing">
-                    <core:InvokeCommandAction Command="{Binding ShowingCommand}" />
-                </core:EventTriggerBehavior>
-                <core:EventTriggerBehavior EventName="Hiding">
-                    <core:InvokeCommandAction Command="{Binding HidingCommand}" />
-                </core:EventTriggerBehavior>
-            </interactivity:Interaction.Behaviors>
-            <Grid Height="80">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="25" />
-                    <RowDefinition Height="*" />
-                </Grid.RowDefinitions>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="Auto" />
-                </Grid.ColumnDefinitions>
-                <TextBox x:Name="SearchBox" Text="{Binding SearchText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Grid.Row="1" PlaceholderText="Search Shotties" VerticalAlignment="Center"
-                         Margin="10,0" KeyDown="SearchBox_OnKeyDown">
-                    <interactivity:Interaction.Behaviors>
-                        <core:EventTriggerBehavior EventName="KeyDown">
-                            <core:InvokeCommandAction Command="{Binding KeyDownCommand}" />
-                        </core:EventTriggerBehavior>
-                        <core:EventTriggerBehavior EventName="GotFocus">
-                            <core:InvokeCommandAction Command="{Binding GotFocusCommand}" />
-                        </core:EventTriggerBehavior>
-                    </interactivity:Interaction.Behaviors>
-                </TextBox>
-                <Button Command="{Binding GoToProfileCommand}" Grid.Row="1" Grid.Column="1" VerticalAlignment="Center">
-                    <Ellipse Height="35" Width="35"
-                         Margin="0,0,10,0">
-                        <Ellipse.Fill>
-                            <ImageBrush ImageSource="{Binding ShotsService.CurrentUser.ProfilePhotoSmall}" />
-                        </Ellipse.Fill>
-                    </Ellipse>
-                </Button>
-            </Grid>
-        </controls:AutoHideBar>
+            </selectors:ShotFeedTemplateSelector.ShotTemplate>
+            <selectors:ShotFeedTemplateSelector.AdTemplate>
+                <DataTemplate>
+                    <Grid Background="{StaticResource PhoneAccentBrush}">
+                        <TextBlock Text="This will be an advertisement" Foreground="White" FontSize="20" Margin="10" />
+                    </Grid>
+                </DataTemplate>
+            </selectors:ShotFeedTemplateSelector.AdTemplate>
+        </selectors:ShotFeedTemplateSelector>
+    </Page.Resources>
+
+    <Grid>
+        <controls:ScrollListView x:Name="FeedView" IsItemClickEnabled="False" SelectionMode="None"
+                                 ItemsSource="{Binding HomeList.Items}"
+                                 ItemTemplateSelector="{StaticResource ShotFeedTemplateSelector}"/>
         <!--busy indicator-->
         <Grid Visibility="{Binding IsBusy, Converter={StaticResource VisibilityConverter}}" Background="#7F000000">
             <StackPanel VerticalAlignment="Center">
                 <ProgressRing IsActive="{Binding IsBusy}" Background="{x:Null}" Foreground="White" />
-                <TextBlock Text="Working..." FontSize="18" HorizontalAlignment="Center" FontFamily="Segoe UI Light" FontWeight="Thin" Foreground="White" />
+                <TextBlock Text="Working..." FontSize="18" HorizontalAlignment="Center" FontFamily="Segoe UI Light"
+                           FontWeight="Thin" Foreground="White" />
             </StackPanel>
         </Grid>
     </Grid>

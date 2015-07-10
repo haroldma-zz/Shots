@@ -1,19 +1,32 @@
 ﻿using System;
-using Windows.UI;
 using Windows.UI.Text;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Documents;
-using Windows.UI.Xaml.Media;
+using Shots.Core.Extensions;
 using Shots.Views;
 
 namespace Shots.Tools
 {
     /// <summary>
-    /// Convert @mentions and #hashtags to inlike links.
+    ///     Convert @mentions and #hashtags to inlike links.
     /// </summary>
     public class InlineHyperlinks : DependencyObject
     {
+        public static readonly DependencyProperty TextProperty =
+            DependencyProperty.RegisterAttached(
+                "Text",
+                typeof (string),
+                typeof (InlineHyperlinks),
+                new PropertyMetadata(null, OnTextPropertyChanged));
+
+        public static readonly DependencyProperty LinkProperty =
+            DependencyProperty.RegisterAttached(
+                "Link",
+                typeof (ShotLink),
+                typeof (Hyperlink),
+                new PropertyMetadata(null, null));
+
         public static string GetText(TextBlock element)
         {
             if (element != null)
@@ -39,7 +52,7 @@ namespace Shots.Tools
 
             var lowerText = text.ToLower();
 
-            if (lowerText.Contains("@") || text.Contains("#") || text.Contains("!<<"))
+            if (lowerText.Contains("@") || text.Contains("#"))
                 AddInlineControls(tb, SplitSpace(text));
             else
                 tb.Inlines.Add(GetRunControl(text));
@@ -51,25 +64,8 @@ namespace Shots.Tools
             {
                 var tmp = splittedString[index];
                 if (tmp.StartsWith("@"))
-                    textBlock.Inlines.Add(GetHyperLink(tmp, new ShotLink(tmp.Replace("@", ""), ShotLink.PageType.User)));
-                else if (tmp.StartsWith("!@"))
-                {
-                    var last = tmp.LastIndexOf("!@", StringComparison.Ordinal);
-                    var lastTmp = last == 0 ? "" : tmp.Substring(last + 2);
-                    tmp = tmp.Substring(2, (last == 0 ? tmp.Length : last) - 2);
-
                     textBlock.Inlines.Add(GetHyperLink(tmp,
-                        new ShotLink(tmp, ShotLink.PageType.User)));
-                    textBlock.Inlines.Add(GetRunControl(lastTmp));
-                }
-                else if (tmp.StartsWith("!<<"))
-                {
-                    var text = tmp.Substring(tmp.LastIndexOf(">>", StringComparison.Ordinal) + 2);
-                    var postId = tmp.Substring(0, tmp.LastIndexOf(">>", StringComparison.Ordinal)).Replace("!<<", "");
-
-                    textBlock.Inlines.Add(GetHyperLink(text, new ShotLink(postId,
-                        ShotLink.PageType.Like)));
-                }
+                        new ShotLink(tmp.Replace("@", "").Replace("<b>", ""), ShotLink.PageType.User)));
                 else if (tmp.StartsWith("#"))
                     textBlock.Inlines.Add(GetHyperLink(tmp, new ShotLink(tmp.Replace("#", ""), ShotLink.PageType.Tag)));
                 else
@@ -82,10 +78,14 @@ namespace Shots.Tools
 
         private static Hyperlink GetHyperLink(string text, ShotLink link)
         {
+            var bold = text.StartsWith("@<b>");
+            if (bold)
+                text = text.Replace("@<b>", "@");
+
             var hyper = new Hyperlink
             {
-                Foreground = new SolidColorBrush(Colors.White),
-                FontWeight = FontWeights.ExtraBold
+                Foreground = "#7f7f7f".ToColorBrush(),
+                FontWeight = bold ? FontWeights.Bold : FontWeights.Normal
             };
             hyper.SetValue(LinkProperty, link);
             hyper.Click += HyperOnClick;
@@ -114,20 +114,6 @@ namespace Shots.Tools
             var splittedVal = val.Split(new[] {" "}, StringSplitOptions.None);
             return splittedVal;
         }
-
-        public static readonly DependencyProperty TextProperty =
-            DependencyProperty.RegisterAttached(
-                "Text",
-                typeof (string),
-                typeof (InlineHyperlinks),
-                new PropertyMetadata(null, OnTextPropertyChanged));
-
-        public static readonly DependencyProperty LinkProperty =
-            DependencyProperty.RegisterAttached(
-                "Link",
-                typeof (ShotLink),
-                typeof (Hyperlink),
-                new PropertyMetadata(null, null));
     }
 
     public class ShotLink

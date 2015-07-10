@@ -38,7 +38,7 @@ namespace Shots.Web.Services.DesignTime
             throw new NotImplementedException();
         }
 
-        public Task<HomeListResponse> GetHomeListAsync(string lastId = null, bool configureLoadMore = true)
+        public Task<HomeListResponse> GetHomeListAsync(string lastId = null, int perPage = 8, bool configureLoadMore = true)
         {
             return Task.FromResult(new HomeListResponse
             {

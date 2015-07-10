@@ -28,6 +28,7 @@ namespace Shots.Web.Models
         Failed,
         AuthFailed,
         Success,
-        BadConsumer
+        BadConsumer,
+        TimeExpired
     }
 }

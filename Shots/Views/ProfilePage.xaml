@@ -7,17 +7,30 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:navigationService="using:Shots.Services.NavigationService"
     xmlns:controls="using:Shots.Controls"
+    xmlns:selectors="using:Shots.Tools.Selectors"
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
     DataContext="{Binding Profile, Source={StaticResource ViewModelLocator}}">
 
-    <Grid>
-        <controls:ScrollListView x:Name="FeedView" ItemsSource="{Binding Feed}">
-            <ListView.ItemTemplate>
+    <Page.Resources>
+        <selectors:ShotFeedTemplateSelector x:Key="ShotFeedTemplateSelector">
+            <selectors:ShotFeedTemplateSelector.ShotTemplate>
                 <DataTemplate>
                     <controls:ShotItemViewer ScrollListView="{Binding ElementName=FeedView}" />
                 </DataTemplate>
-            </ListView.ItemTemplate>
+            </selectors:ShotFeedTemplateSelector.ShotTemplate>
+            <selectors:ShotFeedTemplateSelector.AdTemplate>
+                <DataTemplate>
+                    <Grid Background="{StaticResource PhoneAccentBrush}">
+                        <TextBlock Text="This will be an advertisement" Foreground="White" FontSize="20" Margin="10" />
+                    </Grid>
+                </DataTemplate>
+            </selectors:ShotFeedTemplateSelector.AdTemplate>
+        </selectors:ShotFeedTemplateSelector>
+    </Page.Resources>
+    
+    <Grid>
+        <controls:ScrollListView x:Name="FeedView" IsItemClickEnabled="False" SelectionMode="None" ItemsSource="{Binding Feed}" ItemTemplateSelector="{StaticResource ShotFeedTemplateSelector}">
             <ListView.HeaderTemplate>
                 <DataTemplate>
                     <Grid>
@@ -84,7 +97,9 @@
                 </DataTemplate>
             </ListView.HeaderTemplate>
         </controls:ScrollListView>
-        <ProgressRing Visibility="{Binding IsLoading, Converter={StaticResource VisibilityConverter}}"
+        <Grid Background="White" Visibility="{Binding IsLoading, Converter={StaticResource VisibilityConverter}}">
+            <ProgressRing
                       IsActive="{Binding IsLoading}" />
+        </Grid>
     </Grid>
 </navigationService:NavigatablePage>

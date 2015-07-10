@@ -37,9 +37,10 @@ namespace Shots.Web.Services.Interface
         ///     Gets the home list.
         /// </summary>
         /// <param name="lastId">The id of the last item. (Paging)</param>
+        /// <param name="perPage">Results per page</param>
         /// <param name="configureLoadMore">If set to [true] it will configure HasMoreItem and LoadMoreItemsFunc.</param>
         /// <returns></returns>
-        Task<HomeListResponse> GetHomeListAsync(string lastId = null, bool configureLoadMore = true);
+        Task<HomeListResponse> GetHomeListAsync(string lastId = null, int perPage = 8, bool configureLoadMore = true);
 
         void AttachLoadMore(HomeListResponse response);
 

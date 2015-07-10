@@ -72,7 +72,7 @@ namespace Shots.ViewModels
 
             if (resp.Status == Status.Success) return;
 
-            CurtainPrompt.ShowError("Problem following profile.");
+            CurtainPrompt.ShowError(resp.Message);
             if (UserInfo.Privacy)
                 UserInfo.IsRequested = !UserInfo.IsRequested;
             else
@@ -86,7 +86,7 @@ namespace Shots.ViewModels
             IsLoading = false;
             if (resp.Status != Status.Success)
             {
-                CurtainPrompt.ShowError("Problem loading profile.");
+                CurtainPrompt.ShowError(resp.Message);
                 return;
             }
 

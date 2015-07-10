@@ -15,11 +15,14 @@ namespace Shots.Web.Models
         public DateTime? AutoTs { get; set; }
 
         public string Caption { get; set; }
+
         // The explore section has shots that use different property names, like description and caption
         public string Description
         {
             get { return Caption ?? _description; }
-            set { _description = value; }
+            set { _description = value;
+                Caption = null;
+            }
         }
 
         public string Filter { get; set; }
@@ -35,37 +38,6 @@ namespace Shots.Web.Models
             {
                 _isLike = value;
                 OnPropertyChanged();
-            }
-        }
-
-        [JsonIgnore]
-        public string LikeParseText
-        {
-            get
-            {
-                // Using !@ it will not include @ on text, just link it.
-                // !<<{0}>> is utilized for like page
-                const string moreThanTwo = "!@{0}!@, !@{1} and {2} more";
-                const string onlyTwo = "!@{0} and !@{1}";
-                const string onlyOne = "!@{0}";
-                string fmt;
-
-                switch (LikeCount)
-                {
-                    case 0:
-                        return null;
-                    case 1:
-                        fmt = string.Format(onlyOne, Likes[0].Username);
-                        break;
-                    case 2:
-                        fmt = string.Format(onlyTwo, Likes[0].Username, Likes[1].Username);
-                        break;
-                    default:
-                        fmt = string.Format(moreThanTwo, Likes[0].Username, Likes[1].Username, LikeCount);
-                        break;
-                }
-
-                return fmt;
             }
         }
 
@@ -101,6 +73,7 @@ namespace Shots.Web.Models
         public DateTime Time { get; set; }
         public string Type { get; set; }
         public string Url { get; set; }
+        public string VideoUrl { get; set; }
 
         [JsonProperty("user_id")]
         public long UserId { get; set; }

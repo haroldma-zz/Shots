@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using Newtonsoft.Json;
 using Shots.Web.Converters;
 
@@ -10,10 +9,15 @@ namespace Shots.Web.Models
         private DateTime _time;
 
         [JsonProperty("react_to")]
-        [JsonConverter(typeof(SingleOrArrayConverter<ShotItem>))]
-        public List<ShotItem> ReactTo { get; set; }
+        [JsonConverter(typeof (ArrayForNullConverter<ShotItem>))]
+        public ShotItem ReactTo { get; set; }
 
         public Resource Resource { get; set; }
+
+        public string DescriptionFormatted
+            =>
+                (ReactTo != null ? "@<b>" + ReactTo.User.Username + " — " : "") +
+                Resource.Description;
 
         public DateTime Time
         {
@@ -23,5 +27,7 @@ namespace Shots.Web.Models
         }
 
         public UserInfo User { get; set; }
+        public bool Seen { get; set; }
+        public Ad Ad { get; set; }
     }
 }

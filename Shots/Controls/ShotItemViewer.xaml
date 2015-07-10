@@ -54,9 +54,11 @@
                         <CompositeTransform ScaleX="0.6" ScaleY="0.6" />
                     </AppBarToggleButton.RenderTransform>
                 </AppBarToggleButton>
-                <TextBlock Text="{Binding User.Username}"
-                           Visibility="{Binding User.Username, Converter={StaticResource NullToVisibilityConverters}}"
-                           Foreground="White" FontSize="14" />
+                <Button HorizontalAlignment="Left" Click="ProfileButton_Click">
+                    <TextBlock Text="{Binding User.Username}"
+                               Visibility="{Binding User.Username, Converter={StaticResource NullToVisibilityConverters}}"
+                               Foreground="White" FontSize="14" />
+                </Button>
                 <TextBlock Text="{Binding Resource.FsVenueInfo.FsVenueName}"
                            Visibility="{Binding Resource.FsVenueInfo, Converter={StaticResource NullToVisibilityConverters}}"
                            Foreground="#7FFFFFFF" FontSize="12" />
@@ -64,7 +66,8 @@
         </Grid>
         <Button Grid.Row="0" Width="100" Margin="0,0,2,-5"
                 Visibility="{Binding ReactTo, Converter={StaticResource NullToVisibilityConverters}}"
-                HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.ZIndex="1" HorizontalContentAlignment="Stretch" Click="ReactTo_Click">
+                HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.ZIndex="1"
+                HorizontalContentAlignment="Stretch" Click="ReactTo_Click">
             <Grid>
                 <Border Background="#3F000000"
                         Margin="0,0,0,-1" CornerRadius="5" />

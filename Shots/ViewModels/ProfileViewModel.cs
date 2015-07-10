@@ -12,8 +12,8 @@ namespace Shots.ViewModels
     {
         private IncrementalObservableCollection<ShotItem> _feed;
         private bool _isLoading;
-        private UserInfo _userInfo;
         private string _statusMessage;
+        private UserInfo _userInfo;
 
         public ProfileViewModel(IShotsService service)
         {
@@ -109,7 +109,7 @@ namespace Shots.ViewModels
 
             if (resp.Status != Status.Success)
             {
-                CurtainPrompt.ShowError("Problem loading profile.");
+                CurtainPrompt.ShowError(resp.Message);
                 return;
             }
             Feed = resp.Items;

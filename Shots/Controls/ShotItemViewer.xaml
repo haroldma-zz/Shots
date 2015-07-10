@@ -9,7 +9,6 @@
     xmlns:converters="using:Shots.Tools.Converters"
     mc:Ignorable="d"
     x:Name="Viewer"
-    d:DesignHeight="300"
     d:DesignWidth="400">
     <UserControl.Resources>
         <Storyboard x:Name="LoadingProgress" RepeatBehavior="Forever">
@@ -65,7 +64,7 @@
         </Grid>
         <Button Grid.Row="0" Width="100" Margin="0,0,2,-5"
                 Visibility="{Binding ReactTo, Converter={StaticResource NullToVisibilityConverters}}"
-                HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.ZIndex="1" HorizontalContentAlignment="Stretch">
+                HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.ZIndex="1" HorizontalContentAlignment="Stretch" Click="ReactTo_Click">
             <Grid>
                 <Border Background="#3F000000"
                         Margin="0,0,0,-1" CornerRadius="5" />

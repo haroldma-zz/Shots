@@ -145,5 +145,10 @@ namespace Shots.Controls
             }
             StatusBarHelper.HideStatus();
         }
+
+        private void ReactTo_Click(object sender, RoutedEventArgs e)
+        {
+            App.Current.NavigationService.Navigate(typeof (ShotPage), ShotItem.ReactTo.Resource.Id);
+        }
     }
 }

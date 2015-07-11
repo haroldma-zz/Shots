@@ -30,7 +30,7 @@ namespace Shots.ViewModels
             set { Set(ref _shot, value); }
         }
 
-        public async void SetUser(string id)
+        public async void SetShot(string id)
         {
             Shot = null;
 
@@ -46,9 +46,26 @@ namespace Shots.ViewModels
             Shot = resp.Item;
         }
 
+        private bool TryToRestoreState(NavigationMode mode, IReadOnlyDictionary<string, object> state)
+        {
+            object shotState;
+
+            if (mode == NavigationMode.Back && Shot == null
+                && state.TryGetValue("shot", out shotState))
+                Shot = shotState as ShotItem;
+
+            return Shot != null;
+        }
+
         public override void OnNavigatedTo(object parameter, NavigationMode mode, Dictionary<string, object> state)
         {
-            SetUser(parameter as string);
+            if (!TryToRestoreState(mode, state))
+                SetShot(parameter as string);
+        }
+
+        public override void OnNavigatedFrom(bool suspending, Dictionary<string, object> state)
+        {
+            state["shot"] = Shot;
         }
     }
 }

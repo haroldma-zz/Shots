@@ -101,6 +101,9 @@
     <Compile Include="AppEngine\Providers\ProviderHelper.cs" />
     <Compile Include="Common\BootStrapper.cs" />
     <Compile Include="Common\CurtainPrompt.cs" />
+    <Compile Include="Controls\BusyIndicator.xaml.cs">
+      <DependentUpon>BusyIndicator.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\ScrollListView.cs" />
     <Compile Include="Controls\ShotItemViewer.xaml.cs">
       <DependentUpon>ShotItemViewer.xaml</DependentUpon>
@@ -210,6 +213,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Page Include="Controls\BusyIndicator.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Controls\ShotItemViewer.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

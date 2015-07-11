@@ -123,6 +123,7 @@ namespace Shots.Web.Services.RunTime
 
                     if (resp != null)
                     {
+                        response.LoggedInUser = resp.LoggedInUser;
                         response.PageInfo = resp.PageInfo;
                         CopyBaseResponse(resp, response);
 
@@ -391,6 +392,7 @@ namespace Shots.Web.Services.RunTime
                     if (resp != null)
                     {
                         response.PageInfo = resp.PageInfo;
+                        response.User = resp.User;
                         CopyBaseResponse(resp, response);
 
                         if (resp.Items != null)

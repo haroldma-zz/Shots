@@ -1,7 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Windows.UI.Xaml.Navigation;
 using Shots.Common;
-using Shots.Core.Common;
 using Shots.Mvvm;
 using Shots.Web.Models;
 using Shots.Web.Services.Interface;
@@ -10,7 +10,8 @@ namespace Shots.ViewModels
 {
     public class ProfileViewModel : ViewModelBase
     {
-        private IncrementalObservableCollection<ShotItem> _feed;
+        private int _currentVisibleIndex;
+        private UserListWithSuggestionResponse _feed;
         private bool _isLoading;
         private string _statusMessage;
         private UserInfo _userInfo;
@@ -41,7 +42,7 @@ namespace Shots.ViewModels
 
         public IShotsService Service { get; set; }
 
-        public IncrementalObservableCollection<ShotItem> Feed
+        public UserListWithSuggestionResponse Feed
         {
             get { return _feed; }
             set { Set(ref _feed, value); }
@@ -51,6 +52,12 @@ namespace Shots.ViewModels
         {
             get { return _statusMessage; }
             set { Set(ref _statusMessage, value); }
+        }
+
+        public int CurrentVisibleIndex
+        {
+            get { return _currentVisibleIndex; }
+            set { Set(ref _currentVisibleIndex, value); }
         }
 
         private async void FollowExecute()
@@ -93,7 +100,7 @@ namespace Shots.ViewModels
             SetUser(resp.UserInfo);
         }
 
-        public async void SetUser(UserInfo info)
+        public async void SetUser(UserInfo info, bool loadFeed = true)
         {
             StatusMessage = null;
             UserInfo = info;
@@ -105,19 +112,50 @@ namespace Shots.ViewModels
                 return;
             }
 
-            var resp = await Service.GetUserListAsync(info.Id);
+            if (!loadFeed) return;
 
-            if (resp.Status != Status.Success)
+            Feed = await Service.GetUserListAsync(info.Id);
+
+            if (Feed.Status != Status.Success)
+                CurtainPrompt.ShowError(Feed.Message);
+        }
+
+        private bool TryToRestoreState(NavigationMode mode, IReadOnlyDictionary<string, object> state)
+        {
+            object feedState, currentVisibleIndexState, userState;
+
+            if (mode == NavigationMode.Back && Feed == null
+                && state.TryGetValue("userInfo", out userState)
+                && state.TryGetValue("feedList", out feedState)
+                && state.TryGetValue("currentVisibleIndex", out currentVisibleIndexState))
             {
-                CurtainPrompt.ShowError(resp.Message);
-                return;
+                // The app was supended and terminated, so we resume from the state
+                Feed = feedState as UserListWithSuggestionResponse;
+                SetUser(userState as UserInfo, false);
+
+                // Need to reattach
+                if (Feed != null)
+                    Service.AttachLoadMore(Feed);
+
+                // Scroll the list were we left off
+                // JSON.NET serializes ints as int64; Have to covert it to int32
+                CurrentVisibleIndex = Convert.ToInt32(currentVisibleIndexState);
             }
-            Feed = resp.Items;
+
+            return UserInfo != null;
         }
 
         public override void OnNavigatedTo(object parameter, NavigationMode mode, Dictionary<string, object> state)
         {
-            SetUser(parameter as string);
+            if (!TryToRestoreState(mode, state))
+                SetUser(parameter as string);
+        }
+
+        public override void OnNavigatedFrom(bool suspending, Dictionary<string, object> state)
+        {
+            state["userInfo"] = UserInfo;
+            state["feedList"] = Feed;
+            state["currentVisibleIndex"] = CurrentVisibleIndex;
         }
     }
 }

@@ -30,7 +30,7 @@
     </Page.Resources>
     
     <Grid>
-        <controls:ScrollListView x:Name="FeedView" IsItemClickEnabled="False" SelectionMode="None" ItemsSource="{Binding Feed}" ItemTemplateSelector="{StaticResource ShotFeedTemplateSelector}">
+        <controls:ScrollListView x:Name="FeedView" IsItemClickEnabled="False" SelectionMode="None" ItemsSource="{Binding Feed.Items}" ItemTemplateSelector="{StaticResource ShotFeedTemplateSelector}" CurrentVisibleIndex="{Binding CurrentVisibleIndex, Mode=TwoWay}">
             <ListView.HeaderTemplate>
                 <DataTemplate>
                     <Grid>
@@ -97,9 +97,6 @@
                 </DataTemplate>
             </ListView.HeaderTemplate>
         </controls:ScrollListView>
-        <Grid Background="White" Visibility="{Binding IsLoading, Converter={StaticResource VisibilityConverter}}">
-            <ProgressRing
-                      IsActive="{Binding IsLoading}" />
-        </Grid>
+       <controls:BusyIndicator DataContext="{Binding IsLoading}" />
     </Grid>
 </navigationService:NavigatablePage>

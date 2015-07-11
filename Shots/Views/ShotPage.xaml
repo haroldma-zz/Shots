@@ -15,8 +15,6 @@
         <ListView>
             <controls:ShotItemViewer DataContext="{Binding Shot}" />
         </ListView>
-        <Grid Background="White" Visibility="{Binding IsLoading, Converter={StaticResource VisibilityConverter}}">
-            <ProgressRing IsActive="{Binding IsLoading}" />
-        </Grid>
+        <controls:BusyIndicator DataContext="{Binding IsLoading}" />
     </Grid>
 </navigationService:NavigatablePage>

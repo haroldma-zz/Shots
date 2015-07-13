@@ -27,6 +27,9 @@
             <converters:BoolToStringConverter x:Key="BoolToLikeTextConverter"
                                               FalseContent="like"
                                               TrueContent="liked!" />
+            <converters:BoolToStringConverter x:Key="BoolToLikeToggleTextConverter"
+                                              FalseContent="like"
+                                              TrueContent="unlike" />
 
             <converters:FollowerStateToTextConverter x:Key="FollowerStateToTextConverter" />
 

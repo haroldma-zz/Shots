@@ -104,6 +104,14 @@
                         </Button>
                         <Button Background="White" HorizontalAlignment="Right" Margin="0,0,10,0"
                                 VerticalAlignment="Center">
+                            <Button.Flyout>
+                                <MenuFlyout>
+                                    <MenuFlyoutItem Text="{Binding Resource.IsLike, Converter={StaticResource BoolToLikeToggleTextConverter}}" Click="LikeButton_Click"/>
+                                    <!--<MenuFlyoutItem Text="reply"/>-->
+                                    <MenuFlyoutItem Text="share" Click="ShareMenuFlyoutItem_Click"/>
+                                    <MenuFlyoutItem Text="save" Click="SaveMenuFlyoutItem_Click"/>
+                                </MenuFlyout>
+                            </Button.Flyout>
                             <Path Stretch="Uniform" Width="25" Height="15" Stroke="#FF979797" StrokeThickness="1"
                                   Data="M459.6,281c0,5.9-4.8,10.6-10.6,10.6c-5.9,0-10.6-4.8-10.6-10.6s4.8-10.6,10.6-10.6
 	C454.9,270.4,459.6,275.1,459.6,281z M481,270.4c-5.9,0-10.6,4.8-10.6,10.6s4.8,10.6,10.6,10.6c5.9,0,10.6-4.8,10.6-10.6

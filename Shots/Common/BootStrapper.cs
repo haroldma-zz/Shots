@@ -1,11 +1,15 @@
 ﻿using System;
+using System.Diagnostics;
+using System.IO;
 using System.Threading.Tasks;
+using System.Xml;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
 using Windows.Globalization;
 using Windows.Phone.UI.Input;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Markup;
 using Shots.AppEngine;
 using Shots.Factories;
 using Shots.Services.NavigationService;
@@ -34,6 +38,7 @@ namespace Shots.Common
                 await OnSuspendingAsync(s, e);
                 deferral.Complete();
             };
+            UnhandledException += App_UnhandledException;
         }
 
         /// <summary>
@@ -118,6 +123,54 @@ namespace Shots.Common
             e.Handled = true;
         }
 
+        #region handling
+
+        private void App_UnhandledException(object sender, UnhandledExceptionEventArgs e)
+        {
+            if (e != null)
+            {
+                // handling ad network exceptions
+                var exception = e.Exception;
+                if ((exception is XmlException || exception is NullReferenceException) &&
+                    exception.ToString().ToUpper().Contains("INNERACTIVE"))
+                {
+                    Debug.WriteLine("Handled Inneractive exception {0}", exception);
+                    e.Handled = true;
+                    return;
+                }
+                if (exception is NullReferenceException && exception.ToString().ToUpper().Contains("SOMA"))
+                {
+                    Debug.WriteLine("Handled Smaato null reference exception {0}", exception);
+                    e.Handled = true;
+                    return;
+                }
+                if ((exception is IOException || exception is NullReferenceException) &&
+                    exception.ToString().ToUpper().Contains("GOOGLE"))
+                {
+                    Debug.WriteLine("Handled Google exception {0}", exception);
+                    e.Handled = true;
+                    return;
+                }
+                if (exception is ObjectDisposedException && exception.ToString().ToUpper().Contains("MOBFOX"))
+                {
+                    Debug.WriteLine("Handled Mobfox exception {0}", exception);
+                    e.Handled = true;
+                    return;
+                }
+                if ((exception is NullReferenceException || exception is XamlParseException) &&
+                    exception.ToString().ToUpper().Contains("MICROSOFT.ADVERTISING"))
+                {
+                    Debug.WriteLine("Handled Microsoft.Advertising exception {0}", exception);
+                    e.Handled = true;
+                    return;
+                }
+
+                e.Handled = OnUnhandledException(e.Exception);
+            }
+        }
+
+        #endregion
+
         #region properties
 
         public AppKernel Kernel { get; set; }
@@ -198,6 +251,11 @@ namespace Shots.Common
         protected virtual Task OnSuspendingAsync(object s, SuspendingEventArgs e)
         {
             return Task.FromResult<object>(null);
+        }
+
+        protected virtual bool OnUnhandledException(Exception ex)
+        {
+            return false;
         }
 
         #endregion

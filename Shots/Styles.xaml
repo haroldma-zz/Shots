@@ -3,6 +3,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:controls="using:Shots.Controls"
     mc:Ignorable="d">
     <SolidColorBrush x:Key="ShotsAccentColor" Color="#26D1F3" />
     <SolidColorBrush x:Key="ApplicationPageBackgroundThemeBrush" Color="#e8e9e4" />
@@ -75,6 +76,17 @@
             </Setter.Value>
         </Setter>
     </Style>
+
+    <ControlTemplate x:Key="AdFrameTemplate" TargetType="Frame">
+        <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <ContentPresenter Content="{TemplateBinding Content}" ContentTemplate="{TemplateBinding ContentTemplate}" ContentTransitions="{TemplateBinding ContentTransitions}" />
+            <controls:AdSpaceControl Grid.Row="1" />
+        </Grid>
+    </ControlTemplate>
 
     <FontFamily x:Key="ContentControlThemeFontFamily">Segoe WP</FontFamily>
     <x:Double x:Key="ControlContentThemeFontSize">12</x:Double>

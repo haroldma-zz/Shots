@@ -10,8 +10,8 @@
     xmlns:media="using:Microsoft.Xaml.Interactions.Media"
     x:Class="Shots.Views.WelcomePage"
     RequestedTheme="Dark"
-    mc:Ignorable="d"
-    Background="{ThemeResource ShotsAccentColor}">
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
+    mc:Ignorable="d">
     <navigationService:NavigatablePage.Resources>
         <Storyboard x:Name="ShowLogin">
             <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Visibility)"
@@ -97,7 +97,7 @@
     </navigationService:NavigatablePage.DataContext>
 
 
-    <Grid>
+    <Grid Background="{ThemeResource ShotsAccentColor}">
         <StackPanel Margin="20,-100,20,0" VerticalAlignment="Center">
             <Path Fill="White"
                   Data="M545.1,32.3H385.7c-158.9,0-182.3,74.2-182.3,202v59.3c-2.9,170.4,18.5,231,178.4,234.1h173.6

@@ -101,6 +101,9 @@
     <Compile Include="AppEngine\Providers\ProviderHelper.cs" />
     <Compile Include="Common\BootStrapper.cs" />
     <Compile Include="Common\CurtainPrompt.cs" />
+    <Compile Include="Controls\AdSpaceControl.xaml.cs">
+      <DependentUpon>AdSpaceControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\BusyIndicator.xaml.cs">
       <DependentUpon>BusyIndicator.xaml</DependentUpon>
     </Compile>
@@ -214,6 +217,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Page Include="Controls\AdSpaceControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Controls\BusyIndicator.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -278,6 +285,9 @@
   <ItemGroup>
     <SDKReference Include="BehaviorsXamlSDKManaged, Version=12.0">
       <Name>Behaviors SDK %28XAML%29</Name>
+    </SDKReference>
+    <SDKReference Include="Microsoft.Advertising.Mobile.Display, Version=8.1">
+      <Name>Microsoft Advertising SDK for Windows Phone 8.1 %28XAML%29</Name>
     </SDKReference>
   </ItemGroup>
   <ItemGroup />

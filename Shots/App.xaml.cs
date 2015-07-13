@@ -2,6 +2,7 @@
 using Windows.ApplicationModel.Activation;
 using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
+using Windows.UI.Xaml.Controls;
 using Shots.Views;
 using Shots.Web.Services.Interface;
 
@@ -25,6 +26,7 @@ namespace Shots
 
         public override Task OnInitializeAsync()
         {
+            RootFrame.Template = Resources["AdFrameTemplate"] as ControlTemplate;
             ApplicationView.GetForCurrentView().SetDesiredBoundsMode(ApplicationViewBoundsMode.UseCoreWindow);
             return Task.FromResult(0);
         }

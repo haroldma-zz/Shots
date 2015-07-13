@@ -26,13 +26,65 @@
                 </DataTemplate>
             </selectors:ShotFeedTemplateSelector.AdTemplate>
         </selectors:ShotFeedTemplateSelector>
+        <Style x:Key="PivotStyle" TargetType="Pivot">
+            <Setter Property="Margin" Value="0"/>
+            <Setter Property="Padding" Value="0"/>
+            <Setter Property="Foreground" Value="{ThemeResource PhoneForegroundBrush}"/>
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="ItemsPanel">
+                <Setter.Value>
+                    <ItemsPanelTemplate>
+                        <Grid/>
+                    </ItemsPanelTemplate>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Pivot">
+                        <Grid x:Name="RootElement" Background="{TemplateBinding Background}" HorizontalAlignment="{TemplateBinding HorizontalAlignment}" VerticalAlignment="{TemplateBinding VerticalAlignment}">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
+                            <ScrollViewer x:Name="ScrollViewer" HorizontalSnapPointsAlignment="Center" HorizontalSnapPointsType="MandatorySingle" HorizontalScrollBarVisibility="Hidden" Margin="{TemplateBinding Padding}" Grid.Row="1" Template="{StaticResource ScrollViewerScrollBarlessTemplate}" VerticalSnapPointsType="None" VerticalScrollBarVisibility="Disabled" VerticalScrollMode="Disabled" VerticalContentAlignment="Stretch" ZoomMode="Disabled">
+                                <PivotPanel x:Name="Panel" VerticalAlignment="Stretch">
+                                    <ItemsPresenter x:Name="PivotItemPresenter" Margin="0,-62,0,0">
+                                        <ItemsPresenter.RenderTransform>
+                                            <TranslateTransform x:Name="ItemsPresenterTranslateTransform" X="0"/>
+                                        </ItemsPresenter.RenderTransform>
+                                    </ItemsPresenter>
+                                    <Grid Background="White" Opacity="0.5" Height="60" VerticalAlignment="Top" />
+                                    <PivotHeaderPanel x:Name="Header" Margin="0,30,0,0">
+                                        <PivotHeaderPanel.RenderTransform>
+                                            <CompositeTransform x:Name="HeaderTranslateTransform" TranslateX="0"/>
+                                        </PivotHeaderPanel.RenderTransform>
+                                    </PivotHeaderPanel>
+                                </PivotPanel>
+                            </ScrollViewer>
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
     </Page.Resources>
 
-    <Grid>
-        <controls:ScrollListView x:Name="FeedView" IsItemClickEnabled="False" SelectionMode="None"
+    <Pivot Style="{StaticResource PivotStyle}">
+        <Pivot.HeaderTemplate>
+            <DataTemplate>
+                <TextBlock Text="{Binding}" FontSize="24" />
+            </DataTemplate>
+        </Pivot.HeaderTemplate>
+        <PivotItem Header="home" Margin="0">
+            <Grid>
+                <controls:ScrollListView x:Name="FeedView" Padding="0,60,0,0" IsItemClickEnabled="False" SelectionMode="None"
                                  ItemsSource="{Binding HomeList.Items}"
                                  ItemTemplateSelector="{StaticResource ShotFeedTemplateSelector}" 
                                  CurrentVisibleIndex="{Binding CurrentVisibleIndex, Mode=TwoWay}"/>
-        <controls:BusyIndicator DataContext="{Binding IsLoading}" />
-    </Grid>
+                <controls:BusyIndicator DataContext="{Binding IsLoading}" />
+            </Grid>
+        </PivotItem>
+        <PivotItem Header="explore">
+
+        </PivotItem>
+    </Pivot>
 </navigationService:NavigatablePage>

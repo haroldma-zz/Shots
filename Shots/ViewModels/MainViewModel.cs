@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using Windows.UI;
 using Windows.UI.Xaml.Navigation;
 using Shots.Common;
+using Shots.Helpers;
 using Shots.Mvvm;
 using Shots.Web.Models;
 using Shots.Web.Services.Interface;
@@ -68,6 +70,7 @@ namespace Shots.ViewModels
         public override sealed async void OnNavigatedTo(object parameter, NavigationMode mode,
             Dictionary<string, object> state)
         {
+            StatusBarHelper.Instance.ForegroundColor = Colors.Black;
             if (!TryToRestoreState(mode, state))
             {
                 IsLoading = true;
@@ -81,6 +84,7 @@ namespace Shots.ViewModels
 
         public override void OnNavigatedFrom(bool suspending, Dictionary<string, object> state)
         {
+            StatusBarHelper.Instance.ForegroundColor = Colors.White;
             state["homeList"] = HomeList;
             state["currentVisibleIndex"] = CurrentVisibleIndex;
         }

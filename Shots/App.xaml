@@ -30,6 +30,9 @@
 
             <converters:FollowerStateToTextConverter x:Key="FollowerStateToTextConverter" />
 
+            <converters:CurrentUserVisibilityConverter x:Key="IfCurrentUserVisibilityConverter" />
+            <converters:CurrentUserVisibilityConverter x:Key="IfNotCurrentUserVisibilityConverter" HideIfUser="True" />
+            
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="ms-appx:///Styles.xaml" />
             </ResourceDictionary.MergedDictionaries>

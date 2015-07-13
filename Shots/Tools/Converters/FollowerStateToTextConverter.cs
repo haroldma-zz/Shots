@@ -13,13 +13,13 @@ namespace Shots.Tools.Converters
             switch (state)
             {
                 case FriendState.Requested:
-                    return "Requested";
+                    return "🕘 Requested";
                 case FriendState.Added:
-                    return "Added";
+                    return "✔ Added";
                 case FriendState.Private:
-                    return "Request";
+                    return "➕ Request";
                 default:
-                    return "Add";
+                    return "➕ Add";
             }
         }
 

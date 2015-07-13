@@ -28,9 +28,12 @@
             </selectors:ShotFeedTemplateSelector.AdTemplate>
         </selectors:ShotFeedTemplateSelector>
     </Page.Resources>
-    
+
     <Grid>
-        <controls:ScrollListView x:Name="FeedView" IsItemClickEnabled="False" SelectionMode="None" ItemsSource="{Binding Feed.Items}" ItemTemplateSelector="{StaticResource ShotFeedTemplateSelector}" CurrentVisibleIndex="{Binding CurrentVisibleIndex, Mode=TwoWay}">
+        <controls:ScrollListView x:Name="FeedView" IsItemClickEnabled="False" SelectionMode="None"
+                                 ItemsSource="{Binding Feed.Items}"
+                                 ItemTemplateSelector="{StaticResource ShotFeedTemplateSelector}"
+                                 CurrentVisibleIndex="{Binding CurrentVisibleIndex, Mode=TwoWay}">
             <ListView.HeaderTemplate>
                 <DataTemplate>
                     <Grid>
@@ -38,65 +41,61 @@
                             <RowDefinition Height="*" />
                             <RowDefinition Height="Auto" />
                         </Grid.RowDefinitions>
-                        <Grid Background="{Binding UserInfo.ColorBrush}">
+                        <Grid Background="{Binding UserInfo.ColorBrush}" Margin="0,5,0,0">
                             <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
                                 <RowDefinition Height="Auto" />
                                 <RowDefinition Height="Auto" />
                                 <RowDefinition Height="Auto" />
                                 <RowDefinition Height="Auto" />
                             </Grid.RowDefinitions>
                             <Grid Margin="0,25,0,5">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="*" />
-                                    <ColumnDefinition Width="*" />
-                                    <ColumnDefinition Width="*" />
-                                </Grid.ColumnDefinitions>
-                                <Button Command="{Binding FollowCommand}" HorizontalAlignment="Center"
-                                        VerticalAlignment="Center">
-                                    <StackPanel>
-                                        <Image Width="50"
-                                               Source="{Binding UserInfo.FriendState, Converter={StaticResource FollowerStateToImageConverter}}" />
-                                        <TextBlock
-                                            Text="{Binding UserInfo.FriendState, Converter={StaticResource FollowerStateToTextConverter}}"
-                                            FontSize="16" Foreground="White" HorizontalAlignment="Center" />
-                                    </StackPanel>
-                                </Button>
-                                <Ellipse Width="120" Height="120" Grid.Column="1" VerticalAlignment="Center"
-                                         Stroke="White" StrokeThickness="3" />
-                                <Ellipse Width="100" Height="100" Grid.Column="1" VerticalAlignment="Center">
+                                <Ellipse Width="100" Height="100" VerticalAlignment="Center">
                                     <Ellipse.Fill>
                                         <ImageBrush ImageSource="{Binding UserInfo.ProfilePhotoSmall}" />
                                     </Ellipse.Fill>
                                 </Ellipse>
-                                <Button Grid.Column="2" HorizontalAlignment="Center" VerticalAlignment="Center">
-                                    <StackPanel>
-                                        <Image Source="/Assets/Icons/more.png" Height="35" />
-                                        <TextBlock Text="Options" FontSize="16" Foreground="White"
-                                                   HorizontalAlignment="Center" />
-                                    </StackPanel>
-                                </Button>
                             </Grid>
-                            <TextBlock Grid.Row="1" Foreground="White" FontSize="28" TextAlignment="Center"
+                            <TextBlock Grid.Row="1" Foreground="White" FontSize="18" FontWeight="Bold"
+                                       TextAlignment="Center"
                                        TextWrapping="Wrap">
                                 <Run Text="{Binding UserInfo.FirstName}" />
                                 <Run Text="{Binding UserInfo.LastName}" />
                             </TextBlock>
-                            <Border
-                                Visibility="{Binding UserInfo.FollowsMe, Converter={StaticResource VisibilityConverter}}"
-                                HorizontalAlignment="Center" BorderBrush="#7FFFFFFF" BorderThickness="1"
-                                CornerRadius="5" Grid.Row="2" Margin="0,0,0,5">
-                                <TextBlock Margin="5,3,5,3" Text="Added You" Foreground="#7FFFFFFF" FontSize="14" />
-                            </Border>
-                            <TextBlock Grid.Row="3" Text="{Binding UserInfo.Bio}" Foreground="White" FontSize="14"
-                                       TextAlignment="Center" TextWrapping="Wrap" Margin="0,0,0,15" />
+                            <TextBlock Grid.Row="2" Foreground="White" FontSize="16" TextAlignment="Center"
+                                       TextWrapping="Wrap" Text="{Binding UserInfo.Username}" />
+                            <TextBlock Grid.Row="3" Text="{Binding UserInfo.Bio}" Foreground="#BFFFFFFF" FontSize="12"
+                                       TextAlignment="Center" TextWrapping="Wrap" Margin="0,0,0,5" />
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Grid.Row="4"
+                                        Margin="0,0,0,15">
+                                <Button Command="{Binding FollowCommand}">
+                                    <Border Background="#3F000000"
+                                        HorizontalAlignment="Center" BorderBrush="White" BorderThickness="1"
+                                        CornerRadius="10">
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock Margin="8,3"
+                                                       Text="{Binding UserInfo.FriendState, Converter={StaticResource FollowerStateToTextConverter}}"
+                                                       Foreground="White" FontSize="12" />
+                                        </StackPanel>
+                                    </Border>
+                                </Button>
+                                <Border
+                                    Visibility="{Binding UserInfo.FollowsMe, Converter={StaticResource VisibilityConverter}}"
+                                    HorizontalAlignment="Center" Background="#7FFFFFFF" BorderThickness="1"
+                                    CornerRadius="10" Margin="5,0,0,0">
+                                    <TextBlock Margin="5,3,5,3" Text="Added You" Foreground="Black" FontSize="12" />
+                                </Border>
+                            </StackPanel>
                         </Grid>
-                        <Grid Margin="0,10" Grid.Row="1" Visibility="{Binding StatusMessage, Converter={StaticResource NullToVisibilityConverters}}">
-                            <TextBlock Text="{Binding StatusMessage}" FontSize="18" TextWrapping="Wrap" TextAlignment="Center" />
+                        <Grid Margin="0,10" Grid.Row="1"
+                              Visibility="{Binding StatusMessage, Converter={StaticResource NullToVisibilityConverters}}">
+                            <TextBlock Text="{Binding StatusMessage}" FontSize="18" TextWrapping="Wrap"
+                                       TextAlignment="Center" />
                         </Grid>
                     </Grid>
                 </DataTemplate>
             </ListView.HeaderTemplate>
         </controls:ScrollListView>
-       <controls:BusyIndicator DataContext="{Binding IsLoading}" />
+        <controls:BusyIndicator DataContext="{Binding IsLoading}" />
     </Grid>
 </navigationService:NavigatablePage>

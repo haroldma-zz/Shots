@@ -22,7 +22,11 @@ namespace Shots.Controls
 
         public ScrollListView()
         {
-            Loaded += (s, e) => { ScrollViewer.ViewChanged += ScrollViewer_ViewChanged; };
+            Loaded += (s, e) =>
+            {
+                ScrollViewer.ViewChanged -= ScrollViewer_ViewChanged;
+                ScrollViewer.ViewChanged += ScrollViewer_ViewChanged;
+            };
         }
 
         public ScrollViewer ScrollViewer => _scroll ?? (_scroll = this.GetScrollViewer());
@@ -46,17 +50,24 @@ namespace Shots.Controls
             var list = (ScrollListView) d;
             var index = e.NewValue as int?;
 
+            RoutedEventHandler handler = null;
             Action action = () =>
             {
+                // ReSharper disable AccessToModifiedClosure
+                if (handler != null)
+                    list.Loaded -= handler;
+                // ReSharper restore AccessToModifiedClosure
+
                 if (index != null
                     && index != list.GetFirstVisibleIndex()
                     && list.Items != null
                     && index < list.Items.Count)
                     list.ScrollIntoView(list.Items[index.Value]);
             };
+            handler = (s, ee) => action();
 
             if (list.ScrollViewer == null)
-                list.Loaded += (s, ee) => action();
+                list.Loaded += handler;
             else
                 action();
         }
@@ -66,7 +77,7 @@ namespace Shots.Controls
             var panel = ItemsPanelRoot as ItemsStackPanel;
             if (panel != null && Items != null)
             {
-                var middleValue = (int)Math.Round((panel.FirstVisibleIndex + panel.LastVisibleIndex) / 2.0f);
+                var middleValue = (int) Math.Round((panel.FirstVisibleIndex + panel.LastVisibleIndex)/2.0f);
                 var diff = panel.LastVisibleIndex - panel.FirstVisibleIndex;
 
                 return diff == 1 ? panel.FirstVisibleIndex : middleValue;
@@ -84,14 +95,21 @@ namespace Shots.Controls
         {
             var list = (ScrollListView) d;
 
+            RoutedEventHandler handler = null;
             Action action = () =>
             {
+                // ReSharper disable AccessToModifiedClosure
+                if (handler != null)
+                    list.Loaded -= handler;
+                // ReSharper restore AccessToModifiedClosure
+
                 if (list.VerticalOffset != list.ScrollViewer.VerticalOffset)
                     list.ScrollViewer.ChangeView(null, (double) e.NewValue, null, true);
             };
+            handler = (s, ee) => action();
 
             if (list.ScrollViewer == null)
-                list.Loaded += (s, ee) => action();
+                list.Loaded += handler;
             else
                 action();
         }

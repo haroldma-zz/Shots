@@ -10,6 +10,7 @@
         <ResourceDictionary>
             <viewModels:ViewModelLocator x:Key="ViewModelLocator" />
 
+            <converters:DateTimeToTimeSinceConverter x:Key="DateTimeToTimeSinceConverter" />
             <converters:VisibilityConverter x:Key="VisibilityConverter" />
             <converters:NullToVisibilityConverter x:Key="NullToVisibilityConverters" />
             <converters:BoolToOppositeConverter x:Key="BoolToOppositeConverter" />
@@ -35,7 +36,7 @@
 
             <converters:CurrentUserVisibilityConverter x:Key="IfCurrentUserVisibilityConverter" />
             <converters:CurrentUserVisibilityConverter x:Key="IfNotCurrentUserVisibilityConverter" HideIfUser="True" />
-            
+
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="ms-appx:///Styles.xaml" />
             </ResourceDictionary.MergedDictionaries>

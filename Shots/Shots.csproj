@@ -118,6 +118,7 @@
     <Compile Include="Tools\Converters\BoolToImageConverter.cs" />
     <Compile Include="Tools\Converters\BoolToOppositeConverter.cs" />
     <Compile Include="Tools\Converters\BoolToStringConverter.cs" />
+    <Compile Include="Tools\Converters\DateTimeToTimeSinceConverter.cs" />
     <Compile Include="Tools\Converters\FollowerStateToTextConverter.cs" />
     <Compile Include="Tools\Converters\CurrentUserVisibilityConverter.cs" />
     <Compile Include="Tools\Converters\NullToVisibilityConverter.cs" />

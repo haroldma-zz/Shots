@@ -34,13 +34,13 @@
                    ImageOpened="Image_ImageOpened" />
             <MediaElement AutoPlay="True" Source="{Binding Resource.VideoUrl}" IsMuted="True" IsLooping="True"
                           x:Name="MediaElement" Visibility="Collapsed" />
-            <Rectangle Height="75" VerticalAlignment="Bottom">
+            <Rectangle Height="100" VerticalAlignment="Bottom">
                 <Rectangle.Fill>
                     <LinearGradientBrush StartPoint="1,0" EndPoint="1,1">
                         <GradientStop Color="Transparent" Offset="0" />
                         <GradientStop Color="#0C000000" Offset="0.3" />
                         <GradientStop Color="#3F000000" Offset="0.6" />
-                        <GradientStop Color="#99000000" Offset="1" />
+                        <GradientStop Color="#A5000000" Offset="1" />
                     </LinearGradientBrush>
                 </Rectangle.Fill>
             </Rectangle>
@@ -54,14 +54,17 @@
                         <CompositeTransform ScaleX="0.6" ScaleY="0.6" />
                     </AppBarToggleButton.RenderTransform>
                 </AppBarToggleButton>
-                <Button HorizontalAlignment="Left" Click="ProfileButton_Click">
-                    <TextBlock Text="{Binding User.Username}"
-                               Visibility="{Binding User.Username, Converter={StaticResource NullToVisibilityConverters}}"
-                               Foreground="White" FontSize="14" />
-                </Button>
+                <StackPanel Orientation="Horizontal">
+                    <Button HorizontalAlignment="Left" Click="ProfileButton_Click">
+                        <TextBlock Text="{Binding User.Username}"
+                                   Visibility="{Binding User.Username, Converter={StaticResource NullToVisibilityConverters}}"
+                                   Foreground="White" FontSize="14" />
+                    </Button>
+                    <TextBlock Text="{Binding Resource.Time, Converter={StaticResource DateTimeToTimeSinceConverter}}" Foreground="#FFE8E8E8" FontSize="12" VerticalAlignment="Bottom" Margin="2, 0, 0, 0" FontWeight="Thin" />
+                </StackPanel>
                 <TextBlock Text="{Binding Resource.FsVenueInfo.FsVenueName}"
                            Visibility="{Binding Resource.FsVenueInfo, Converter={StaticResource NullToVisibilityConverters}}"
-                           Foreground="#7FFFFFFF" FontSize="12" />
+                           Foreground="#FFE8E8E8" FontSize="12" FontWeight="Thin" />
             </StackPanel>
         </Grid>
         <Button Grid.Row="0" Width="100" Margin="0,0,2,-5"

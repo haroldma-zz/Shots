@@ -27,5 +27,15 @@ namespace Shots.Core.Extensions
                 dateTime = dateTime.ToUniversalTime();
             return (long) (dateTime.Subtract(EpochDateTime)).TotalSeconds;
         }
+
+        public static string ToTimeSince(this DateTime dateTime)
+        {
+            var ts = DateTime.Now.Subtract(dateTime);
+            if (ts.TotalMinutes < 1)
+                return $"{Math.Floor(ts.TotalSeconds)}s";
+            if (ts.TotalHours < 1)
+                return $"{Math.Floor(ts.TotalMinutes)}m";
+            return ts.TotalDays < 1 ? $"{Math.Floor(ts.TotalHours)}h" : $"{Math.Floor(ts.TotalDays)}d";
+        }
     }
 }

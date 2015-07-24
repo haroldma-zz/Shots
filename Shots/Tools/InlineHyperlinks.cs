@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Text.RegularExpressions;
+using Windows.System;
 using Windows.UI.Text;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -63,13 +65,27 @@ namespace Shots.Tools
             for (var index = 0; index < splittedString.Length; index++)
             {
                 var tmp = splittedString[index];
+                var result = Regex.Match(tmp, @"(@|#)\w+").Value;
+                string post = null;
+                if (!string.IsNullOrEmpty(result))
+                {
+                    post = tmp.Replace(result, "");
+                    tmp = result;
+                }
+
                 if (tmp.StartsWith("@"))
                     textBlock.Inlines.Add(GetHyperLink(tmp,
                         new ShotLink(tmp.Replace("@", "").Replace("<b>", ""), ShotLink.PageType.User)));
                 else if (tmp.StartsWith("#"))
                     textBlock.Inlines.Add(GetHyperLink(tmp, new ShotLink(tmp.Replace("#", ""), ShotLink.PageType.Tag)));
+                else if (tmp.StartsWith("http:") || tmp.StartsWith("https:") || tmp.StartsWith("www.") ||
+                         tmp.EndsWith(".com"))
+                    textBlock.Inlines.Add(GetHyperLink(tmp, new ShotLink(tmp, ShotLink.PageType.Web)));
                 else
                     textBlock.Inlines.Add(GetRunControl(tmp));
+
+                if (!string.IsNullOrEmpty(post))
+                    textBlock.Inlines.Add(GetRunControl(post));
 
                 if (index != splittedString.Length - 1)
                     textBlock.Inlines.Add(GetRunControl(" "));
@@ -93,13 +109,19 @@ namespace Shots.Tools
             return hyper;
         }
 
-        private static void HyperOnClick(Hyperlink sender, HyperlinkClickEventArgs args)
+        private static async void HyperOnClick(Hyperlink sender, HyperlinkClickEventArgs args)
         {
             var link = (ShotLink) sender.GetValue(LinkProperty);
 
             if (link.Page == ShotLink.PageType.User)
             {
                 App.Current.NavigationService.Navigate(typeof (ProfilePage), link.Parameter);
+            }
+            else if (link.Page == ShotLink.PageType.Web)
+            {
+                if (!link.Parameter.StartsWith("http"))
+                    link.Parameter = "http://" + link.Parameter;
+                await Launcher.LaunchUriAsync(new Uri(link.Parameter));
             }
         }
 
@@ -122,7 +144,7 @@ namespace Shots.Tools
         {
             User,
             Tag,
-            Like
+            Web
         }
 
         public ShotLink(string parameter, PageType page)

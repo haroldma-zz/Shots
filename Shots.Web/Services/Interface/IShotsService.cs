@@ -58,7 +58,7 @@ namespace Shots.Web.Services.Interface
         Task<SingleItemResponse> GetShotItemAsync(string id);
 
         /// <summary>
-        /// Likes the shot item.
+        ///     Likes the shot item.
         /// </summary>
         /// <param name="id">The resource id.</param>
         /// <param name="on">if set to <c>true</c> [on].</param>
@@ -113,7 +113,8 @@ namespace Shots.Web.Services.Interface
         /// <param name="lastId">The id of the last item. (Paging)</param>
         /// <param name="configureLoadMore">If set to [true] it will configure HasMoreItem and LoadMoreItemsFunc.</param>
         /// <returns></returns>
-        Task<FollowingResponse> GetUserFollowingAsync(DateTime since, string id, string lastId = null, bool configureLoadMore = true);
+        Task<FollowingResponse> GetUserFollowingAsync(DateTime since, string id, string lastId = null,
+            bool configureLoadMore = true);
 
         void AttachLoadMore(FollowingResponse response);
 
@@ -124,7 +125,8 @@ namespace Shots.Web.Services.Interface
         /// <param name="lastId">The id of the last item. (Paging)</param>
         /// <param name="configureLoadMore">If set to [true] it will configure HasMoreItem and LoadMoreItemsFunc.</param>
         /// <returns></returns>
-        Task<UserListWithSuggestionResponse> GetUserListAsync(string id, string lastId = null, bool configureLoadMore = true);
+        Task<UserListWithSuggestionResponse> GetUserListAsync(string id, string lastId = null,
+            bool configureLoadMore = true);
 
         void AttachLoadMore(UserListWithSuggestionResponse response);
 
@@ -137,7 +139,7 @@ namespace Shots.Web.Services.Interface
         Task<BaseResponse> LoginAsync(string username, string password);
 
         /// <summary>
-        /// Logouts this instance.
+        ///     Logouts this instance.
         /// </summary>
         void Logout();
 
@@ -147,16 +149,30 @@ namespace Shots.Web.Services.Interface
         /// <param name="username">The username.</param>
         /// <param name="password">The password.</param>
         /// <param name="email">The email.</param>
-        /// <param name="firstName">The first name.</param>
-        /// <param name="lastName">The last name.</param>
+        /// <param name="name">The first name.</param>
         /// <param name="birthday">The birthday.</param>
         /// <param name="imageData">The image data. Use null to not include any.</param>
         /// <returns></returns>
-        Task<BaseResponse> RegisterAsync(string username, string password, string email, string firstName,
-            string lastName, DateTime birthday, Stream imageData);
+        Task<BaseResponse> RegisterAsync(string username, string password, string email, string name,
+            DateTime birthday, Stream imageData);
 
         /// <summary>
-        /// Toggles the shottie's relationship.
+        ///     Sends the SMS verification code.
+        /// </summary>
+        /// <param name="countryCode">The country code.</param>
+        /// <param name="phoneNumber">The phone number.</param>
+        /// <returns></returns>
+        Task<SmsVerificationResponse> SendSmsVerificationCode(string countryCode, string phoneNumber);
+
+        /// <summary>
+        ///     Verifies the SMS code.
+        /// </summary>
+        /// <param name="code">The code.</param>
+        /// <returns></returns>
+        Task<BaseResponse> VerifySmsCode(string code);
+
+        /// <summary>
+        ///     Toggles the shottie's relationship.
         /// </summary>
         /// <param name="id">The user identifier.</param>
         /// <param name="add">if set to <c>true</c> It adds the user as a friend, else removes him.</param>
@@ -164,7 +180,7 @@ namespace Shots.Web.Services.Interface
         Task<BaseResponse> ToggleFriend(string id, bool add = true);
 
         /// <summary>
-        /// Search for users.
+        ///     Search for users.
         /// </summary>
         /// <param name="query">The query.</param>
         /// <returns></returns>

@@ -94,7 +94,7 @@ namespace Shots.Web.Services.RunTime
             data.Add("per_page", perPage.ToString());
             if (!string.IsNullOrEmpty(lastId)) data.Add("last_id", lastId);
 
-            var response = await PostAsync<HomeListResponse>(path, data);
+            var response = await PostAsync<HomeListResponse>(path, data).DontMarshall();
 
             if (configureLoadMore)
                 AttachLoadMore(response);
@@ -144,12 +144,12 @@ namespace Shots.Web.Services.RunTime
         ///     Gets the discover list.
         /// </summary>
         /// <returns></returns>
-        public async Task<BaseListResponse> GetDiscoverListAsync()
+        public Task<BaseListResponse> GetDiscoverListAsync()
         {
             const string path = ShotsConstants.ListDiscoverPath;
             var data = GetDefaultData(path);
 
-            return await PostAsync<BaseListResponse>(path, data);
+            return PostAsync<BaseListResponse>(path, data);
         }
 
         /// <summary>
@@ -166,7 +166,7 @@ namespace Shots.Web.Services.RunTime
             data.Add("resource_id", id);
 
             // so the api returns a list response
-            var resp = await PostAsync<BaseListResponse>(path, data);
+            var resp = await PostAsync<BaseListResponse>(path, data).DontMarshall();
 
             // To make everything nicer, we convert it to a SingleItemResponse manually
             return new SingleItemResponse
@@ -184,7 +184,7 @@ namespace Shots.Web.Services.RunTime
         /// <param name="id">The resource id.</param>
         /// <param name="on">if set to <c>true</c> [on].</param>
         /// <returns></returns>
-        public async Task<LikeResponse> LikeShotItemAsync(string id, bool on = true)
+        public Task<LikeResponse> LikeShotItemAsync(string id, bool on = true)
         {
             var path = on ? ShotsConstants.LikeOnPath : ShotsConstants.LikeOffPath;
             var data = GetDefaultData(path);
@@ -192,18 +192,18 @@ namespace Shots.Web.Services.RunTime
             data.Add("type", "photo");
             data.Add("resource_id", id);
 
-            return await PostAsync<LikeResponse>(path, data);
+            return PostAsync<LikeResponse>(path, data);
         }
 
         /// <summary>
         ///     Gets the suggested users for the current account.
         /// </summary>
         /// <returns></returns>
-        public async Task<SuggestedResponse> GetSuggestedUsersAsync()
+        public Task<SuggestedResponse> GetSuggestedUsersAsync()
         {
             const string path = ShotsConstants.SuggestedPath;
             var data = GetDefaultData(path);
-            return await PostAsync<SuggestedResponse>(path, data);
+            return PostAsync<SuggestedResponse>(path, data);
         }
 
         /// <summary>
@@ -211,12 +211,12 @@ namespace Shots.Web.Services.RunTime
         /// </summary>
         /// <param name="id">The user identifier.</param>
         /// <returns></returns>
-        public async Task<UserInfoReponse> GetUserAsync(string id)
+        public Task<UserInfoReponse> GetUserAsync(string id)
         {
             const string path = ShotsConstants.UserLoadPath;
             var data = GetDefaultData(path);
             data.Add("request_user_id", id);
-            return await PostAsync<UserInfoReponse>(path, data);
+            return PostAsync<UserInfoReponse>(path, data);
         }
 
         /// <summary>
@@ -224,12 +224,12 @@ namespace Shots.Web.Services.RunTime
         /// </summary>
         /// <param name="name">The user name.</param>
         /// <returns></returns>
-        public async Task<UserInfoReponse> GetUserByNameAsync(string name)
+        public Task<UserInfoReponse> GetUserByNameAsync(string name)
         {
             const string path = ShotsConstants.UserLoadPath;
             var data = GetDefaultData(path);
             data.Add("request_username", name);
-            return await PostAsync<UserInfoReponse>(path, data);
+            return PostAsync<UserInfoReponse>(path, data);
         }
 
         /// <summary>
@@ -246,7 +246,7 @@ namespace Shots.Web.Services.RunTime
             data.Add("request_user_id", id == "me" ? CurrentUser.Id : id);
             if (!string.IsNullOrEmpty(lastId)) data.Add("last_id", lastId);
 
-            var response = await PostAsync<FollowersResponse>(path, data);
+            var response = await PostAsync<FollowersResponse>(path, data).DontMarshall();
             response.UserId = id;
             // The Items prop implements ISupportIncrementalLoading. Let's use some C# magic to configure it!
             if (configureLoadMore)
@@ -313,7 +313,7 @@ namespace Shots.Web.Services.RunTime
             if (since != DateTime.MinValue) data.Add("since", since.ToUnixTimestamp().ToString());
             if (!string.IsNullOrEmpty(lastId)) data.Add("last_id", lastId);
 
-            var response = await PostAsync<FollowingResponse>(path, data);
+            var response = await PostAsync<FollowingResponse>(path, data).DontMarshall();
             response.Since = since;
             response.UserId = id;
 
@@ -368,7 +368,7 @@ namespace Shots.Web.Services.RunTime
             data.Add("request_user_id", id == "me" ? CurrentUser.Id : id);
             if (!string.IsNullOrEmpty(lastId)) data.Add("last_id", lastId);
 
-            var response = await PostAsync<UserListWithSuggestionResponse>(path, data);
+            var response = await PostAsync<UserListWithSuggestionResponse>(path, data).DontMarshall();
 
             // The Items prop implements ISupportIncrementalLoading. Let's use some C# magic to configure it!
             if (configureLoadMore)
@@ -421,7 +421,7 @@ namespace Shots.Web.Services.RunTime
             data.Add("username", username);
             data.Add("password", password);
 
-            var resp = await PostAsync<LoginResponse>(path, data);
+            var resp = await PostAsync<LoginResponse>(path, data).DontMarshall();
 
             if (resp.Status == Status.Success &&
                 resp.Keys != null) SaveAuthentication(resp.UserInfo, resp.Keys.Consumer, resp.Keys.Secret);
@@ -440,33 +440,47 @@ namespace Shots.Web.Services.RunTime
         /// <param name="username">The username.</param>
         /// <param name="password">The password.</param>
         /// <param name="email">The email.</param>
-        /// <param name="firstName">The first name.</param>
-        /// <param name="lastName">The last name.</param>
+        /// <param name="name">The first name.</param>
         /// <param name="birthday">The birthday.</param>
         /// <param name="imageData">The image data. Use null to not include any.</param>
         /// <returns></returns>
-        public async Task<BaseResponse> RegisterAsync(string username, string password, string email, string firstName,
-            string lastName, DateTime birthday, Stream imageData = null)
+        public async Task<BaseResponse> RegisterAsync(string username, string password, string email, string name,
+            DateTime birthday, Stream imageData = null)
         {
-            const string path = ShotsConstants.UserNewPath;
+            const string path = ShotsConstants.SignUpNewPath;
             var data = GetDefaultData(path);
             data.Add("identifierForVendor", IdentifierForVendor);
             data.Add("username", username);
             data.Add("password", password);
             data.Add("email", email);
-            data.Add("fname", firstName);
-            data.Add("lname", lastName);
+            data.Add("name", name);
             data.Add("birthday", birthday.ToUnixTimestamp().ToString());
 
             LoginResponse resp;
 
             if (imageData != null) resp = await PostAsync<LoginResponse>(path, data, imageData);
-            else resp = await PostAsync<LoginResponse>(ShotsConstants.UserNewPath, data);
+            else resp = await PostAsync<LoginResponse>(ShotsConstants.SignUpNewPath, data);
 
             if (resp.Status == Status.Success &&
                 resp.Keys != null) SaveAuthentication(resp.UserInfo, resp.Keys.Consumer, resp.Keys.Secret);
 
             return resp;
+        }
+
+        public Task<SmsVerificationResponse> SendSmsVerificationCode(string countryCode, string phoneNumber)
+        {
+            const string path = ShotsConstants.SignUpVerifySmsPath;
+            var data = GetDefaultData(path);
+            data.Add("country_code", countryCode);
+            data.Add("phone_number", phoneNumber);
+            data.Add("phone_verification_type", "sms");
+
+            return PostAsync<SmsVerificationResponse>(path, data);
+        }
+
+        public Task<BaseResponse> VerifySmsCode(string code)
+        {
+            throw new NotImplementedException();
         }
 
         /// <summary>
@@ -475,13 +489,13 @@ namespace Shots.Web.Services.RunTime
         /// <param name="id">The user identifier.</param>
         /// <param name="add">if set to <c>true</c> It adds the user as a friend, else removes him.</param>
         /// <returns></returns>
-        public async Task<BaseResponse> ToggleFriend(string id, bool add = true)
+        public Task<BaseResponse> ToggleFriend(string id, bool add = true)
         {
             var path = add ? ShotsConstants.FriendsAddPath : ShotsConstants.FriendsRemovePath;
             var data = GetDefaultData(path);
             data.Add("friend_id", id);
 
-            return await PostAsync<BaseResponse>(path, data);
+            return PostAsync<BaseResponse>(path, data);
         }
 
         /// <summary>
@@ -489,13 +503,13 @@ namespace Shots.Web.Services.RunTime
         /// </summary>
         /// <param name="query">The query.</param>
         /// <returns></returns>
-        public async Task<UserListResponse> SearchUsersAsync(string query)
+        public Task<UserListResponse> SearchUsersAsync(string query)
         {
             const string path = ShotsConstants.UserSearchPath;
             var data = GetDefaultData(path);
             data.Add("search", query);
 
-            return await PostAsync<UserListResponse>(path, data);
+            return PostAsync<UserListResponse>(path, data);
         }
 
         #region Helpers

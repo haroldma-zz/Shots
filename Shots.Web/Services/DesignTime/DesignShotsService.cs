@@ -144,8 +144,8 @@ namespace Shots.Web.Services.DesignTime
             throw new NotImplementedException();
         }
 
-        public Task<BaseResponse> RegisterAsync(string username, string password, string email, string firstName,
-            string lastName, DateTime birthday,
+        public Task<BaseResponse> RegisterAsync(string username, string password, string email, string name,
+            DateTime birthday,
             Stream imageData)
         {
             throw new NotImplementedException();

@@ -1,11 +1,19 @@
 ﻿using System;
+using Windows.ApplicationModel;
+using Windows.UI;
 using Windows.UI.ViewManagement;
 
 namespace Shots.Helpers
 {
     public static class StatusBarHelper
     {
-        public static StatusBar Instance => StatusBar.GetForCurrentView();
+        public static StatusBar Instance => DesignMode.DesignModeEnabled ? null : StatusBar.GetForCurrentView();
+
+        public static Color? ForegroundColor
+        {
+            get { return Instance?.ForegroundColor; }
+            set { if (!DesignMode.DesignModeEnabled) Instance.ForegroundColor = value; }
+        }
 
         public static void ShowStatus(string message)
         {
@@ -18,8 +26,6 @@ namespace Shots.Helpers
             Instance.ProgressIndicator.Text = message;
             await Instance.ProgressIndicator.ShowAsync();
         }
-        
-        
 
         public static async void HideStatus()
         {

@@ -137,6 +137,11 @@ namespace Shots.Web.Services.Interface
         Task<BaseResponse> LoginAsync(string username, string password);
 
         /// <summary>
+        /// Logouts this instance.
+        /// </summary>
+        void Logout();
+
+        /// <summary>
         ///     Registers a new account on shots.
         /// </summary>
         /// <param name="username">The username.</param>

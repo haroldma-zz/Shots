@@ -132,14 +132,16 @@ namespace Shots.ViewModels
                 // The app was supended and terminated, so we resume from the state
                 Feed = feedState as UserListWithSuggestionResponse;
                 SetUser(userState as UserInfo, false);
-
-                // Need to reattach
+                
                 if (Feed != null)
+                {
+                    // Need to reattach
                     Service.AttachLoadMore(Feed);
 
-                // Scroll the list were we left off
-                // JSON.NET serializes ints as int64; Have to covert it to int32
-                CurrentVisibleIndex = Convert.ToInt32(currentVisibleIndexState);
+                    // Scroll the list were we left off
+                    // JSON.NET serializes ints as int64; Have to covert it to int32
+                    CurrentVisibleIndex = Convert.ToInt32(currentVisibleIndexState);
+                }
             }
 
             return UserInfo != null;

@@ -429,6 +429,11 @@ namespace Shots.Web.Services.RunTime
             return resp;
         }
 
+        public void Logout()
+        {
+            ResetAuthentication();
+        }
+
         /// <summary>
         ///     Registers a new account on shots.
         /// </summary>

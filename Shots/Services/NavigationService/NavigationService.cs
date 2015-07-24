@@ -47,10 +47,19 @@ namespace Shots.Services.NavigationService
 
         public void NavigatedTo(NavigationMode mode, string parameter)
         {
-            if (_frame.CurrentPageType == typeof (WelcomePage))
+            if (_frame.CurrentPageType == typeof (WelcomePage) && _frame.BackStack.Count > 0)
                 _frame.BackStack.RemoveAt(_frame.BackStack.Count - 1);
 
             _frame.CurrentPageType = _frame.Content.GetType();
+
+            if (_frame.CurrentPageType == typeof(WelcomePage) && _frame.BackStack.Count > 0)
+            {
+                for (var i = 0; i < _frame.BackStack.Count; i++)
+                {
+                    _frame.BackStack.RemoveAt(0);
+                }
+            }
+
             LastNavigationParameter = parameter;
             LastNavigationType = _frame.Content.GetType().FullName;
             var key = LastNavigationType + "-depth-" + _frame.BackStackDepth;

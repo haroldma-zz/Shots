@@ -40,11 +40,11 @@
     </Grid>
     <Page.BottomAppBar>
         <CommandBar ClosedDisplayMode="Minimal" Background="#7FDDDDDD">
-            <AppBarButton Icon="AddFriend" Label="friends" />
+            <AppBarButton Icon="AddFriend" Label="people" Command="{Binding PeopleCommand}" />
             <AppBarSeparator />
             <CommandBar.SecondaryCommands>
-                <AppBarButton Label="contact" />
-                <AppBarButton Label="rate+review" />
+                <AppBarButton Label="contact" Command="{Binding ContactCommand}" />
+                <AppBarButton Label="rate+review" Command="{Binding ReviewCommand}" />
                 <AppBarButton Label="logout" Command="{Binding LogoutCommand}" />
             </CommandBar.SecondaryCommands>
         </CommandBar>

@@ -16,5 +16,6 @@ namespace Shots.ViewModels
         public MainViewModel Main => _kernel.Resolve<MainViewModel>();
         public ProfileViewModel Profile => _kernel.Resolve<ProfileViewModel>();
         public ShotViewModel Shot => _kernel.Resolve<ShotViewModel>();
+        public SearchViewModel Search => _kernel.Resolve<SearchViewModel>();
     }
 }

@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using Windows.ApplicationModel.Store;
+using Windows.System;
 using Windows.UI;
 using Windows.UI.Xaml.Navigation;
 using Shots.Helpers;
@@ -24,11 +26,17 @@ namespace Shots.ViewModels
             _navigationService = navigationService;
             ShotsService = shotsService;
             LogoutCommand = new Command(LogoutExecute);
+            ReviewCommand = new Command(ReviewExecute);
+            ContactCommand = new Command(ContactExecute);
+            PeopleCommand = new Command(PeopleExecute);
 
             if (!IsInDesignMode) return;
             OnNavigatedTo(null, NavigationMode.New, null);
         }
 
+        public Command PeopleCommand { get; set; }
+        public Command ContactCommand { get; set; }
+        public Command ReviewCommand { get; set; }
         public Command LogoutCommand { get; set; }
         public IShotsService ShotsService { get; }
 
@@ -54,6 +62,21 @@ namespace Shots.ViewModels
         {
             get { return _errorMessage; }
             set { Set(ref _errorMessage, value); }
+        }
+
+        private void PeopleExecute()
+        {
+            _navigationService.Navigate(typeof (SearchPage));
+        }
+
+        private async void ContactExecute()
+        {
+            await Launcher.LaunchUriAsync(new Uri("mailto:help@zumicts.com"));
+        }
+
+        private async void ReviewExecute()
+        {
+            await Launcher.LaunchUriAsync(new Uri("ms-windows-store:reviewapp?appid=" + CurrentApp.AppId));
         }
 
         private void LogoutExecute()

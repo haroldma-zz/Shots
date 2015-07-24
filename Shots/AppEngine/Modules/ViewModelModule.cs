@@ -12,6 +12,7 @@ namespace Shots.AppEngine.Modules
             builder.RegisterType<MainViewModel>();
             builder.RegisterType<ProfileViewModel>();
             builder.RegisterType<ShotViewModel>();
+            builder.RegisterType<SearchViewModel>();
         }
     }
 }

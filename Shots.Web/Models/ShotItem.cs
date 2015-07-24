@@ -17,12 +17,12 @@ namespace Shots.Web.Models
         public string DescriptionFormatted
             =>
                 (ReactTo != null ? "@<b>" + ReactTo.User.Username + " — " : "") +
-                Resource.Description;
+                Resource?.Description;
 
         public DateTime Time
         {
             // Some shots only have the time in the resource
-            get { return _time == DateTime.MinValue ? Resource.Time : _time; }
+            get { return _time == DateTime.MinValue && Resource != null ? Resource.Time : _time; }
             set { _time = value; }
         }
 

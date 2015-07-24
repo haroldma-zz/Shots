@@ -146,6 +146,7 @@ namespace Shots.Web.Services.Interface
         /// <summary>
         ///     Registers a new account on shots.
         /// </summary>
+        /// <param name="signUpToken">The sign up token used for verification.</param>
         /// <param name="username">The username.</param>
         /// <param name="password">The password.</param>
         /// <param name="email">The email.</param>
@@ -153,7 +154,7 @@ namespace Shots.Web.Services.Interface
         /// <param name="birthday">The birthday.</param>
         /// <param name="imageData">The image data. Use null to not include any.</param>
         /// <returns></returns>
-        Task<BaseResponse> RegisterAsync(string username, string password, string email, string name,
+        Task<BaseResponse> RegisterAsync(string signUpToken, string username, string password, string email, string name,
             DateTime birthday, Stream imageData);
 
         /// <summary>
@@ -165,11 +166,12 @@ namespace Shots.Web.Services.Interface
         Task<SmsVerificationResponse> SendSmsVerificationCode(string countryCode, string phoneNumber);
 
         /// <summary>
-        ///     Verifies the SMS code.
+        ///     Verifies the code.
         /// </summary>
         /// <param name="code">The code.</param>
+        /// <param name="token">The original request's token.</param>
         /// <returns></returns>
-        Task<BaseResponse> VerifySmsCode(string code);
+        Task<BaseResponse> VerifyCode(string code, string token);
 
         /// <summary>
         ///     Toggles the shottie's relationship.

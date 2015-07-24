@@ -84,7 +84,7 @@
                 <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
             <ContentPresenter Content="{TemplateBinding Content}" ContentTemplate="{TemplateBinding ContentTemplate}" ContentTransitions="{TemplateBinding ContentTransitions}" />
-            <controls:AdSpaceControl Grid.Row="1" />
+            <!--<controls:AdSpaceControl Grid.Row="1" />-->
         </Grid>
     </ControlTemplate>
 

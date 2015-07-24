@@ -14,9 +14,13 @@
         public const string UserFollowingPath = UserPath + "/following";
         public const string UserFollowersPath = UserPath + "/followers";
         public const string UserLoginPath = UserPath + "/login";
-        public const string UserNewPath = UserPath + "/new";
         public const string UserCheckPath = UserPath + "/check";
-        
+
+        public const string SignUpBasePath = "signup";
+        public const string SignUpNewPath = SignUpBasePath + "/new";
+        public const string SignUpVerifySmsPath = SignUpBasePath + "/verify_phone";
+        public const string SignUpVerifyCodePath = SignUpBasePath + "/verify_code";
+
         public const string FriendsPath = "friends";
         public const string FriendsAddPath = FriendsPath + "/add";
         public const string FriendsRemovePath = FriendsPath + "/remove";

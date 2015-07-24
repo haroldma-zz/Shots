@@ -144,9 +144,25 @@ namespace Shots.Web.Services.DesignTime
             throw new NotImplementedException();
         }
 
+        public Task<BaseResponse> RegisterAsync(string signUpToken, string username, string password, string email, string name, DateTime birthday,
+            Stream imageData)
+        {
+            throw new NotImplementedException();
+        }
+
         public Task<BaseResponse> RegisterAsync(string username, string password, string email, string name,
             DateTime birthday,
             Stream imageData)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<SmsVerificationResponse> SendSmsVerificationCode(string countryCode, string phoneNumber)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<BaseResponse> VerifyCode(string code, string token)
         {
             throw new NotImplementedException();
         }

@@ -1,6 +1,7 @@
 using System;
 using System.Linq;
 using System.Runtime.Serialization.Formatters;
+using System.Text.RegularExpressions;
 using Newtonsoft.Json;
 using Shots.Core.Helpers;
 
@@ -8,6 +9,10 @@ namespace Shots.Core.Extensions
 {
     public static class StringExtensions
     {
+        public static bool IsValidPhoneNumber(this string text)
+            => new Regex(@"(\([2-9]\d\d\)|[2-9]\d\d) ?[-.,]? ?[2-9]\d\d ?[-.,]? ?\d{4}").IsMatch(text);
+
+        public static string ToDigitsOnly(this string text) => new Regex(@"[^\d]").Replace(text, "");
         public static bool IsAnyNullOrEmpty(params string[] values) => values.Any(string.IsNullOrEmpty);
 
         public static T TryDeserializeJson<T>(this string json)

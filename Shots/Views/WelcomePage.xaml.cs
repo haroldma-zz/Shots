@@ -28,9 +28,7 @@ namespace Shots.Views
 
             if (textBox.Name == $"LoginUsername{suffix}")
                 LoginPasswordTextBox.Focus(FocusState.Programmatic);
-            else if (textBox.Name == $"FirstName{suffix}")
-                LastNameTextBox.Focus(FocusState.Programmatic);
-            else if (textBox.Name == $"LastName{suffix}")
+            else if (textBox.Name == $"Name{suffix}")
                 UsernameTextBox.Focus(FocusState.Programmatic);
             else if (textBox.Name == $"Username{suffix}")
                 EmailTextBox.Focus(FocusState.Programmatic);

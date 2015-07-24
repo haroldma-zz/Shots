@@ -107,9 +107,15 @@
     <Compile Include="Controls\BusyIndicator.xaml.cs">
       <DependentUpon>BusyIndicator.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\PhoneNumerInput.xaml.cs">
+      <DependentUpon>PhoneNumerInput.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\ScrollListView.cs" />
     <Compile Include="Controls\ShotItemViewer.xaml.cs">
       <DependentUpon>ShotItemViewer.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\VerificationCodeInput.xaml.cs">
+      <DependentUpon>VerificationCodeInput.xaml</DependentUpon>
     </Compile>
     <Compile Include="Extensions\ItemsControlExtensions.cs" />
     <Compile Include="Extensions\VisualTreeHelperExtensions.cs" />
@@ -127,6 +133,7 @@
     <Compile Include="Tools\Converters\NullToVisibilityConverter.cs" />
     <Compile Include="Tools\Converters\VisibilityConverter.cs" />
     <Compile Include="Tools\InlineHyperlinks.cs" />
+    <Compile Include="Tools\PopupInputHelper.cs" />
     <Compile Include="Tools\Selectors\ShotFeedTemplateSelector.cs" />
     <Compile Include="ViewModels\ProfileViewModel.cs" />
     <Compile Include="ViewModels\ShotViewModel.cs" />
@@ -225,9 +232,17 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Controls\PhoneNumerInput.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Controls\ShotItemViewer.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\VerificationCodeInput.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Styles.xaml">
       <SubType>Designer</SubType>

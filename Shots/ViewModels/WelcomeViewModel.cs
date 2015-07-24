@@ -1,8 +1,10 @@
 ﻿using System;
 using Shots.Common;
+using Shots.Controls;
 using Shots.Core.Extensions;
 using Shots.Mvvm;
 using Shots.Services.NavigationService;
+using Shots.Tools;
 using Shots.Views;
 using Shots.Web.Models;
 using Shots.Web.Services.Interface;
@@ -22,6 +24,7 @@ namespace Shots.ViewModels
         private readonly IShotsService _shotsService;
         private WelcomeMode _currentMode;
         private bool _isBusy;
+        private string _signUpToken;
 
         public WelcomeViewModel(IShotsService shotsService, INavigationService navigationService)
         {
@@ -44,9 +47,9 @@ namespace Shots.ViewModels
         public string LoginPassword { get; set; }
         public string SignUpUsername { get; set; }
         public string SignUpPassword { get; set; }
-        public string SignUpFirstName { get; set; }
-        public string SignUpLastName { get; set; }
+        public string SignUpName { get; set; }
         public string SignUpEmail { get; set; }
+
         // The default birthdate is set for 18 years ago. Should make it easier for the average user to select their date.
         public DateTimeOffset SignUpBirthDate { get; set; } = new DateTime(DateTimeOffset.Now.Year - 18,
             DateTimeOffset.Now.Month, DateTimeOffset.Now.Day);
@@ -61,17 +64,57 @@ namespace Shots.ViewModels
         {
             if (CurrentMode == WelcomeMode.SignUp)
             {
-                if (StringExtensions.IsAnyNullOrEmpty(SignUpUsername, SignUpPassword, SignUpEmail, SignUpFirstName,
-                    SignUpLastName))
+                if (StringExtensions.IsAnyNullOrEmpty(SignUpUsername, SignUpPassword, SignUpEmail, SignUpName))
                 {
                     CurtainPrompt.ShowError("Make sure to fill up everything.");
                     return;
                 }
 
+                if (string.IsNullOrEmpty(_signUpToken))
+                {
+                    // Get phone number
+                    var phone = await PopupInputHelper.GetInputAsync(new PhoneNumerInput());
+                    if (string.IsNullOrEmpty(phone)) return;
+
+                    // Send verification code
+                    IsBusy = true;
+                    var smsResults = await _shotsService.SendSmsVerificationCode("", phone);
+                    IsBusy = false;
+                    if (smsResults.Status != Status.Success)
+                    {
+                        CurtainPrompt.ShowError(smsResults.Message);
+                        return;
+                    }
+
+                    // get the code from user
+                    var code = await PopupInputHelper.GetInputAsync(new VerificationCodeInput());
+                    if (string.IsNullOrEmpty(code)) return;
+
+                    if (smsResults.Status != Status.Success)
+                    {
+                        CurtainPrompt.ShowError(smsResults.Message);
+                        return;
+                    }
+
+                    // verify it
+                    IsBusy = true;
+                    var verifyResults = await _shotsService.VerifyCode(code, smsResults.SignUpToken);
+
+                    if (verifyResults.Status != Status.Success)
+                    {
+                        IsBusy = false;
+                        CurtainPrompt.ShowError(smsResults.Message);
+                        return;
+                    }
+
+                    _signUpToken = smsResults.SignUpToken;
+                }
+
                 IsBusy = true;
                 var results =
-                    await _shotsService.RegisterAsync(SignUpUsername, SignUpPassword, SignUpEmail, SignUpFirstName,
-                        SignUpLastName, SignUpBirthDate.Date, null);
+                    await
+                        _shotsService.RegisterAsync(_signUpToken, SignUpUsername, SignUpPassword, SignUpEmail, SignUpName,
+                            SignUpBirthDate.Date, null);
                 IsBusy = false;
 
                 if (results.Status == Status.Success)

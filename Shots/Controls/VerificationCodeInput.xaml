@@ -1,0 +1,26 @@
+﻿<UserControl
+    x:Class="Shots.Controls.VerificationCodeInput"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Shots.Controls"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    d:DesignHeight="300"
+    d:DesignWidth="400"
+    RequestedTheme="Dark">
+
+    <Grid Background="{ThemeResource ShotsAccentColor}">
+        <StackPanel Margin="15,40,15,15">
+            <TextBlock FontSize="26" TextWrapping="Wrap" TextAlignment="Center">
+                <Run Text="Ok, we've sent you a " />
+                <Bold>
+                    <Run Text="code. " />
+                </Bold>
+                <Run Text="Enter it here." />
+            </TextBlock>
+            <TextBox x:Name="VerificationCode" MaxLength="4" HorizontalAlignment="Center" FontSize="67" TextAlignment="Center" Width="165" InputScope="Number" />
+            <Button Content="Continue" Foreground="White" Click="Button_Click" />
+        </StackPanel>
+    </Grid>
+</UserControl>

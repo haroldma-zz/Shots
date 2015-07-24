@@ -21,9 +21,7 @@
             </selectors:ShotFeedTemplateSelector.ShotTemplate>
             <selectors:ShotFeedTemplateSelector.AdTemplate>
                 <DataTemplate>
-                    <Grid Background="{StaticResource PhoneAccentBrush}">
-                        <TextBlock Text="This will be an advertisement" Foreground="White" FontSize="20" Margin="10" />
-                    </Grid>
+                    <controls:AdSpaceControl />
                 </DataTemplate>
             </selectors:ShotFeedTemplateSelector.AdTemplate>
         </selectors:ShotFeedTemplateSelector>

@@ -44,7 +44,7 @@
             <DoubleAnimationUsingKeyFrames EnableDependentAnimation="True"
                                            Storyboard.TargetProperty="(FrameworkElement.Height)"
                                            Storyboard.TargetName="SignUpPanel">
-                <EasingDoubleKeyFrame KeyTime="0:0:0.2" Value="340">
+                <EasingDoubleKeyFrame KeyTime="0:0:0.2" Value="285">
                     <EasingDoubleKeyFrame.EasingFunction>
                         <ExponentialEase EasingMode="EaseIn" />
                     </EasingDoubleKeyFrame.EasingFunction>
@@ -129,10 +129,8 @@
             </Button>
 
             <StackPanel x:Name="SignUpPanel" Visibility="Collapsed" Height="0">
-                <TextBox x:Name="FirstNameTextBox" PlaceholderText="First Name"
-                         Text="{Binding SignUpFirstName, Mode=TwoWay}" KeyDown="TextBox_KeyDown" />
-                <TextBox x:Name="LastNameTextBox" PlaceholderText="Last Name"
-                         Text="{Binding SignUpLastName, Mode=TwoWay}" KeyDown="TextBox_KeyDown" />
+                <TextBox x:Name="NameTextBox" PlaceholderText="Full Name"
+                         Text="{Binding SignUpName, Mode=TwoWay}" KeyDown="TextBox_KeyDown" />
                 <TextBox x:Name="UsernameTextBox" PlaceholderText="Username"
                          Text="{Binding SignUpUsername, Mode=TwoWay}" KeyDown="TextBox_KeyDown" />
                 <TextBox x:Name="EmailTextBox" PlaceholderText="Email" Text="{Binding SignUpEmail, Mode=TwoWay}"
@@ -153,7 +151,6 @@
                 </interactivity:Interaction.Behaviors>
             </Button>
         </StackPanel>
-
         <!--busy indicator-->
         <Grid Visibility="{Binding IsBusy, Converter={StaticResource VisibilityConverter}}" Background="#7F000000">
             <StackPanel VerticalAlignment="Center">

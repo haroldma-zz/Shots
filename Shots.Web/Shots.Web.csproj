@@ -112,6 +112,7 @@
     <Compile Include="Models\ShotItem.cs" />
     <Compile Include="Models\SimpleUserInfo.cs" />
     <Compile Include="Models\SingleItemResponse.cs" />
+    <Compile Include="Models\SmsVerificationResponse.cs" />
     <Compile Include="Models\SuggestedResponse.cs" />
     <Compile Include="Models\UserInfo.cs" />
     <Compile Include="Models\UserListWithSuggestionResponse.cs" />

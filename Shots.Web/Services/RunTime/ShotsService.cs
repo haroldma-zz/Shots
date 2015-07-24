@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -9,6 +8,7 @@ using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using Windows.UI.Xaml.Data;
 using Newtonsoft.Json;
+using Shots.Core.Common;
 using Shots.Core.Extensions;
 using Shots.Core.Utilities.Interfaces;
 using Shots.Web.Converters;
@@ -87,7 +87,8 @@ namespace Shots.Web.Services.RunTime
         /// <param name="perPage">Results per page</param>
         /// <param name="configureLoadMore">If set to [true] it will configure HasMoreItem and LoadMoreItemsFunc.</param>
         /// <returns></returns>
-        public async Task<HomeListResponse> GetHomeListAsync(string lastId = null, int perPage = 8, bool configureLoadMore = true)
+        public async Task<HomeListResponse> GetHomeListAsync(string lastId = null, int perPage = 8,
+            bool configureLoadMore = true)
         {
             const string path = ShotsConstants.ListHomePath;
             var data = GetDefaultData(path);
@@ -96,6 +97,8 @@ namespace Shots.Web.Services.RunTime
 
             var response = await PostAsync<HomeListResponse>(path, data).DontMarshall();
 
+            ConfigureAds(response.Items);
+
             if (configureLoadMore)
                 AttachLoadMore(response);
 
@@ -103,15 +106,17 @@ namespace Shots.Web.Services.RunTime
             {
                 var item = response.Items?.FirstOrDefault();
                 if (item?.Resource?.Description?.Contains("shots.com/update") ?? false)
-                    item.Resource.Description = "*Shotty for Shots (Windows) update schedule differs, check the store for updates.*";
+                    item.Resource.Description =
+                        "*Shotty for Shots (Windows) update schedule differs, check the store for updates.*";
             }
 
             return response;
         }
-
+        
         public void AttachLoadMore(HomeListResponse response)
         {
-            if (response.Items == null || response.PageInfo == null) return;
+            if (response.Items == null || response.PageInfo == null || response.Items.All(p => p.Resource == null))
+                return;
 
             response.Items.HasMoreItems = response.PageInfo.EntryCount != 0;
             response.Items.LoadMoreItemsFunc = u =>
@@ -119,7 +124,9 @@ namespace Shots.Web.Services.RunTime
                 Func<Task<LoadMoreItemsResult>> taskFunc = async () =>
                 {
                     // Make sure to set configureLoadMore to [false]
-                    var resp = await GetHomeListAsync(response.Items.LastOrDefault()?.Resource.Id ?? "", configureLoadMore: false);
+                    var resp =
+                        await GetHomeListAsync(response.Items.LastOrDefault(p => p.Resource != null)?.Resource.Id ?? "",
+                                configureLoadMore: false);
 
                     if (resp != null)
                     {
@@ -133,7 +140,7 @@ namespace Shots.Web.Services.RunTime
                             response.Items.AddRange(resp.Items);
                         }
                     }
-                    return new LoadMoreItemsResult { Count = (uint)(resp?.Items?.Count ?? 0) };
+                    return new LoadMoreItemsResult {Count = (uint) (resp?.Items?.Count ?? 0)};
                 };
                 var loadMorePostsTask = taskFunc();
                 return loadMorePostsTask.AsAsyncOperation();
@@ -239,7 +246,8 @@ namespace Shots.Web.Services.RunTime
         /// <param name="lastId">The id of the last item. (Paging)</param>
         /// <param name="configureLoadMore">If set to [true] it will configure HasMoreItem and LoadMoreItemsFunc.</param>
         /// <returns></returns>
-        public async Task<FollowersResponse> GetUserFollowersAsync(string id, string lastId = null, bool configureLoadMore = true)
+        public async Task<FollowersResponse> GetUserFollowersAsync(string id, string lastId = null,
+            bool configureLoadMore = true)
         {
             const string path = ShotsConstants.UserFollowersPath;
             var data = GetDefaultData(path);
@@ -265,7 +273,9 @@ namespace Shots.Web.Services.RunTime
                 Func<Task<LoadMoreItemsResult>> taskFunc = async () =>
                 {
                     // Make sure to set configureLoadMore to [false]
-                    var resp = await GetUserFollowersAsync(response.UserId, response.Followers.LastOrDefault()?.Id ?? "", false);
+                    var resp =
+                        await
+                            GetUserFollowersAsync(response.UserId, response.Followers.LastOrDefault()?.Id ?? "", false);
 
                     if (resp != null)
                     {
@@ -278,7 +288,7 @@ namespace Shots.Web.Services.RunTime
                             response.Followers.AddRange(resp.Followers);
                         }
                     }
-                    return new LoadMoreItemsResult { Count = (uint)(resp?.Followers?.Count ?? 0) };
+                    return new LoadMoreItemsResult {Count = (uint) (resp?.Followers?.Count ?? 0)};
                 };
                 var loadMorePostsTask = taskFunc();
                 return loadMorePostsTask.AsAsyncOperation();
@@ -292,7 +302,8 @@ namespace Shots.Web.Services.RunTime
         /// <param name="lastId">The id of the last item. (Paging)</param>
         /// <param name="configureLoadMore">If set to [true] it will configure HasMoreItem and LoadMoreItemsFunc.</param>
         /// <returns></returns>
-        public Task<FollowingResponse> GetUserFollowingAsync(string id, string lastId = null, bool configureLoadMore = true)
+        public Task<FollowingResponse> GetUserFollowingAsync(string id, string lastId = null,
+            bool configureLoadMore = true)
         {
             return GetUserFollowingAsync(DateTime.MinValue, id, lastId, configureLoadMore);
         }
@@ -305,7 +316,8 @@ namespace Shots.Web.Services.RunTime
         /// <param name="lastId">The id of the last item. (Paging)</param>
         /// <param name="configureLoadMore">If set to [true] it will configure HasMoreItem and LoadMoreItemsFunc.</param>
         /// <returns></returns>
-        public async Task<FollowingResponse> GetUserFollowingAsync(DateTime since, string id, string lastId = null, bool configureLoadMore = true)
+        public async Task<FollowingResponse> GetUserFollowingAsync(DateTime since, string id, string lastId = null,
+            bool configureLoadMore = true)
         {
             const string path = ShotsConstants.UserFollowingPath;
             var data = GetDefaultData(path);
@@ -334,7 +346,10 @@ namespace Shots.Web.Services.RunTime
                 Func<Task<LoadMoreItemsResult>> taskFunc = async () =>
                 {
                     // Make sure to set configureLoadMore to [false]
-                    var resp = await GetUserFollowingAsync(response.Since, response.UserId, response.Following.LastOrDefault()?.Id ?? "", false);
+                    var resp =
+                        await
+                            GetUserFollowingAsync(response.Since, response.UserId,
+                                response.Following.LastOrDefault()?.Id ?? "", false);
 
                     if (resp != null)
                     {
@@ -347,7 +362,7 @@ namespace Shots.Web.Services.RunTime
                             response.Following.AddRange(resp.Following);
                         }
                     }
-                    return new LoadMoreItemsResult { Count = (uint)(resp?.Following?.Count ?? 0) };
+                    return new LoadMoreItemsResult {Count = (uint) (resp?.Following?.Count ?? 0)};
                 };
                 var loadMorePostsTask = taskFunc();
                 return loadMorePostsTask.AsAsyncOperation();
@@ -361,7 +376,8 @@ namespace Shots.Web.Services.RunTime
         /// <param name="lastId">The id of the last item. (Paging)</param>
         /// <param name="configureLoadMore">If set to [true] it will configure HasMoreItem and LoadMoreItemsFunc.</param>
         /// <returns></returns>
-        public async Task<UserListWithSuggestionResponse> GetUserListAsync(string id, string lastId = null, bool configureLoadMore = true)
+        public async Task<UserListWithSuggestionResponse> GetUserListAsync(string id, string lastId = null,
+            bool configureLoadMore = true)
         {
             const string path = ShotsConstants.ListUserPath;
             var data = GetDefaultData(path);
@@ -370,24 +386,28 @@ namespace Shots.Web.Services.RunTime
 
             var response = await PostAsync<UserListWithSuggestionResponse>(path, data).DontMarshall();
 
+            ConfigureAds(response.Items);
+
             // The Items prop implements ISupportIncrementalLoading. Let's use some C# magic to configure it!
             if (configureLoadMore)
-               AttachLoadMore(response);
+                AttachLoadMore(response);
 
             return response;
         }
 
         public void AttachLoadMore(UserListWithSuggestionResponse response)
         {
-            if (response.Items == null || response.PageInfo == null) return;
+            if (response.Items == null || response.PageInfo == null || response.Items.All(p => p.Resource == null)) return;
 
-            response.Items.HasMoreItems = response.PageInfo.EntryCount != 0;
+                response.Items.HasMoreItems = response.PageInfo.EntryCount != 0;
             response.Items.LoadMoreItemsFunc = u =>
             {
                 Func<Task<LoadMoreItemsResult>> taskFunc = async () =>
                 {
                     // Make sure to set configureLoadMore to [false]
-                    var resp = await GetUserListAsync(response.User.Id, response.Items.LastOrDefault()?.Resource.Id ?? "", false);
+                    var resp =
+                        await
+                            GetUserListAsync(response.User.Id, response.Items.LastOrDefault(p => p.Ad == null)?.Resource.Id ?? "", false);
 
                     if (resp != null)
                     {
@@ -401,7 +421,7 @@ namespace Shots.Web.Services.RunTime
                             response.Items.AddRange(resp.Items);
                         }
                     }
-                    return new LoadMoreItemsResult { Count = (uint)(resp?.Items?.Count ?? 0) };
+                    return new LoadMoreItemsResult {Count = (uint) (resp?.Items?.Count ?? 0)};
                 };
                 var loadMorePostsTask = taskFunc();
                 return loadMorePostsTask.AsAsyncOperation();
@@ -437,6 +457,7 @@ namespace Shots.Web.Services.RunTime
         /// <summary>
         ///     Registers a new account on shots.
         /// </summary>
+        /// <param name="signUpToken">The sign up token used for verification.</param>
         /// <param name="username">The username.</param>
         /// <param name="password">The password.</param>
         /// <param name="email">The email.</param>
@@ -444,12 +465,14 @@ namespace Shots.Web.Services.RunTime
         /// <param name="birthday">The birthday.</param>
         /// <param name="imageData">The image data. Use null to not include any.</param>
         /// <returns></returns>
-        public async Task<BaseResponse> RegisterAsync(string username, string password, string email, string name,
+        public async Task<BaseResponse> RegisterAsync(string signUpToken, string username, string password, string email,
+            string name,
             DateTime birthday, Stream imageData = null)
         {
             const string path = ShotsConstants.SignUpNewPath;
             var data = GetDefaultData(path);
             data.Add("identifierForVendor", IdentifierForVendor);
+            data.Add("sign_up_token", signUpToken);
             data.Add("username", username);
             data.Add("password", password);
             data.Add("email", email);
@@ -458,8 +481,8 @@ namespace Shots.Web.Services.RunTime
 
             LoginResponse resp;
 
-            if (imageData != null) resp = await PostAsync<LoginResponse>(path, data, imageData);
-            else resp = await PostAsync<LoginResponse>(ShotsConstants.SignUpNewPath, data);
+            if (imageData != null) resp = await PostAsync<LoginResponse>(path, data, imageData).DontMarshall();
+            else resp = await PostAsync<LoginResponse>(ShotsConstants.SignUpNewPath, data).DontMarshall();
 
             if (resp.Status == Status.Success &&
                 resp.Keys != null) SaveAuthentication(resp.UserInfo, resp.Keys.Consumer, resp.Keys.Secret);
@@ -467,6 +490,12 @@ namespace Shots.Web.Services.RunTime
             return resp;
         }
 
+        /// <summary>
+        ///     Sends the SMS verification code.
+        /// </summary>
+        /// <param name="countryCode">The country code.</param>
+        /// <param name="phoneNumber">The phone number.</param>
+        /// <returns></returns>
         public Task<SmsVerificationResponse> SendSmsVerificationCode(string countryCode, string phoneNumber)
         {
             const string path = ShotsConstants.SignUpVerifySmsPath;
@@ -478,9 +507,20 @@ namespace Shots.Web.Services.RunTime
             return PostAsync<SmsVerificationResponse>(path, data);
         }
 
-        public Task<BaseResponse> VerifySmsCode(string code)
+        /// <summary>
+        ///     Verifies the code.
+        /// </summary>
+        /// <param name="code">The code.</param>
+        /// <param name="token">The original request's token.</param>
+        /// <returns></returns>
+        public Task<BaseResponse> VerifyCode(string code, string token)
         {
-            throw new NotImplementedException();
+            const string path = ShotsConstants.SignUpVerifyCodePath;
+            var data = GetDefaultData(path);
+            data.Add("code", code);
+            data.Add("sign_up_token", token);
+
+            return PostAsync<BaseResponse>(path, data);
         }
 
         /// <summary>
@@ -515,7 +555,27 @@ namespace Shots.Web.Services.RunTime
         #region Helpers
 
         /// <summary>
-        /// Copies the base response.
+        /// Configures the ads.
+        /// </summary>
+        /// <param name="items">The items.</param>
+        private void ConfigureAds(IncrementalObservableCollection<ShotItem> items)
+        {
+            if (items != null)
+            {
+                if (items.Count(p => p.Ad != null) > 1)
+                {
+                    // remove ads by shots
+                    foreach (var shotItem in items.Where(p => p.Ad != null).ToList())
+                    {
+                        items.Remove(shotItem);
+                    }
+                }
+                items.Add(new ShotItem { Ad = new Ad() });
+            }
+        }
+
+        /// <summary>
+        ///     Copies the base response.
         /// </summary>
         /// <param name="from">From.</param>
         /// <param name="to">To.</param>

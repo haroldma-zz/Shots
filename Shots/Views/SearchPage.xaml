@@ -26,7 +26,12 @@
                     </core:EventTriggerBehavior>
                 </interactivity:Interaction.Behaviors>
             </TextBox>
-            <ListView Grid.Row="1" ItemsSource="{Binding SearchResults}">
+            <ListView Grid.Row="1" ItemsSource="{Binding SearchResults}" IsItemClickEnabled="True">
+                <interactivity:Interaction.Behaviors>
+                    <core:EventTriggerBehavior EventName="ItemClick">
+                        <core:InvokeCommandAction Command="{Binding ItemClickCommand}" />
+                    </core:EventTriggerBehavior>
+                </interactivity:Interaction.Behaviors>
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <StackPanel Margin="0,5" Orientation="Horizontal">

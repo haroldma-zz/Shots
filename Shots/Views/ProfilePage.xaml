@@ -16,7 +16,7 @@
         <selectors:ShotFeedTemplateSelector x:Key="ShotFeedTemplateSelector">
             <selectors:ShotFeedTemplateSelector.ShotTemplate>
                 <DataTemplate>
-                    <controls:ShotItemViewer ScrollListView="{Binding ElementName=FeedView}" />
+                    <controls:ShotItemViewer />
                 </DataTemplate>
             </selectors:ShotFeedTemplateSelector.ShotTemplate>
             <selectors:ShotFeedTemplateSelector.AdTemplate>

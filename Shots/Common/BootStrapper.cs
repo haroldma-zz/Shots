@@ -6,7 +6,7 @@ using System.Xml;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
 using Windows.Globalization;
-using Windows.Phone.UI.Input;
+using Windows.UI.Core;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Markup;
@@ -47,7 +47,7 @@ namespace Shots.Common
         ///     Handled property of the BackRequestedEventArgs to true if you do not want a Page
         ///     Back navigation to occur.
         /// </summary>
-        public event EventHandler<BackPressedEventArgs> BackRequested;
+        public event EventHandler<BackRequestedEventArgs> BackRequested;
 
         protected override void OnLaunched(LaunchActivatedEventArgs e)
         {
@@ -103,7 +103,7 @@ namespace Shots.Common
             Window.Current.Activate();
 
             // Hook up the default Back handler
-            HardwareButtons.BackPressed += OnBackRequested;
+            SystemNavigationManager.GetForCurrentView().BackRequested += OnBackRequested;
         }
 
         /// <summary>
@@ -114,7 +114,7 @@ namespace Shots.Common
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void OnBackRequested(object sender, BackPressedEventArgs e)
+        private void OnBackRequested(object sender, BackRequestedEventArgs e)
         {
             BackRequested?.Invoke(this, e);
             if (e.Handled) return;

@@ -18,7 +18,7 @@
         </Storyboard>
     </UserControl.Resources>
 
-    <Grid Margin="0,0,0,5">
+    <Grid Name="Root" MaxWidth="400" Margin="0,0,0,5">
         <Grid.RowDefinitions>
             <RowDefinition Height="*" />
             <RowDefinition Height="Auto" />
@@ -29,9 +29,9 @@
                     <CompositeTransform />
                 </Image.RenderTransform>
             </Image>
-            <Image Height="{Binding Resource.RatioHeight}" Source="{Binding Resource.Url}"
+            <Image Source="{Binding Resource.Url}" Height="{Binding Resource.RatioHeight}"
                    DataContextChanged="Image_DataContextChanged" ImageFailed="Image_ImageFailed"
-                   ImageOpened="Image_ImageOpened" />
+                   ImageOpened="Image_ImageOpened" Stretch="None" />
             <MediaElement AutoPlay="True" Source="{Binding Resource.VideoUrl}" IsMuted="True" IsLooping="True"
                           x:Name="MediaElement" Visibility="Collapsed" />
             <Rectangle Height="100" VerticalAlignment="Bottom">

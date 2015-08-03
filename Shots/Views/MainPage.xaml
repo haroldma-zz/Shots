@@ -7,7 +7,6 @@
     xmlns:navigationService="using:Shots.Services.NavigationService"
     xmlns:controls="using:Shots.Controls"
     xmlns:selectors="using:Shots.Tools.Selectors"
-    xmlns:ui="using:Microsoft.Advertising.Mobile.UI"
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
     DataContext="{Binding Main, Source={StaticResource ViewModelLocator}}">
@@ -16,7 +15,7 @@
         <selectors:ShotFeedTemplateSelector x:Key="ShotFeedTemplateSelector">
             <selectors:ShotFeedTemplateSelector.ShotTemplate>
                 <DataTemplate>
-                    <controls:ShotItemViewer ScrollListView="{Binding ElementName=FeedView}" />
+                    <controls:ShotItemViewer />
                 </DataTemplate>
             </selectors:ShotFeedTemplateSelector.ShotTemplate>
             <selectors:ShotFeedTemplateSelector.AdTemplate>
@@ -36,7 +35,7 @@
                                  ItemsSource="{Binding HomeList.Items}"
                                  ItemTemplateSelector="{StaticResource ShotFeedTemplateSelector}"
                                  CurrentVisibleIndex="{Binding CurrentVisibleIndex, Mode=TwoWay}" Padding="0,0,0,20" />
-        <controls:BusyIndicator DataContext="{Binding IsLoading}" />
+            <controls:BusyIndicator DataContext="{Binding IsLoading}" />
     </Grid>
     <Page.BottomAppBar>
         <CommandBar ClosedDisplayMode="Minimal" Background="#7FDDDDDD">

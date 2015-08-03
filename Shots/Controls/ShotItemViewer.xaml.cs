@@ -4,7 +4,6 @@ using System.Net.Http;
 using Windows.ApplicationModel.DataTransfer;
 using Windows.Storage;
 using Windows.UI.Xaml;
-using Newtonsoft.Json;
 using Shots.Common;
 using Shots.Core.Helpers;
 using Shots.Helpers;
@@ -16,34 +15,12 @@ namespace Shots.Controls
 {
     public sealed partial class ShotItemViewer
     {
-        public static readonly DependencyProperty ScrollListViewProperty = DependencyProperty.RegisterAttached(
-            "ScrollListView",
-            typeof (ScrollListView),
-            typeof (ShotItemViewer),
-            new PropertyMetadata(null, null));
-
         public ShotItemViewer()
         {
             InitializeComponent();
         }
-
-        public ScrollListView ScrollListView
-        {
-            get { return (ScrollListView) GetValue(ScrollListViewProperty); }
-            set { SetValue(ScrollListViewProperty, value); }
-        }
-
+        
         public ShotItem ShotItem => DataContext as ShotItem;
-
-        public static ScrollListView GetScrollListView(DependencyObject element)
-        {
-            return (ScrollListView) element.GetValue(ScrollListViewProperty);
-        }
-
-        public static void SetScrollListView(DependencyObject element, ScrollListView value)
-        {
-            element.SetValue(ScrollListViewProperty, value);
-        }
 
         private async void LikeButton_Click(object sender, RoutedEventArgs e)
         {

@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using Windows.ApplicationModel.Store;
 using Windows.System;
 using Windows.UI;
+using Windows.UI.Core;
+using Windows.UI.Xaml;
 using Windows.UI.Xaml.Navigation;
 using Shots.Helpers;
 using Shots.Mvvm;
@@ -125,13 +127,28 @@ namespace Shots.ViewModels
                 if (HomeList.Status != Status.Success)
                     ErrorMessage = HomeList.Message;
             }
+            else
+            {
+                CurrentOnSizeChanged(null, null);
+            }
+
+            Window.Current.SizeChanged += CurrentOnSizeChanged;
         }
 
         public override void OnNavigatedFrom(bool suspending, Dictionary<string, object> state)
         {
+            Window.Current.SizeChanged -= CurrentOnSizeChanged;
             StatusBarHelper.ForegroundColor = Colors.White;
             state["homeList"] = HomeList;
             state["currentVisibleIndex"] = CurrentVisibleIndex;
+        }
+
+        private void CurrentOnSizeChanged(object sender, WindowSizeChangedEventArgs windowSizeChangedEventArgs)
+        {
+            foreach (var shotItem in HomeList.Items)
+            {
+                shotItem.Resource?.RefreshRatio();
+            }
         }
     }
 }

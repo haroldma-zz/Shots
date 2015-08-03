@@ -72,6 +72,7 @@ namespace Shots.Common
             }
             catch
             {
+                // ignored
             }
         }
 
@@ -80,12 +81,12 @@ namespace Shots.Common
             return InternalCreate(msg, action, duration?.TotalMilliseconds ?? 1500, Colors.DarkGreen);
         }
 
-        
+
         public static CurtainPrompt ShowError(string msg, Action action = null, TimeSpan? duration = null)
         {
             return InternalCreate(msg, action, duration?.TotalMilliseconds ?? 2500, Colors.DarkRed);
         }
-        
+
         private static CurtainPrompt InternalCreate(string msg, Action action, double milliseconds, Color color)
         {
             _current?.Dismiss();
@@ -130,7 +131,7 @@ namespace Shots.Common
                 Margin = new Thickness(30, PaddingPopup, 20, 20),
                 VerticalAlignment = VerticalAlignment.Bottom,
             };
-            panel.ColumnDefinitions.Add(new ColumnDefinition{Width = GridLength.Auto});
+            panel.ColumnDefinitions.Add(new ColumnDefinition { Width = GridLength.Auto });
             panel.ColumnDefinitions.Add(new ColumnDefinition());
 
             #endregion
@@ -166,13 +167,12 @@ namespace Shots.Common
             _popup.IsOpen = true;
 
             //Make the framework (re)calculate the size of the element
-            grid.Measure(new Size(Double.MaxValue, Double.MaxValue));
+            grid.Measure(new Size(double.MaxValue, double.MaxValue));
         }
 
         private void grid_ManipulationStarted(object sender, ManipulationStartedRoutedEventArgs e)
         {
-            if (_timer != null)
-                _timer.Stop();
+            _timer?.Stop();
         }
 
         private void grid_ManipulationDelta(object sender, ManipulationDeltaRoutedEventArgs e)
@@ -234,7 +234,7 @@ namespace Shots.Common
 
         private void slideDownAnimation_Completed(object sender, object e)
         {
-            _timer = new DispatcherTimer {Interval = TimeSpan.FromMilliseconds(_millisecondsToHide)};
+            _timer = new DispatcherTimer { Interval = TimeSpan.FromMilliseconds(_millisecondsToHide) };
             _timer.Tick += timer_Tick;
             _timer.Start();
         }
@@ -254,8 +254,8 @@ namespace Shots.Common
             //Animate transition
             var slideAnimation = new DoubleAnimation
             {
-                From = (_popup.RenderTransform as TranslateTransform).Y,
-                To = -(_popup.Child as Grid).ActualHeight,
+                From = ((TranslateTransform) _popup.RenderTransform).Y,
+                To = -((Grid) _popup.Child).ActualHeight,
                 Duration = new Duration(TimeSpan.FromMilliseconds(100)),
                 EasingFunction = new SineEase()
             };
@@ -272,6 +272,7 @@ namespace Shots.Common
                 }
                 catch
                 {
+                    // ignored
                 }
             };
             sbHide.Begin();

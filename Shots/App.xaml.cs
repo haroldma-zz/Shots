@@ -36,10 +36,10 @@ namespace Shots
             var service = Kernel.Resolve<IShotsService>();
 
             // Navigate to default page
-            var page = typeof (MainPage);
+            var page = typeof(MainPage);
 
             if (!service.IsAuthenticated)
-                page = typeof (WelcomePage);
+                page = typeof(WelcomePage);
 
             NavigationService.Navigate(page);
             return Task.FromResult(0);

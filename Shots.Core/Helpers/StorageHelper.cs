@@ -74,7 +74,7 @@ namespace Shots.Core.Helpers
             {
                 return null;
             }
-            return await folder.TryGetItemAsync(fileName).ConfigureAwait(false) as StorageFile;
+            return await folder.TryGetItemAsync(fileName).AsTask().ConfigureAwait(false) as StorageFile;
         }
 
         private static async Task<StorageFolder> _EnsureFolderExistsAsync(string name, StorageFolder parent)
@@ -155,7 +155,7 @@ namespace Shots.Core.Helpers
 
         private static async Task<StorageFolder> _GetFolderAsync(string name, StorageFolder parent)
         {
-            var item = await parent.TryGetItemAsync(name).ConfigureAwait(false);
+            var item = await parent.TryGetItemAsync(name).AsTask().ConfigureAwait(false);
             return item as StorageFolder;
         }
 

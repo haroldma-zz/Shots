@@ -15,12 +15,13 @@ namespace Shots.Web.Models
         public DateTime? AutoTs { get; set; }
 
         public string Caption { get; set; }
-
         // The explore section has shots that use different property names, like description and caption
         public string Description
         {
             get { return Caption ?? _description; }
-            set { _description = value;
+            set
+            {
+                _description = value;
                 Caption = null;
             }
         }
@@ -89,9 +90,16 @@ namespace Shots.Web.Models
                 if (Window.Current?.CoreWindow == null) return 533;
 
                 var ratio = (double) Width/Height;
-                _ratioHeight = (int) (Window.Current.CoreWindow.Bounds.Width/ratio);
+                _ratioHeight = (int) (Math.Min(Window.Current.CoreWindow.Bounds.Width, 400)/ratio);
                 return _ratioHeight;
             }
+        }
+
+        public void RefreshRatio()
+        {
+            _ratioHeight = 0;
+            // ReSharper disable once ExplicitCallerInfoArgument
+            OnPropertyChanged("RatioHeight");
         }
     }
 }

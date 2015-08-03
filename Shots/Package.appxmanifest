@@ -1,38 +1,33 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Package xmlns="http://schemas.microsoft.com/appx/2010/manifest" xmlns:m2="http://schemas.microsoft.com/appx/2013/manifest" xmlns:m3="http://schemas.microsoft.com/appx/2014/manifest" xmlns:mp="http://schemas.microsoft.com/appx/2014/phone/manifest">
-  <Identity Name="3237Zumicts.ShottyforShots" Publisher="CN=E38C2EDA-A823-4D3D-BBB1-8F0B81FF4C7B" Version="1.1.0.0" />
-  <mp:PhoneIdentity PhoneProductId="78a2a822-3358-4664-8cb9-493a060581b2" PhonePublisherId="00000000-0000-0000-0000-000000000000" />
+<Package xmlns="http://schemas.microsoft.com/appx/manifest/foundation/windows10" xmlns:mp="http://schemas.microsoft.com/appx/2014/phone/manifest" xmlns:uap="http://schemas.microsoft.com/appx/manifest/uap/windows10" IgnorableNamespaces="uap mp">
+  <Identity Name="3153eb43-3b7c-4d11-a5d9-8aa12339af82" Publisher="CN=Harold" Version="1.0.0.0" />
+  <mp:PhoneIdentity PhoneProductId="3153eb43-3b7c-4d11-a5d9-8aa12339af82" PhonePublisherId="00000000-0000-0000-0000-000000000000" />
   <Properties>
-    <DisplayName>Shotty for Shots</DisplayName>
-    <PublisherDisplayName>Zumicts Studio</PublisherDisplayName>
+    <DisplayName>Shots</DisplayName>
+    <PublisherDisplayName>Harold</PublisherDisplayName>
     <Logo>Assets\StoreLogo.png</Logo>
   </Properties>
-  <Prerequisites>
-    <OSMinVersion>6.3.1</OSMinVersion>
-    <OSMaxVersionTested>6.3.1</OSMaxVersionTested>
-  </Prerequisites>
+  <Dependencies>
+    <TargetDeviceFamily Name="Windows.Universal" MinVersion="10.0.0.0" MaxVersionTested="10.0.0.0" />
+  </Dependencies>
   <Resources>
     <Resource Language="x-generate" />
   </Resources>
   <Applications>
     <Application Id="App" Executable="$targetnametoken$.exe" EntryPoint="Shots.App">
-      <m3:VisualElements DisplayName="Shotty for Shots" Square150x150Logo="Assets\Logo.png" Square44x44Logo="Assets\SmallLogo.png" Description="Shots" ForegroundText="light" BackgroundColor="transparent">
-        <m3:LockScreen Notification="badgeAndTileText" BadgeLogo="Assets\BadgeLogo.png" />
-        <m3:DefaultTile Wide310x150Logo="Assets\WideLogo.png" Square71x71Logo="Assets\Square71x71Logo.png">
-          <m3:ShowNameOnTiles>
-            <m3:ShowOn Tile="square150x150Logo" />
-            <m3:ShowOn Tile="wide310x150Logo" />
-          </m3:ShowNameOnTiles>
-        </m3:DefaultTile>
-        <m3:SplashScreen Image="Assets\SplashScreen.png" />
-        <m3:InitialRotationPreference>
-          <m3:Rotation Preference="portrait" />
-        </m3:InitialRotationPreference>
-      </m3:VisualElements>
+      <uap:VisualElements DisplayName="Shots" Square150x150Logo="Assets\Square150x150Logo.png" Square44x44Logo="Assets\Square44x44Logo.png" Description="Shots" BackgroundColor="transparent">
+        <uap:DefaultTile Wide310x150Logo="Assets\Wide310x150Logo.png" ShortName="Shotty" Square71x71Logo="Assets\Square71x71Logo.png" Square310x310Logo="Assets\Square310x310Logo.png">
+          <uap:ShowNameOnTiles>
+            <uap:ShowOn Tile="square150x150Logo" />
+            <uap:ShowOn Tile="wide310x150Logo" />
+            <uap:ShowOn Tile="square310x310Logo" />
+          </uap:ShowNameOnTiles>
+        </uap:DefaultTile>
+        <uap:SplashScreen Image="Assets\SplashScreen.png" />
+      </uap:VisualElements>
     </Application>
   </Applications>
   <Capabilities>
-    <Capability Name="internetClientServer" />
-    <Capability Name="picturesLibrary" />
+    <Capability Name="internetClient" />
   </Capabilities>
 </Package>
